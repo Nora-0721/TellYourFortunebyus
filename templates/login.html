@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人工智能大数据命理 - 登录</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'base_show.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'site.min.css' %}">
+  <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'html2canvas.min.js' %}"></script>
+  <style>
+    body {
+      padding-top: 0;
+      background-color: #f0f1f2;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      margin-bottom: 0;
+    }
+
+    .jumbotron {
+      background: url(back.png) no-repeat;
+      background-size: cover;
+      padding: 4rem 2rem;
+      margin-bottom: 0;
+    }
+
+    h1 {
+      color: black;
+      text-align: center;
+    }
+
+    .login-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .login-container .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .login-container .form-control {
+      border-radius: 4px;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+    }
+
+    .login-container .btn {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 4px;
+      background-color: #ae2121;
+      color: #fff;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .login-container .btn:hover {
+      background-color: #8c1a1a;
+    }
+
+    .login-container .error-message {
+      color: #dc3545;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .footer {
+      background-color: #333;
+      color: #fff;
+      padding: 2rem 0;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .footer h3 {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <div class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand"></a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="http://www.tellyourfortune.io:8000">首页</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 登录表单 -->
+  <div class="jumbotron">
+    <h1>人工智能大数据命理</h1>
+  </div>
+
+  <div class="login-container">
+    <h2>用户登录</h2>
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">密码</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn">登录</button>
+    </form>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <h3>我们一直致力于为您的未来提供更好的选择！</h3>
+    </div>
+  </footer>
+
+  <script type="text/javascript">
+    // 动态调整页面大小
+    var designWidth = 1580, rem2px = 16;
+    document.documentElement.style.fontSize = ((window.innerWidth / designWidth) * rem2px) + "px";
+
+    window.onresize = function () {
+      document.documentElement.style.fontSize = ((window.innerWidth / designWidth) * rem2px) + "px";
+    };
+  </script>
+</body>
+</html>

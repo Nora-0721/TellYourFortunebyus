@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+
+{% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width， initial-scale=1" />
+    <title>人脸算命</title>
+    <link rel="stylesheet" type="text/css" href="{% static "input_phone_en.css" %}">
+</head>
+<body id="filebody" >
+<div id="head_phone">
+    <div id="h1">FACIAL FORTUNE-TELLING</div>
+
+    <div id="introduce">
+        一个人的面相，随着苍天的意志有了最初的样子，随着所在的环境慢慢地变化，随着四周的人和自己的努力成为了最终的样子。面相记载了与您有关的一切。 欢迎您来到Tell Your Fortune面相命运网 一个结合了深度学习知识和传统相学的免费在线面相命理分析网站。该网站可以根据您上传的照片， 对您的职业，性格等进行分析，首先帮助您对自身本性有进一步的认识，其次对您的职业提供推荐，便于对您的未来进行更好的规划。
+    </div>
+    <div id="h2">ENTERING</div>
+
+
+</div>
+<div id="bottom">
+    <div id="input">
+		
+		<form method="post" enctype="multipart/form-data" name = "my post" >
+				{% csrf_token %} 
+				<div id="input">
+					<div class="form_item1">
+						{{ form.title.errors }}
+							<label for="{{ form.title.id_for_label }}" id="label_input1" class="label_input1" >您的名字：</label>
+						{{ form.title }}
+					</div>
+					<div class="form_item2">
+						{{ form.cover.errors }}
+							<label for="{{ form.cover.id_for_label }}" id="label_input2"  class="label_input2" ">您的照片：</label>
+						{{ form.cover }}
+					</div>
+				</div>
+			
+				<button type="submit" id="button1" ></button>
+		</form>
+	
+	</div>
+    <div id="submit"></div>
+</div>
+
+
+</body>
+</html>

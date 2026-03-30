@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+
+{% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width， initial-scale=1" />
+    <title>人工智能大数据命理</title>
+    <link rel="stylesheet" type="text/css" href="{% static "show_phone.css" %}">
+</head>
+<body id="filebody" >
+
+<div id="back1_phone">
+<div id="head">人工智能大数据命理分析
+</div>
+    <div id="picture">
+		<img id="person_image" src="{{ avatarUrl}}">
+    </div>
+    <div id="name"></div>
+    <div id="recommend">
+        <div id="job"><span>推荐职业：{{ job_message }}</span><br><span>幸运方位：{{ address }}</span><br><span>幸运颜色：{{ color }}</span></div>
+    </div>
+        <div id="eye" class="title">&diams;根据眼睛的结果</div>
+        <div id="eye_text" class="text">{{ eye_block_str }}</div>
+        <div id="nose" class="title">&diams;根据鼻子的结果</div>
+        <div id="nose_text" class="text">{{ nose_block_str }}</div>
+        <div id="mouse" class="title">&diams;根据嘴唇结果</div>
+        <div id="mouse_text"  class="text">{{ lip_block_str }}</div>
+        <div id="character" class="title">&#9775;综合评价</div>
+		<div id="character_text" class="text">{{ person_str }}</div>
+		
+		
+		<div class="banner-head">
+			<div id="hunpei"class="title">&hearts;您的对象长的像谁?</div>
+			<div class="block_qizi1" >
+				<div class="qizi">
+				<img class="qizi_image" src="{{image1_url}}">
+			</div>
+			<div  class="name_title"><span>吻合度：{{wehnhedu1}}</span></div>
+			</div>
+			<div class="block_qizi2" >
+			<div class="qizi">
+			<img class="qizi_image" src="{{image2_url}}">
+
+			</div>
+			<div  class="name_title"><span>吻合度：{{wehnhedu2}}</span></div>
+			</div>
+			<div id="logo2"></div>
+		</div>
+		<div id="download" style="cursor:pointer;width:4rem;height:2rem;background-color:#ae2121;border-radius:2rem;color:#fff;font-size:0.75rem;line-height:2rem;margin:0rem auto 0.4rem" >&nbsp;&nbsp;下载报告</div>
+	
+</div>
+</div>
+<script type="text/javascript">
+		var designWidth = 420, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("filebody");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+		var button_ch = document.getElementById("download");
+        button_ch.onclick = function () {
+			window.location.href="http://www.tellyourfortune.io:8000/download/"
+        }
+
+</script>
+<!-- 
+<script type="text/javascript">
+html2canvas(document.querySelector("#back1_phone")).then(
+	canvas => {
+		console.log(" == > canvas");
+		console.log(canvas);
+		
+		console.log(" == > canvas.toDataURL");
+		console.log(canvas.toDataURL("image/png"));
+		// document.body.appendChild(canvas);
+
+		let image = canvas.toDataURL("image/png");
+
+		window.location.href=image; 
+		console.log(" ==> image");
+		console.log(image);
+	});
+</script> -->
+</body>
+</html>

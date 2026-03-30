@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+{% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人工智能大数据命理</title>
+  <link rel="stylesheet" type="text/css" href="{% static "base_show.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "site.min.css" %}">
+  <script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "html2canvas.min.js" %}"></script>
+  <style>
+    .jumbotron {
+      background: url(back.png) no-repeat;
+      background-size: cover;
+    }
+
+    h1 {
+      color: black;
+      text-align: center;
+
+    }
+
+    p {
+      color: black;
+      text-align: left;
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+
+		#report_switch {
+			position: absolute;
+			top: 5rem; /* 下移约 3 个按钮直径的位置 */
+			right: 1rem;
+			z-index: 10;
+		}
+
+		.switch-btn {
+			cursor: pointer;
+			display: inline-block;
+			width: 1.5rem;
+			height: 1.5rem;
+			line-height: 1.5rem;
+			text-align: center;
+			border-radius: 50%;
+			background-color: #ae2121;
+			color: #fff;
+			font-weight: bold;
+			font-size: 1rem;
+			margin-left: 0.3rem;
+			margin-right: 0.3rem;
+		}
+
+		.switch-btn.disabled {
+			opacity: 0.3;
+			cursor: default;
+		}
+
+		.banner-right {
+			position: relative;
+		}
+
+		#partner_face_list {
+			display: flex;
+			flex-direction: column;
+			gap: 0.6rem;
+			align-items: center;
+		}
+  </style>
+<body style="padding-top:0">
+<script type="text/javascript">
+ 		var isMobile = /Android|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+		if (isMobile) {
+			var lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
+			lang = lang.substr(0, 2)
+			if(lang == "zh" ){
+				window.location.href="http://www.tellyourfortune.io:8000/home_phone/"
+			}else{
+				window.location.href="http://www.tellyourfortune.io:8000/phone_xieyi/"
+			}
+
+
+		}
+				var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+</script>
+<div class="navbar navbar-inverse " style="margin-bottom:0">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand"></a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="http://www.tellyourfortune.io:8000">首页</a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+        </ul>
+		<ul class="nav navbar-nav navbar-right">
+		  <!-- <li><a href="http://www.tellyourfortune.io:8000/home_en/">English</a></li> -->
+        </ul>
+      </div>
+    </div>
+</div>
+
+
+	<div  class="container"  id="module1">
+		<div id = "head">		
+			<div id="logo"></div>
+		</div>
+		<div id="back4">
+			<div class="banner-left">
+				<div id="person">
+				<img id="person_image" src="{{ avatarUrl}}">
+				</div>
+				<div id="name"><span></span><span></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span></span><span></span></div>
+				<div id="address"><span></span><span></span></div>
+				<div id="job"><span>幸运颜色 ：{{ color }}</span><br><span>幸运方位 ：{{ address }}</span><br><span>推荐的职业：</span>{{ job_message }}</div>
+
+				
+			</div>
+			<div class="banner-right">
+					<div id="title">人工智能大数据命理分析</div>
+					<div id="report_switch">
+						<span id="switch_to_self" class="switch-btn disabled">&lt;</span>
+						<span id="switch_to_partner" class="switch-btn">&gt;</span>
+					</div>
+
+					<div id="self_report_panel" class="report-panel">
+						<div id="eye" class="title">&diams;根据眼睛的结果</div>
+						<div id="eye_text" class="text">{{ eye_block_str }}</div>
+						<div id="nose" class="title">&diams;根据鼻子的结果</div>
+						<div id="nose_text" class="text">{{ nose_block_str }}</div>
+						<div id="mouse" class="title">&diams;根据嘴唇结果</div>
+						<div id="mouse_text"  class="text">{{ lip_block_str }}</div>
+						<div id="character" class="title">&#9775;综合评价</div>
+						<div id="character_text" class="text">{{ person_str }}</div>
+					</div>
+
+					<div id="partner_report_panel" class="report-panel" style="display:none;">
+						<div id="partner_title" class="title">&#9825;正缘预测</div>
+						<div id="partner_text" class="text" style="margin-left:0;padding-left:0;">
+							{% if ideal_display_text %}
+								{{ ideal_display_text|linebreaksbr }}
+							{% else %}
+								正缘分析生成中，如暂未出现请稍后刷新重试。
+							{% endif %}
+						</div>
+						<div id="partner_prompt" class="text" style="margin-left:0;padding-left:0;font-size:0.7rem;color:#666;">
+							{% if ideal_visual_prompts %}
+								<div>生成人像提示词：</div>
+								<ol style="margin:0 0 0 1.2em;padding:0;">
+								{% for p in ideal_visual_prompts %}
+									<li>{{ p }}</li>
+								{% endfor %}
+								</ol>
+							{% elif ideal_visual_prompt %}
+								（生成人像提示词：{{ ideal_visual_prompt }}）
+							{% endif %}
+						</div>
+					</div>
+			</div>
+			<div class="banner-head">
+				<div id="hunpei"class="title">&hearts;您的正缘预期长相</div>
+				<div class="block_qizi" >
+					<div id="partner_face_list">
+						{% if ideal_partner_image_data_urls %}
+							{% for img_url in ideal_partner_image_data_urls %}
+							<div class="qizi">
+								<img class="qizi_image partner_face_image_item" src="{{ img_url }}">
+							</div>
+							{% endfor %}
+						{% else %}
+						<div class="qizi">
+							<div id="partner_face_pending" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#666;padding:0.5rem;text-align:center;">正在生成正缘长相，请稍候</div>
+						</div>
+						{% endif %}
+					</div>
+					<div class="name_title">
+						{% if ideal_partner_image_data_urls and ideal_partner_image_data_urls|length >= 3 %}
+						<span id="partner_image_status_text">正缘候选画像已生成（3/3）</span>
+						{% else %}
+						<span id="partner_image_status_text">{{ ideal_partner_image_tip|default:"正在生成正缘长相，请稍候。" }}</span><br/>
+						<button id="refresh_image_btn" type="button" style="margin-top:0.4rem;padding:0.2rem 0.6rem;border:0;border-radius:0.3rem;background:#ae2121;color:#fff;font-size:0.75rem;">立即刷新</button>
+						{% endif %}
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="download" style="cursor:pointer;width:4rem;height:2rem;background-color:#ae2121;border-radius:2rem;color:#fff;font-size:0.75rem;line-height:2rem;margin:0rem auto 0.4rem" >&nbsp;&nbsp;下载报告</div>
+	</div>
+	  <footer class="footer ">
+    <div class="container">
+      <div class="row footer-top">
+        <div class="col-md-4 col-lg-4">		
+		   <div id="logo2"></div>
+        </div>
+        <div class="col-md-8  col-lg-8">
+		<h3>我们一直致力于为您的未来提供更好的选择！</h3>
+
+        </div>
+      </div>
+  </footer>
+
+<script type="text/javascript">
+
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		var button_ch = document.getElementById("download");
+        button_ch.onclick = function () {
+			window.location.href="http://127.0.0.1:8000/download/"
+        }
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+			window.onresize=function(){  
+
+		var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+
+				} 
+
+		// 文本区域左右切换：本人报告 <-> 正缘报告
+		var switchToPartner = document.getElementById("switch_to_partner");
+		var switchToSelf = document.getElementById("switch_to_self");
+		var selfPanel = document.getElementById("self_report_panel");
+		var partnerPanel = document.getElementById("partner_report_panel");
+		var refreshImageBtn = document.getElementById("refresh_image_btn");
+		var partnerListBox = document.getElementById("partner_face_list");
+		var partnerStatusText = document.getElementById("partner_image_status_text");
+
+		function renderPartnerImages(urls) {
+			if (!partnerListBox) {
+				return;
+			}
+			partnerListBox.innerHTML = "";
+			for (var i = 0; i < urls.length; i++) {
+				var box = document.createElement("div");
+				box.className = "qizi";
+				var img = document.createElement("img");
+				img.className = "qizi_image partner_face_image_item";
+				img.src = urls[i];
+				box.appendChild(img);
+				partnerListBox.appendChild(box);
+			}
+		}
+
+		if (switchToPartner && switchToSelf && selfPanel && partnerPanel) {
+			// 默认在本人页：左键禁用，右键可用
+			switchToPartner.onclick = function () {
+				if (switchToPartner.classList.contains("disabled")) {
+					return;
+				}
+				selfPanel.style.display = "none";
+				partnerPanel.style.display = "block";
+				switchToPartner.classList.add("disabled");
+				switchToSelf.classList.remove("disabled");
+			};
+			switchToSelf.onclick = function () {
+				if (switchToSelf.classList.contains("disabled")) {
+					return;
+				}
+				partnerPanel.style.display = "none";
+				selfPanel.style.display = "block";
+				switchToSelf.classList.add("disabled");
+				switchToPartner.classList.remove("disabled");
+			};
+		}
+
+		if (refreshImageBtn) {
+			refreshImageBtn.onclick = function () {
+				checkIdealImageStatus();
+			};
+			// 只轮询图片状态接口，不整页刷新，避免重复触发旧流程。
+			setTimeout(function () {
+				checkIdealImageStatus();
+			}, 4000);
+		}
+
+		function checkIdealImageStatus() {
+			fetch("/api/ideal_image_status/", { method: "GET" })
+				.then(function (resp) { return resp.json(); })
+				.then(function (data) {
+					if (data.status === "ready" && (data.data_urls || data.data_url)) {
+						var urls = Array.isArray(data.data_urls) ? data.data_urls : [data.data_url];
+						renderPartnerImages(urls);
+						if (partnerStatusText) {
+							partnerStatusText.innerText = "正缘候选画像已生成（" + urls.length + "/3）";
+						}
+						if (refreshImageBtn && urls.length >= 3) {
+							refreshImageBtn.style.display = "none";
+						}
+					} else if (partnerStatusText) {
+						if (Array.isArray(data.data_urls) && data.data_urls.length > 0) {
+							renderPartnerImages(data.data_urls);
+						}
+						partnerStatusText.innerText = data.message || "正在生成正缘长相，请稍候。";
+					}
+				})
+				.catch(function () {
+					if (partnerStatusText) {
+						partnerStatusText.innerText = "图片状态检查失败，请稍后重试。";
+					}
+				});
+		}
+
+</script>
+
+<!-- <script type="text/javascript"> -->
+<!-- html2canvas(document.querySelector("#module1")).then( -->
+	<!-- canvas => { -->
+		<!-- console.log(" == > canvas"); -->
+		<!-- console.log(canvas); -->
+		
+		<!-- console.log(" == > canvas.toDataURL"); -->
+		<!-- console.log(canvas.toDataURL("image/png")); -->
+		<!-- // document.body.appendChild(canvas); -->
+
+		<!-- let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); -->
+		<!-- window.location.href=image;  -->
+		<!-- console.log(" ==> image"); -->
+		<!-- console.log(image); -->
+	<!-- }); -->
+<!-- </script> -->
+</body>
+</html>

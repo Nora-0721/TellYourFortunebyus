@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+{% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人工智能大数据命理</title>
+  <link rel="stylesheet" type="text/css" href="{% static "base_show.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "site.min.css" %}">
+  <script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "html2canvas.min.js" %}"></script>
+  <style>
+    .jumbotron {
+      background: url(back.png) no-repeat;
+      background-size: cover;
+    }
+
+    h1 {
+      color: black;
+      text-align: center;
+
+    }
+
+    p {
+      color: black;
+      text-align: left;
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  </style>
+<body style="padding-top:0">
+<script type="text/javascript">
+ 		var isMobile = /Android|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+		if (isMobile) {
+			var lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
+			lang = lang.substr(0, 2)
+			if(lang == "zh" ){
+				window.location.href="http://www.tellyourfortune.io:8000/home_phone/"
+			}else{
+				window.location.href="http://www.tellyourfortune.io:8000/phone_xieyi/"
+			}
+
+
+		}
+				var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+</script>
+<div class="navbar navbar-inverse " style="margin-bottom:0">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand"></a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="http://www.tellyourfortune.io:8000">首页</a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+        </ul>
+		<ul class="nav navbar-nav navbar-right">
+		  <!-- <li><a href="http://www.tellyourfortune.io:8000/home_en/">English</a></li> -->
+        </ul>
+      </div>
+    </div>
+</div>
+
+
+	<div  class="container"  id="module1">
+		<div id = "head">		
+			<div id="logo"></div>
+		</div>
+		<div id="back4">
+			<div class="bannerpipei-left">
+				<div id="person">
+				<img id="person_image" src="{{ avatarUrl1}}">
+				</div>
+				<div id="name"><span></span><span></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span></span><span></span></div>
+				<div id="address"><span></span><span></span></div>
+				<div id="job"><span>相恋指数 ：{{ fenshu1 }}</span><br><span>祝语：</span>{{ yuju1 }}</div>
+
+				
+			</div>
+			<div class="bannerpipei-right">
+				<div id="person">
+				<img id="person_image" src="{{ avatarUrl2}}">
+				</div>
+				<div id="name"><span></span><span></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span></span><span></span></div>
+				<div id="address"><span></span><span></span></div>
+				<div id="job"><span>相恋指数 ：{{ fenshu2 }}</span><br><span>祝语：</span>{{ yuju2 }}</div>
+
+			</div>
+
+		</div>
+	</div>
+	  <footer class="footer ">
+    <div class="container">
+      <div class="row footer-top">
+        <div class="col-md-4 col-lg-4">		
+		   <div id="logo2"></div>
+        </div>
+        <div class="col-md-8  col-lg-8">
+		<h3>我们一直致力于为您的未来提供更好的选择！</h3>
+
+        </div>
+      </div>
+  </footer>
+
+<script type="text/javascript">
+
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+				var button_ch = document.getElementById("download");
+        button_ch.onclick = function () {
+			window.location.href="http://www.tellyourfortune.io:8000/download/"
+        }
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+			window.onresize=function(){  
+
+		var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+
+				} 
+
+</script>
+
+<!-- <script type="text/javascript"> -->
+<!-- html2canvas(document.querySelector("#module1")).then( -->
+	<!-- canvas => { -->
+		<!-- console.log(" == > canvas"); -->
+		<!-- console.log(canvas); -->
+		
+		<!-- console.log(" == > canvas.toDataURL"); -->
+		<!-- console.log(canvas.toDataURL("image/png")); -->
+		<!-- // document.body.appendChild(canvas); -->
+
+		<!-- let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); -->
+		<!-- window.location.href=image;  -->
+		<!-- console.log(" ==> image"); -->
+		<!-- console.log(image); -->
+	<!-- }); -->
+<!-- </script> -->
+</body>
+</html>

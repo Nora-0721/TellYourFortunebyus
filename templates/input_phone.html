@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+
+{% load static %}
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>人工智能大数据命理</title>
+    <link rel="stylesheet" type="text/css" href="{% static "input_phone.css" %}">
+</head>
+<body id="filebody" >
+
+<div id="back1_phone">
+<div id="head">人工智能大数据命理
+</div>
+    <div id="introduce">
+我适合读什么专业？我适合做什么工作？哪个城市更适合我居住？你是否也曾被这些问题困扰呢？一匹马力气大小，走得快、慢，看看它各个部位是否均匀，毛色、神态与气息如何也就知道了。人，亦是如此。相由心生，一个人的心性如何也会从他的面相上显露出来。
+
+本网站将传统面相学中的“五官”、“三停”和“十二宫位”等与当前最先进的人工智能相结合，利用大数据、计算机视觉和推荐系统等先进技术为您的未来提供助力，为您拨开云雾找到方向。在下方上传您的人脸图像我们会为您提供关于您职业、工作方位、个人性格等全方面的信息判断。
+			</div>
+    <div id="h1">命理分析</div>
+    
+	
+	<div id="form" >
+		<form method="post" enctype="multipart/form-data" name = "my post" >
+				{% csrf_token %} 
+				<div id="input">
+
+					<div class="form_item1">
+						
+							<label for="id_sex_1" id="label_input3" class="label_input1">您的性别：</label>						
+							<label for="id_sex_1"><input type="radio" name="sex" value="1" id="id_sex_1" checked="" required="">男</label>
+							<label for="id_sex_2"><input type="radio" name="sex" value="2" id="id_sex_2" required="">女</label>
+
+					</div>
+						<div class="form_item1">
+								<label id="label_input_age" class="label_input1">您的年龄段：</label>
+								<div>
+									<label><input type="radio" name="age_group" value="18-25" checked>18-25岁</label>
+									<label style="margin-left:1.5rem;"><input type="radio" name="age_group" value="26-35">26-35岁</label>
+								</div>
+								<div style="margin-top:0.3rem;">
+									<label><input type="radio" name="age_group" value="36-45">36-45岁</label>
+									<label style="margin-left:1.5rem;"><input type="radio" name="age_group" value=">45">45岁以上</label>
+								</div>
+						</div>
+					<div class="form_item2">
+													<label for="cover" id="label_input2" class="label_input2">您的照片：</label>
+							<button type="button"  id="cover" onclick="document.querySelector('#id_cover').click()")>选择文件</button>
+						<input style="display:none" type="file" name="cover" id="id_cover" accept="image/*" required="">
+							<!-- <label for="id_cover" id="label_input2" class="label_input2">您的照片：</label> -->
+						<!-- <input type="file" name="cover" id="id_cover" accept="image/*" required=""> -->
+					</div>
+
+				</div>
+			
+				<button type="submit" id="button1" ></button>
+		</form>
+	</div>
+<div id="logo2"></div>
+    <!-- <div id="submit"></div> -->
+	
+</div>
+</div>
+<script type="text/javascript">
+		var designWidth = 420, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("filebody");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+		console.log(window.innerWidth)
+		console.log(window.innerHeight)
+
+
+</script>
+</body>
+
+</html>

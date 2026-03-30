@@ -1,0 +1,105 @@
+<!DOCTYPE html> 
+<html>
+<head>
+{% load static %}
+	<meta charset="UTF-8">
+	<title>输入界面</title>
+	<link rel="stylesheet" type="text/css" href="{% static "base.css" %}">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-148448118-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-148448118-1');
+</script>
+</head>
+<body style="width:100%;">﻿
+
+<div class="header1" style="height:66px; background-color:#884400; margin:auto; text-align:center">
+
+</div>
+
+
+
+<div class="wrapper">
+
+	<div style=" position:relative;top:0px;left:700px;width: 490px;">
+		<img src="{% static "fengshui.jpg" %}" height="300" width="810" >
+	</div>
+	<!--main begin-->
+	<div class="main" >
+		<!--menu begin-->
+
+		<div class="cont">
+        
+       
+
+			<div class="col_left">
+				<!--生辰八字 begin-->
+           
+       
+           
+           
+                
+			<div class="fn_bz fn_part mod_box_t1" style="position:relative;top:-10px;left:110px;margin-top:00px; border:0px;border-top:1px solid #D0AD9A">
+              <div class="hd">
+                <h1>人脸算命</h1>
+              </div>
+              <div class="bd">
+               
+<div class="intro_area" style="font-size:14px; line-height:23px">
+&nbsp;&nbsp;欢迎您来到人脸算命网一个结合了深度学习知识和传统相学的免费在线算命网站。该网站可以根据您上传的照片，对你的职业，性格等进行预测，让您对自身的规划以及自己的优缺点有一个进一步的认识。从而，对您的未来进行更好的规划。
+<br><br>
+
+&nbsp;&nbsp;一个人的面相，随着苍天的意志决定了最初的样子，随着所在的环境决定了慢慢变化的那部分，随着四周的人和自己的努力决定了最终的样子。我们通过您的面相便看看过你那短暂的一生，从而对你的未来进行一个好的引领。</div>
+
+                
+						<div class="mod_box_t3 fn_box">
+							<div class="box_con">
+							<form method="post" enctype="multipart/form-data" name = "my post">
+							{% csrf_token %} 
+								<div class="mod_form" style="width:400px;margin:auto;margin-top:30px">
+									<div class="form_item">
+										{{ form.title.errors }}
+										<label for="{{ form.title.id_for_label }}" class="label_input">您的名字：</label>
+										{{ form.title }}
+									</div>
+									<div class="form_item">
+										{{ form.cover.errors }}
+										<label for="{{ form.cover.id_for_label }}" class="label_input">您的照片：</label>
+										{{ form.cover }}
+									</div>
+									
+									<button type="submit" id="btn_login" style="width: 240px;height: 30px;border-radius: 3px;border-width: 0px;">上传</button>
+								
+                                    
+								</div>
+								</form>
+								<div class="help_area">
+							
+									
+								</div>
+							</div>
+							<i class="flag_tl_t3"></i><i class="flag_tr_t3"></i><i class="flag_bl_t3"></i><i class="flag_br_t3"></i>
+						</div>
+
+					</div>
+					
+					<i class="flag_tl_t1"></i><i class="flag_tr_t1"></i><i class="flag_bl_t1"></i><i class="flag_br_t1"></i>
+					
+				</div>
+
+           
+           <div>
+
+            <div style="float:right; width:585px; height:394px;">
+             
+                <!-- 最新文章 -->
+                <div style="padding-top:8px; ">
+                	</div></div></div></div></div></div></div>
+
+
+</body>
+</html>

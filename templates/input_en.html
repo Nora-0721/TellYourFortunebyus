@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+{% load static %}
+<!--     <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280px, initial-scale=1.0">
+    <title>FACIAL FORTUNE-TELLING</title>
+    <link rel="stylesheet" type="text/css" href="{% static "base_input_en.css" %}">
+</head>
+ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FACIAL FORTUNE-TELLING</title>
+  <link rel="stylesheet" type="text/css" href="{% static "base_input_en.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "site.min.css" %}">
+  <style>
+    .jumbotron {
+      background: url(back.png) no-repeat;
+      background-size: cover;
+    }
+
+    h1 {
+      color: black;
+      text-align: center;
+
+    }
+
+    p {
+      color: black;
+      text-align: left;
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  </style>
+<body style="padding-top:0">
+<!-- 	<div id="head" class="container">
+	<div id="logo"></div>
+	<div class ="container_button">
+		<input id="button_en" >
+	</div>
+	</div> -->
+	<div id="head" class="navbar " style="margin-bottom:0">
+	<div id="logo"></div>
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand">FACIAL FORTUNE-TELLING</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav ">
+          <li class="active"><a href="#">home</a></li>
+          <li><a href="#">about</a></li>
+          <li><a href="#">phone</a></li>
+        </ul>
+		<ul class="nav navbar-nav navbar-right">
+		  <li class="" ><a href="http://www.tellyourfortune.io/" >Chinese</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
+	<div id="module1" class="container">
+		<div id="container">
+		<div class="banner-left">
+			<div id="title_block">ENTERING</div>
+			<div>
+				<form method="post" enctype="multipart/form-data" name = "my post" >
+						{% csrf_token %} 		
+						<div class="form_item1">
+							{{ form.title.errors }}
+								<label for="{{ form.title.id_for_label }}" id="label_input1" class="label_input1" >YOUR NAME：</label>
+							{{ form.title }}
+						</div>
+						<div class="form_item2">
+							{{ form.cover.errors }}
+								<label for="{{ form.cover.id_for_label }}" id="label_input2"  class="label_input2" >YOUR IMAGE：</label>
+							{{ form.cover }}
+						</div>
+					
+					<button type="submit" id="button1" ></button>
+				</form>
+			</div>
+		</div>
+		<div class="banner-right">
+			<div id="title">FACIAL FORTUNE-TELLING</div>
+			<div id="introduce">
+			What major am I suitable for? What job am I suitable for? Which city is more suitable for me to live in?Have you ever been troubled by these problems?Whether the strength of a horse is big or small, the speed of a horse is fast or slow, we can find them from if it is uniform in all parts, the color, appearance and breath of the horse. The same is for human beings, your face is born with your mind. A person’s mind will be revealed for his face. Facial science, as a kind of knowledge I Chinese five techniques, has been circulating for thousands of years. It is shown from various statistics experiments, you can judge a person by his appearance. Maybe, we can find the answer from our face to eliminate tour anxiety about our future.
+			</div>
+		</div>
+
+		</div>
+	</div>
+  <footer class="footer ">
+    <div class="container">
+      <div class="row footer-top">
+        <div class="col-md-3 col-lg-3">		
+		   <div id="logo2"></div>
+        </div>
+        <div class="col-md-9  col-lg-9">
+		<h3>We have always been committed to providing better choices for your future!</h3>
+
+        </div>
+      </div>
+
+  </footer>
+<script type="text/javascript">
+		var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight +"px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+	window.onresize=function(){  
+
+		var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+
+				} 
+  window.onload = function () {
+		var isMobile = /Android|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+		if (isMobile) {
+			var lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
+			lang = lang.substr(0, 2)
+			if(lang == "zh" ){
+				window.location.href="http://www.tellyourfortune.io/phone_ch/"
+			}else{
+				window.location.href="http://www.tellyourfortune.io/phone_en/"
+			}
+			
+
+		} 
+        var filebody = document.getElementById("filebody");
+        var button_en = document.getElementById("button_en");
+        button_en.onclick = function () {
+			window.location.href="http://www.tellyourfortune.io/"
+        }
+
+
+    }
+
+</script>
+</body>
+</html>

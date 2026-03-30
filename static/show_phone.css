@@ -1,0 +1,181 @@
+html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,input,button,sub,sup,textarea{margin:0;padding:0;}
+/*#body{*/
+/*width:100%;*/
+/*!*height: 200%;*!*/
+/*!*background:url("./picture/back.png") no-repeat center 0px;*!*/
+/*}*/
+@font-face {
+    font-family: rlsm;
+    src: url("./picture/rlsm.TTF");
+}
+#filebody{
+/*     width:100%;
+    height:51em;
+    background-size: 100% 100%;
+    background:url("./picture/back_phone_well.png") ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0; */
+	background:#e3e1e1;
+
+}
+#head{
+    width:100%;
+    height:2.3rem;
+    line-height: 3rem;
+    font-size:2rem;
+    text-align:center;
+    font-family:rlsm;
+    font-weight:bold;
+    color:rgb(0,0,0);
+	padding-top:6rem;
+}
+
+#back1_phone{
+
+	height: 150rem;
+    width: 28rem;
+    background-image:url("./picture/back_phone_show.png");
+    background-size: 28rem 100%;
+    -moz-background-size: 28rem 100%;
+    -webkit-background-size: 28rem 100%;
+	margin-top:0.25rem;
+	margin-left:auto;
+	margin-right:auto;
+}
+#picture{
+    height: 8.3em;
+    width: 8.3em;
+    margin: 10% 20% 0 35%;
+    background-image:url("./picture/back3.png");
+    background-size: 8.3em 100%;
+    -moz-background-size: 8.3em 100%;
+    -webkit-background-size: 8.3em 100%;
+
+}
+#person_image{
+	
+    margin:1.1rem 1.0rem 1.0rem 1.2rem;
+    border: 0;
+	height: 5.5rem;
+    width: 5.5rem;
+    border-radius: 50%;
+	object-fit: cover;
+}
+
+
+#name{
+    width: 100%;
+    height: 1.5em;
+    line-height: 1.5em;
+    font-size:0.6em;
+    text-align:center;
+    vertical-align: middle;
+    font-weight:bold;
+    color:rgb(0,0,0);
+}
+#recommend{
+    width:19rem;
+    height:7rem;
+
+    margin-left:4.5rem;
+    background-image:url("./picture/recommend.png");
+    background-size: 19rem 100%;
+    -moz-background-size: 19rem 100%;
+    -webkit-background-size: 19rem 100%;
+
+}
+#job{
+	padding-top:1.5rem;
+    width: 19rem;
+    height: 3rem;
+    line-height: 1.5rem;
+    font-size:1rem;
+    text-align:center;
+    vertical-align: middle;
+    font-weight:bold;
+    color:rgb(0,0,0);
+
+}
+
+
+.title{
+	margin-top:1rem;
+    margin-left:2.5rem;
+    font-size:1.25rem;
+    font-weight:bold;
+    color:rgba(51,51,51,1);
+}
+.text{
+	margin-left:3.75rem;
+	width:19rem;
+	margin-top:1rem;
+    font-size: 1.25rem;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    white-space: pre-wrap;
+
+}
+
+#character{
+	margin-top: 3rem;
+
+    color:rgb(157 12 12);
+}
+.banner-head{
+
+    width: 26.25rem;
+	height: 30rem;
+}
+.block_qizi1{
+	margin-top:2rem;
+	margin-left:4rem;
+	width: 8rem;
+    height: 12rem;
+}
+.block_qizi2{
+	margin-left:16rem;
+	margin-top:-12rem;
+	width: 8rem;
+    height: 12rem;
+}
+.qizi{
+    width: 8rem;
+    height: 8rem;
+	background: url("./picture/back3.png") center top no-repeat;
+	background-size: 8rem  100%;
+    -moz-background-size: 8rem  100%;
+    -webkit-background-size: 8rem  100%;
+
+}
+.qizi_image{
+	margin-top: 1rem;
+    margin-left: 1rem;
+    border: 0;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+	object-fit: cover;
+}
+.name_title{
+		margin-top: 1rem;
+	    font-size:1rem;
+	line-height:1.5rem;
+	text-align:center;
+    font-weight:400;
+	width:8rem;
+    color:rgba(51,51,51,1);
+}
+
+#logo2 {
+    width: 31rem;
+    height:18rem;
+	margin-top:-3rem;
+	margin-left:-2rem;
+    background: url("./picture/logo1.png") center top no-repeat;
+    background-size: 24rem 100%;
+    -moz-background-size: 24rem 100%;
+    -webkit-background-size: 24rem 100%;
+}

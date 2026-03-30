@@ -1,0 +1,137 @@
+html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,input,button,sub,sup,textarea{margin:0;padding:0;}
+/*#body{*/
+/*width:100%;*/
+/*!*height: 200%;*!*/
+/*!*background:url("./picture/back.png") no-repeat center 0px;*!*/
+/*}*/
+@font-face {
+    font-family: rlsm;
+    src: url("./picture/rlsm.TTF");
+}
+#filebody{
+    width:100%;
+    height:100%;
+    background-size: 100% 100%;
+    background-color: #E3F3F9;
+
+}
+
+#head_phone{
+    height: 21.3em;
+    width: 100%;
+    background-image:url("./picture/head_show.png");
+
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
+
+    position:absolute;
+    top: 0em;
+}
+
+#h1{
+    margin: 6% 8% 0 8%;
+    width:84%;
+    height:2em;
+    line-height: 2em;
+    font-size:1.3em;
+
+    font-family:Alibaba PuHuiTi;
+    /*text-align:center;*/
+    vertical-align: middle;
+    font-weight:bold;
+    color:#296D88;
+}
+
+#picture{
+    height: 46%;
+    width: 36%;
+    margin: 1%  3% 0 8%;
+    background-image:url("./picture/pic_show.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
+    float: left;
+
+}
+#person_image{
+	
+    margin:1.5em 1.0em 1.0em 0.9em;
+    border: 0;
+	height: 7em;
+    width: 7em;
+    border-radius: 50%;
+}
+#recommend{
+    margin: 6% 0 0 0 ;
+}
+#name{
+    font-family:Alibaba PuHuiTi;
+    /*text-align:center;*/
+    line-height: 2em;
+    vertical-align: middle;
+    font-weight:bold;
+    color:#296D88;
+}
+#job{
+    font-family:Alibaba PuHuiTi;
+    /*text-align:center;*/
+    vertical-align: middle;
+    line-height: 1.5em;
+    font-weight:bold;
+    color:#296D88;
+
+}
+#job_name{
+    font-family:Alibaba PuHuiTi;
+    /*text-align:center;*/
+    vertical-align: middle;
+    line-height: 1.5em;
+    font-weight:bold;
+    color:#296D88;
+}
+#bottom{
+    width:100%;
+    height: 8em;
+    position:absolute;
+    bottom: 0em;
+}
+#block1{
+    margin-top: 22em;
+    /*margin-bottom: 1em;*/
+    /*height: 100%;*/
+}
+.block{
+    margin-top: 4%;
+    margin-left: 6%;
+    /*height: 20%;*/
+    width: 88%;
+    background-image:url("./picture/block_show.png");
+
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
+}
+.title{
+    margin: 2%  5% 0 2%;
+    font-size:65%;
+    font-weight:bold;
+    color:rgba(51,51,51,1);
+}
+.text{
+    margin: 3% 5% 0 5%;
+    font-size: 0.5%;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    white-space: pre-wrap;
+
+}

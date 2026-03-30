@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+{% load static %}
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人工智能大数据命理</title>
+  <link rel="stylesheet" type="text/css" href="{% static "base_input_ch.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "site.min.css" %}">
+  <style>
+    .jumbotron {
+      background: url(back.png) no-repeat;
+      background-size: cover;
+    }
+
+    h1 {
+      color: black;
+      text-align: center;
+
+    }
+
+    p {
+      color: black;
+      text-align: left;
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  </style>
+<body style="padding-top:0">
+
+<script type="text/javascript">
+ 		var isMobile = /Android|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+		if (isMobile) {
+			var lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
+			lang = lang.substr(0, 2)
+			if(lang == "zh" ){
+				window.location.href="http://www.tellyourfortune.io:8000/phone_ch/"
+			}else{
+				window.location.href="http://www.tellyourfortune.io:8000/phone_ch/"
+			}
+
+
+		}
+		var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+</script>
+<div class="navbar navbar-inverse " style="margin-bottom:0">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand"></a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">首页</a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+        </ul>
+		<ul class="nav navbar-nav navbar-right">
+		  <!-- <li><a href="http://www.tellyourfortune.io:8000/en/">English</a></li> -->
+        </ul>
+      </div>
+    </div>
+</div>
+
+
+  <div class="container-fluid" id="module1">
+		<div id="head">	
+			<div id="logo"></div>
+			<div class ="container_button">
+			</div>
+		</div>
+		<div id="container">
+			<div id="title_h1">人工智能大数据命理</div>
+			<div id="content_h1">我适合读什么专业？我适合做什么工作？哪个城市更适合我居住？你是否也曾被这些问题困扰呢？一匹马力气大小，走得快、慢，看看它各个部位是否均匀，毛色、神态与气息如何也就知道了。人，亦是如此。相由心生，一个人的心性如何也会从他的面相上显露出来。
+
+本网站将传统面相学中的“五官”、“三停”和“十二宫位”等与当前最先进的人工智能相结合，利用大数据、计算机视觉和推荐系统等先进技术为您的未来提供助力，为您拨开云雾找到方向。在下方上传您和您理想对象的人脸图像我们会为您提供关于你们的缘分指数。
+			</div>
+			<div id="container_h1">
+				<div id="input">
+					<div id="suanming">命理分析</div>
+                    		<form method="post" enctype="multipart/form-data" name = "my post" >
+				{% csrf_token %}
+
+				<div id="input">
+
+					<div class="form_item2">
+						
+							<label for="id_sex_1" id="label_input3" class="label_input1">您的性别：</label>						
+							<label for="id_sex_1"><input type="radio" name="sex" value="1" id="id_sex_1" checked="" required="">男</label>
+							<label for="id_sex_2"><input type="radio" name="sex" value="2" id="id_sex_2" required="">女</label>
+
+					</div>
+					<div class="form_item2">
+						
+							<label for="cover1" id="label_input2" class="label_input2">您的照片：</label>
+							<button type="button"  id="cover1" onclick="document.querySelector('#id_cover1').click()")>选择文件</button>
+						<input style="display:none" type="file" name="cover1" id="id_cover1" accept="image/*" required="">
+					</div>
+					<div class="form_item3">
+						
+							<label for="cover2" id="label_input2" class="label_input2">理想对象：</label>
+							<button type="button"  id="cover2" onclick="document.querySelector('#id_cover2').click()")>选择文件</button>
+						<input style="display:none" type="file" name="cover2" id="id_cover2" accept="image/*" required="">
+					</div>
+
+				</div>
+				
+				<button type="submit" id="button1" ></button>
+		</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+  <footer class="footer ">
+    <div class="container">
+      <div class="row footer-top">
+        <div class="col-md-4 col-lg-4">
+		   <div id="logo2"></div>
+        </div>
+        <div class="col-md-8  col-lg-8">
+		<h3>我们一直致力于为您的未来提供更好的选择！</h3>
+
+        </div>
+      </div>
+      <!-- <hr> -->
+      <!-- <div class="row footer-bottom"> -->
+        <!-- <ul class="list-inline text-center"> -->
+          <!-- <li><a href="#" target="_blank">xxxxxxxxxxxxx</a></li> -->
+          <!-- <li>xxxxxxxxxxxxx</li> -->
+        <!-- </ul> -->
+      <!-- </div> -->
+    <!-- </div> -->
+  </footer>
+<script type="text/javascript">
+
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+	window.onresize=function(){
+
+		var designWidth = 1580, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+		var back = document.getElementById("module1");
+		back.style.width = window.innerWidth +"px";
+		back.style.height = window.innerHeight + "px";
+		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
+
+				}
+  window.onload = function () {
+        var filebody = document.getElementById("filebody");
+        var button_ch = document.getElementById("button_ch");
+        button_ch.onclick = function () {
+			window.location.href="http://www.tellyourfortune.io:8000/en/"
+        }
+
+
+    }
+
+</script>
+</body>
+</html>

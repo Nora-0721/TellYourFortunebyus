@@ -1,0 +1,150 @@
+
+<!-- saved from url=(0020)http://www.pc89.com/ -->
+<html>
+<head>
+<meta charset=UTF-8">
+	<title>显示界面</title>
+
+	<style type="text/css">
+		.avatar-195 {
+			width: 195px;
+			height: 195px;
+			border-radius: 50%;
+		}
+		.ref-author strong {
+			text-transform: uppercase;
+			margin-bottom: 5px;
+		}
+		.avatar{
+			border-radius: 50%;
+		}
+		img {
+			border: 0;
+			max-width: 100%;
+			height: auto;
+			display: inline-block;
+			vertical-align: middle;
+		}
+	.ref-box {
+		position: relative;
+		padding-left: 70px;
+		padding-bottom: 1.875em;
+		margin-bottom: 2.5em;
+		min-height: 58px;
+		box-sizing: content-box;
+		border-bottom: 2px solid #e6e6e6;
+		
+	}
+
+	</style>
+</head>
+<body style="background-color: #F5F5F5">﻿
+
+<div class="header1" style="height:66px; background-color:#884400; margin:auto; text-align:center">
+
+</div>
+
+
+
+<div class="wrapper" style="width:820px;position:relative;top:0px;left:600px;background-color:#fffcf5" >
+	<div style="background-color:#f2d2b5" >
+		<div style="width:200px;margin:auto">
+			<article id="ace-card" class="ace-card bg-primary" >
+				<div class="ace-card-inner text-center">
+					<img class="avatar avatar-195" src="{{ post.cover.url}}" width="195" height="195" alt="">
+					<h1 align="center">{{ post.title }}</h1>
+				</div>
+
+			</article><!-- #ace-card -->
+		</div>
+	</div>
+	<div class="padd-box">
+
+		<section class="section clear-mrg">
+			<h2 class="title-lg text-upper">预测结果</h2>
+
+			<div class="padd-box-sm clear-mrg">
+				<div class="ref-box brd-btm hreview">
+					<div class="ref-avatar">
+						<img alt="" src="{{ eye_path}}"  class="avatar avatar-54 photo" height="54" width="54">
+					</div>
+
+					<div class="ref-info">
+						<div class="ref-author">
+							<strong>根据眼睛的结果</strong>
+							<!-- <span>West Alexandrine</span> -->
+						</div>
+
+						<blockquote class="ref-cont clear-mrg">
+							<p>{{ eye_block_str }}</p>
+						</blockquote>
+					</div>
+				</div><!-- .ref-box -->
+
+				<div class="ref-box brd-btm hreview">
+					<div class="ref-avatar">
+						<img alt="" src="{{ nose_path}}"  class="avatar avatar-54 photo" height="54" width="54">
+					</div>
+
+					<div class="ref-info">
+						<div class="ref-author">
+							<strong>根据鼻子的结果</strong>
+							<!-- <span>Modern LLC,HR</span> -->
+						</div>
+
+						<blockquote class="ref-cont clear-mrg">
+							<p>{{ nose_block_str }}</p>
+						</blockquote>
+					</div>
+				</div><!-- .ref-box -->
+
+				<div class="ref-box brd-btm hreview">
+					<div class="ref-avatar">
+						<img alt="" src="{{ lip_path}}"  class="avatar avatar-54 photo" height="54" width="54">
+					</div>
+
+					<div class="ref-info">
+						<div class="ref-author">
+							<strong>根据嘴唇的结果</strong>
+							<!-- <span>West Alexandrine</span> -->
+						</div>
+
+						<blockquote class="ref-cont clear-mrg">
+							<p>{{ lip_block_str }}</p>
+						</blockquote>
+					</div>
+				</div><!-- .ref-box -->
+
+				<div class="ref-box brd-btm hreview">
+					<div class="ref-info">
+						<div class="ref-author">
+							<strong>个人的性格</strong>
+						</div>
+
+						<blockquote class="ref-cont clear-mrg">
+							<p>{{ person_str }}</p>
+						</blockquote>
+					</div>
+				</div><!-- .ref-box -->
+
+				<div class="ref-box brd-btm hreview">
+					<div class="ref-info">
+						<div class="ref-author">
+							<strong>推荐的职业</strong>
+							<!-- <span>West Alexandrine</span> -->
+						</div>
+
+						<blockquote class="ref-cont clear-mrg">
+							<p>{{ job_message }}</p>
+						</blockquote>
+					</div>
+				</div><!-- .ref-box -->
+
+
+			</div><!-- .padd-box-sm -->
+		</section><!-- .section -->
+
+	</div><!-- .padd-box -->
+</div>
+</body>
+</html>

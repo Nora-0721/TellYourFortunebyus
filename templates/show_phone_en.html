@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+
+{% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>showpage</title>
+   <link rel="stylesheet" type="text/css" href="{% static "show_phone_en.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "base_input_en.css" %}">
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "site.min.css" %}">
+  <style>
+    .jumbotron {
+      background: url(back.png) no-repeat;
+      background-size: cover;
+    }
+
+    h1 {
+      color: black;
+      text-align: center;
+
+    }
+
+    p {
+      color: black;
+      text-align: left;
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  </style>
+<body style="padding-top:0">
+<body id="filebody" >
+	<div id="head" class="navbar " style="margin-bottom:0">
+	<div id="logo"></div>
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand">Project Name</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav .navbar-right">
+          <li class="active"><a href="#">home</a></li>
+          <li><a href="#">about</a></li>
+          <li><a href="#">phone</a></li>
+		  <li class=".navbar-left"><a href="http://www.tellyourfortune.io/">chinese</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
+<div id="head_phone">
+    <div id="h1">FORECAST RESULT</div>
+    <div id="picture">
+		<img id="person_image" src="{{ post.cover.url}}">
+	</div>
+
+    <div id="recommend">
+        <div id="name"><span>NAME：</span><span>{{ post.title }}</span></div>
+        <div id="job">Recommended：</div>
+        <div id="job_name">{{ job_message }}</div>
+    </div>
+</div>
+<!--<div id="bottom">-->
+    <!--&lt;!&ndash;<div id="input"></div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div id="submit"></div>&ndash;&gt;-->
+<!--</div>-->
+<div id="block1">
+<div class="block">
+    <div id="eye" class="title">【0】RESULT OF EYE</div>
+    <div id="eye_text" class="text">{{ eye_block_str }}</div>
+</div>
+
+<div class="block">
+    <div id="nose" class="title">【1】RESULT OF NOSE</div>
+    <div id="nose_text" class="text">{{ nose_block_str }}</div>
+</div>
+<div class="block">
+    <div id="mouse" class="title">【2】RESULT OF LIP</div>
+    <div id="mouse_text"  class="text">{{ lip_block_str }}</div>
+</div>
+<div class="block">
+    <div id="character" class="title">【3】RESULT OF PERSON</div>
+    <div id="character_text" class="text">{{ person_str }}</div>
+</div>
+</div>
+<script type="text/javascript">
+		var designWidth = 320, rem2px = 16;
+　　　  document.documentElement.style.fontSize =((window.innerWidth / designWidth) * rem2px) + "px";
+</script>
+</body>
+</html>

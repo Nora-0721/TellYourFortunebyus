@@ -1,0 +1,104 @@
+html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,input,button,sub,sup,textarea{margin:0;padding:0;}
+#filebody{
+    width:100%;
+    height:100%;
+    background:url("./picture/back.png") no-repeat center 0px;
+    background-size:cover;
+}
+
+#back2{
+    position:relative;top:103px;left:343px;
+    background-image:url("./picture/back2.png") ;
+    background-size: 1422px 689px;
+    width: 1422px;
+    height: 689px;
+}
+#button_ch{
+	position:relative;top:29px;left:1590px;
+    border: 0px;
+    background:url("./picture/button_ch2en.png");
+    background-position: center center;
+    background-size: cover;
+    width:189px;
+    height:37px;
+}
+
+#title{
+    position:relative;top:99px;left:670px;
+    width:300px;
+    height:42px;
+    font-size:42px;
+    font-family:FZQingKeBenYueSongS-R-GB;
+    font-weight:bold;
+    color:rgba(51,51,51,1);
+}
+#introduce{
+    position:relative;top:165px;left:180px;
+    width:1115px;
+    height:105px;
+    font-size:16px;
+    font-family:FZQingKeBenYueSongS-R-GB;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:22px;
+}
+#block1{
+    position:relative;left:460px;top:174px;
+    width:603px;
+    height:314px;
+    opacity:0.8;
+    background-image:url("./picture/back1.png") ;
+    background-size: 603px 314px;
+}
+#block2{
+    position:relative;top:14px;left:18px;
+    width:568px;
+    height:283px;
+    background:rgba(252,252,252,1);
+}
+#head{
+    position:relative;top:34px;left:235px;
+    width:132px;
+    height:31px;
+    font-size:30px;
+    font-family:FZQingKeBenYueSongS-R-GB;
+    font-weight:bold;
+    color:rgba(51,51,51,1);
+}
+#button1{
+	position:relative;top:131px;left:192px;
+	width: 130px;
+	height: 30px;
+	border-radius: 3px;
+	border-width: 0px;
+}
+.form_item1{
+    position:relative;top:80px;left:106px;
+}
+.form_item2{
+    position:relative;top:108px;left:106px;
+}
+
+.label_input1{
+    width:76px;
+    height:16px;
+    font-size:16px;
+    font-family:FZQingKeBenYueSongS-R-GB;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:22px;
+}
+.label_input2{
+    width:76px;
+    height:17px;
+    font-size:16px;
+    font-family:FZQingKeBenYueSongS-R-GB;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:22px;
+}
+/* #id_cover{ */
+
+	/* border:1px solid rgba(190,4,4,1); */
+	/* border-radius:6px; */
+/* } */

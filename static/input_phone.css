@@ -1,0 +1,181 @@
+html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,input,button,sub,sup,textarea{margin:0;padding:0;}
+/*#body{*/
+    /*width:100%;*/
+    /*!*height: 200%;*!*/
+    /*!*background:url("./picture/back.png") no-repeat center 0px;*!*/
+/*}*/
+html{
+    font-size: 16px;
+}
+@font-face {
+    font-family: rlsm;
+    src: url("./picture/rlsm.TTF");
+}
+#filebody{
+	background:#e3e1e1;
+    /* width:30rem; */
+    /* height:50rem; */
+	
+    /* background-size: 100% 100%; */
+    /* background:url("./picture/back_phone_well.png") ; */
+    /* background-size: 30rem 50rem; */
+    /* -moz-background-size: 30rem 50rem; */
+    /* -webkit-background-size: 30rem 50rem; */
+
+}
+#head{
+    width:100%;
+    height:2.3rem;
+    line-height: 3rem;
+    font-size:2rem;
+    text-align:center;
+    vertical-align: middle;
+    font-family:rlsm;
+    font-weight:bold;
+    color:rgb(0,0,0);
+	padding-top:4rem;
+}
+
+#back1_phone{
+    height: 60rem;
+    width: 28rem;
+    background-image:url("./picture/back_phone1.png");
+    background-size: 28rem 100%;
+    -moz-background-size: 28rem 100%;
+    -webkit-background-size: 28rem 100%;
+	margin-top:0.25rem;
+	margin-left:auto;
+	margin-right:auto;
+    /* position:absolute; */
+    /* top: 1.75rem; */
+	/* left:0.25rem; */
+}
+#introduce{
+    margin: 10% 10% 0 10%;
+    width:80%;
+    /*height:69px;*/
+    font-size:1rem;
+    font-family:rlsm;
+    font-weight:400;
+    line-height:1.3em;
+    color:rgb(34, 6, 6);
+    white-space: pre-line;
+}
+
+#h1{
+	margin-top:1rem;
+    width:100%;
+    height:2rem;
+    line-height: 2rem;
+    font-size:1.3rem;
+
+    font-family:Alibaba PuHuiTi;
+    text-align:center;
+    vertical-align: middle;
+    font-weight:bold;
+    color:rgb(0,0,0);
+}
+#input{
+	
+    margin: 1rem auto 0 auto;
+    width:80%;
+    height: 9rem;
+    background-image:url("./picture/back_phone2.png");
+    background-size: 100% 9rem;
+    -moz-background-size: 100% 9rem;
+    -webkit-background-size: 100% 9rem;
+}
+#id_title{
+	width:8rem;
+	height:1rem;
+	font-size:1rem;
+}
+#id_cover{
+	width:8rem;
+	height:2rem;
+	font-size:1rem;
+}
+#id_sex{
+	width:8rem;
+	height:1rem;
+	font-size:1rem;
+}
+.form_item1{
+	padding-top: 2rem;
+	margin-left: 6rem;
+    margin-right: auto;
+	height:2rem;
+    
+}
+.form_item2{
+	padding-top:1rem;
+	margin-left: 6rem;
+    margin-right: auto;
+	height:2rem;
+    
+}
+.label_input1{
+    width:20%;
+    height:2rem;
+    font-size:1rem;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:1.375rem;
+}
+.label_input2{
+    width:20%;
+    height:1.5rem;
+    font-size:1rem;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:1.375rem;
+}
+#button1{
+	
+	margin-top:2rem;
+	margin-left:10rem;
+	width:9rem;
+	height:2rem;
+    border: 0rem;
+    background:url("./picture/submit_phone.png");
+    background-position: center center;
+    background-size: cover;
+}
+#xieyi{
+	margin-top:3rem;
+	margin-left:15rem;
+}
+
+.xieyi{
+	position: relative;
+	top:0rem;
+	background:#e3e1e1;
+	width: 100%;
+	height: 45rem;
+	border-radius: 5px;
+	margin: 5% auto;
+}
+.header{
+	height: 4rem;
+	width:100%;
+	text-align:center;
+
+}
+
+.text_area{
+
+	background: #e3e1e1;
+	width: 95%;
+	margin: 0 1rem;
+	height: 35rem;
+}
+#logo2 {
+    width: 31rem;
+    height:18rem;
+	margin-top:0rem;
+	margin-left:-2rem;
+    background: url("./picture/logo1.png") center top no-repeat;
+    background-size: 24rem 100%;
+    -moz-background-size: 24rem 100%;
+    -webkit-background-size: 24rem 100%;
+}

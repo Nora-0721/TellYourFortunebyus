@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:background="http://www.w3.org/1999/xhtml">
+<head>
+{% load static %}
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>面相与命运</title>
+    <link rel="stylesheet" type="text/css" href="{% static "base_input.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "base_input_en.css" %}">
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-148448118-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-148448118-1');
+	</script>
+</head>
+<body id="filebody" >
+    <div id="top">
+        <input id="button_ch" >
+    </div>
+
+    <div id="back2" >
+        <div id="title">面相与命运</div>
+        <div id="introduce">欢迎您来到Tell Your Fortune面相命运网 一个结合了深度学习知识和传统相学的免费在线面相命理分析网站。
+		该网站可以根据您上传的照片， 对您的职业，性格等进行分析，首先帮助您对自身本性有进一步的认识，其次对您的职业提供推荐，
+		便于对您的未来进行更好的规划。</div>
+        <div id="block1">
+            <div id="block2">
+                <div id="head">开始分析</div>
+
+            </div>
+        </div>
+    </div>
+	<div id = "toplist_en" style="display: none">
+           <input id="button_en" >
+    </div>
+
+    <div id="leftlist_en" style="display: none">
+		<div id="head_en" align="center">ENTERING</div>
+
+		</div>
+    </div>
+    <div id="rightlist_en" style="display: none">
+		<div id="title_en"  align="center" >FACIAL FORTUNE-TELLING</div>
+			<div id="introduce_en">
+			
+			一个人的面相，随着苍天的意志有了最初的样子，随着所在的环境慢慢地变化，随着四周的人和自己的努力成为了最终的样子。面相记载了与您有关的一切。
+
+			欢迎您来到Tell Your Fortune面相命运网 一个结合了深度学习知识和传统相学的免费在线面相命理分析网站。该网站可以根据您上传的照片， 对您的职业，性格等进行分析，首先帮助您对自身本性有进一步的认识，其次对您的职业提供推荐，便于对您的未来进行更好的规划。
+			</div>
+		</div>
+	</div>
+	<div id="form" style="width:400px;position:relative;top: -220px;left: 850px">
+		<form method="post" enctype="multipart/form-data" name = "my post" >
+				{% csrf_token %} 
+		
+				<div class="form_item1">
+					{{ form.title.errors }}
+						<label for="{{ form.title.id_for_label }}" id="label_input1" class="label_input1" >您的名字：</label>
+					{{ form.title }}
+				</div>
+				<div class="form_item2">
+					{{ form.cover.errors }}
+						<label for="{{ form.cover.id_for_label }}" id="label_input2"  class="label_input2" ">您的照片：</label>
+					{{ form.cover }}
+				</div>
+				<div class="form_item3_en" id="form_item3_en" style="display: none">
+					{{ form.language.errors }}
+						<label for="{{ form.language.id_for_label }}" class="label_input3" "></label>
+					{{ form.language }}
+				</div>
+			<button type="submit" id="button1" >上传</button>
+		</form>
+	</div>
+<script type="text/javascript">
+
+  window.onload = function () {
+		var isMobile = /Android|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+		if (isMobile) {
+			var lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
+			lang = lang.substr(0, 2)
+			if(lang == "zh" ){
+				window.location.href="http://www.tellyourfortune.io/phone_ch/"
+			}else{
+				window.location.href="http://www.tellyourfortune.io/phone_en/"
+			}
+			
+
+		} 
+        var filebody = document.getElementById("filebody");
+        var button_ch = document.getElementById("button_ch");
+		var button_en = document.getElementById("button_en");
+		var data = document.getElementById("{{ form.language.id_for_label }}");
+		data.value = "Chinese"
+		var r = window.location.search;
+		if(r =="?en"){
+		    filebody.style.backgroundImage = "url({% static './picture/background_en1.png' %})";
+            filebody.style.height = "700px";
+            var toplist_en = document.getElementById("toplist_en");
+            var leftlist_en = document.getElementById("leftlist_en");
+            var rightlist_en = document.getElementById("rightlist_en");
+		    var top = document.getElementById("top");
+            var back2 = document.getElementById("back2");
+			var data = document.getElementById("{{ form.language.id_for_label }}");
+			data.value = "English"
+            toplist_en.style.display = "";
+            leftlist_en.style.display = "";
+            rightlist_en.style.display = "";
+            top.style.display = "none";
+            back2.style.display = "none";
+			document.getElementById('form').style.left = '200px'
+			document.getElementById('form').style.top = '-1050px'
+			document.getElementById('label_input1').innerText = 'YOUR NAME'
+			document.getElementById('label_input2').innerText = 'YOUR IMAGE'
+			document.getElementById('button1').innerText = 'submit'
+			document.title = 'yinwen'
+		}
+		
+
+        button_ch.onclick = function () {
+            filebody.style.backgroundImage = "url({% static './picture/background_en1.png' %})";
+            filebody.style.height = "700px";
+            var toplist_en = document.getElementById("toplist_en");
+            var leftlist_en = document.getElementById("leftlist_en");
+            var rightlist_en = document.getElementById("rightlist_en");
+            var top = document.getElementById("top");
+            var back2 = document.getElementById("back2");
+			var data = document.getElementById("{{ form.language.id_for_label }}");
+			data.value = "English"
+            toplist_en.style.display = "";
+            leftlist_en.style.display = "";
+            rightlist_en.style.display = "";
+            top.style.display = "none";
+            back2.style.display = "none";
+			document.getElementById('form').style.left = '200px'
+			document.getElementById('form').style.top = '-1050px'
+			document.getElementById('label_input1').innerText = 'YOUR NAME'
+			document.getElementById('label_input2').innerText = 'YOUR IMAGE'
+			document.getElementById('button1').innerText = 'submit'
+			document.title = 'yinwen'
+
+        }
+        button_en.onclick = function () {
+            filebody.style.backgroundImage = "url({% static './picture/back.png' %}) ";
+            var toplist_en = document.getElementById("toplist_en");
+            var leftlist_en = document.getElementById("leftlist_en");
+            var rightlist_en = document.getElementById("rightlist_en");
+            var top = document.getElementById("top");
+            var back2 = document.getElementById("back2");
+			var data = document.getElementById("{{ form.language.id_for_label }}");
+			data.value = "Chinese"
+            toplist_en.style.display = "none";
+            leftlist_en.style.display = "none";
+            rightlist_en.style.display = "none";
+            top.style.display = "";
+            back2.style.display = "";
+			document.getElementById('form').style.left = '850px'
+			document.getElementById('form').style.top = '-220px'
+			document.getElementById('label_input1').innerText = '您的名字：'
+			document.getElementById('label_input2').innerText = '您的照片：'
+			document.getElementById('button1').innerText = '上传'
+			document.title = 'zhongwen'
+
+        }
+
+    }
+
+</script>
+</body>
+</html>
