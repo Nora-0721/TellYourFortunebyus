@@ -4,6 +4,7 @@
 
 #以下是3.30 To ljq ：APIkey获取说明
 ##一、本地跑通项目的命令行
+
         # 通义千问密钥（LLM算命用）
         $env:DASHSCOPE_API_KEY=" "
         
@@ -19,6 +20,7 @@
         
         # 开关：启用生图
         $env:USE_HUNYUAN_IMAGE="1"
+        
 ##二、APIkey获取位置（我找的都是有免费额度的OvO）：
 ###1.通义千问的在阿里云百炼
 https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-key
