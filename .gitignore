@@ -1,28 +1,20 @@
-__pycache__/
+# IDE 配置
 .idea/
 .vscode/
+
+# 虚拟环境
 .venv/
-wheels/
-*.whl
-get-pip.py
-output/*
-!output/.gitkeep
-stygan/ffhq.pkl
-stygan/__pycache__/
-*.log
-*.pid
-nohup.out
-uwsgi.log
-*.bak
-*.bak2
+
+# Python 缓存
+__pycache__/
+
+# 输出文件与图片
+output/
 out.png
-*.pyc
-*.pyo
-*.pyd
-*.tmp
-*.DS_Store
-*.egg-info/
-db.sqlite3-journal
-media/.DS_Store
-static/.DS_Store
-templates/.DS_Store
+
+# 备份文件
+requirements.txt.bak
+requirements.txt.bak2
+
+# 模型文件
+stygan/ffhq.pkl
