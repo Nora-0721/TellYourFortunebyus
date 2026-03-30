@@ -47,7 +47,9 @@ https://console.cloud.tencent.com/aiart/hunyuan-image-fast-create
 - 然后要下载腾讯的sdk，可以让ai给你写命令行下载，大概需要二十分钟。API文档里也有github地址。
 ## 三、跑通项目的最后一步
 跑完“一”的命令行之后run server，比如我的是这样：
-e:/Web/tellyourfortune/.venv/Scripts/python.exe manage.py runserver
+```shell
+d:/tellyourfortune/.venv/Scripts/python.exe manage.py runserver
+```
 会给你输出一个localhost的地址打开上传照片就可以，报错都会在本地终端输出，你发给ide的ai问一下就好。
 （注意跑的时候不要开梯子，因为我们腾讯混元的服务地域用的国内的。）
 ## 四、你短期内需要修改的
