@@ -4,6 +4,8 @@
 我默认你已经可以跑通初始版本了，就是登录这种没做你直接叫ai给你写一个本地测试用的账号密码登进去就行。requirements.txt不是所有东西都要下。都下要等一亿年。如果不清楚要安装哪些依赖，就等跑完报错之后抛给ai。
 
 # 以下是3.30 To ljq ：APIkey获取说明
+飞书文档也会给你，我写成readme方便你拉下来在ide里问ai。如果你没有GitHub Copilot Pro可以用杭电邮箱开通：[点这个链接](https://zeeklog.com/copilotxue-sheng-ren-zheng-2026-github-copilotxue-sheng-ren-zheng-shou-ba-shou-jiao-hui-8/)
+这个我推荐给皓宇哥过😋🥰😃🙂✌🏻🤗
 ## 一、本地跑通项目的命令行
 
         # 通义千问密钥（LLM算命用）
@@ -34,9 +36,11 @@ API接口文档
 【腾讯混元生图 混元生图（极速版）_腾讯云】 https://cloud.tencent.com/document/api/1668/120721?from=copy
 <img width="1280" height="450" alt="image" src="https://github.com/user-attachments/assets/3a57f357-be3a-440e-aac0-bed0c7a530eb" />
 
-https://console.cloud.tencent.com/aiart/hunyuan-image-fast-create这个是试用入口，应该有个地方叫你开通服务的，要先开通服务你才能在这里输入prompt试用，apikey才有效。但是具体哪里我有点忘了，你可以自己问豆包找一下，很好找的。大概就是上图所说内容步骤。
+https://console.cloud.tencent.com/aiart/hunyuan-image-fast-create
 
-- 开通之后，https://console.cloud.tencent.com/cam/capi
+这个是试用入口，应该有个地方叫你开通服务的，要先开通服务你才能在这里输入prompt试用，apikey才有效。但是具体哪里我有点忘了，你可以自己问豆包找一下，很好找的。大概就是上图所说内容步骤。
+
+开通之后，https://console.cloud.tencent.com/cam/capi
 <img width="1280" height="477" alt="image" src="https://github.com/user-attachments/assets/67097918-5314-48d1-b2c4-658955c98431" />
 
 这里创建秘钥，需要一个ID,一个KEY，填入“一”中的命令行里，创建的时候会给你复制的机会，如果没复制就看不到了，可以删除重建一个。
@@ -55,6 +59,7 @@ e:/Web/tellyourfortune/.venv/Scripts/python.exe manage.py runserver
 
 3.第二页我现在是把提示词用小字体打印出来了，后面做得差不多了把这个显示去掉就好。
 还有就是我现在用的这个轻量模型对发型这种提示词是不敏感的，生成的人像一定会雷同，不管换什么用户的照片都会雷同。因为即使提示词变化了模型也没有分辨能力。
-我在试用的地方https://console.cloud.tencent.com/aiart/hunyuan-image-three-create看了一下效果似乎确实是这样的，换成混元的2.0和3.0可能大概也许或许probablymaybe会好一点，但是我好像是免费额度用完的问题有报错，你可以自己试试看。或者对比一下你原来选用的模型哪个稍微好一点让ai帮忙vibecoding换一下。
+我在试用的地方https://console.cloud.tencent.com/aiart/hunyuan-image-three-create
+看了一下效果似乎确实是这样的，换成混元的2.0和3.0可能大概也许或许probablymaybe会好一点，但是我好像是免费额度用完的问题有报错，你可以自己试试看。或者对比一下你原来选用的模型哪个稍微好一点让ai帮忙vibecoding换一下。
 <img width="1280" height="840" alt="image" src="https://github.com/user-attachments/assets/54d20c33-c5b5-44f4-8bdd-410f9616db3e" />
 
