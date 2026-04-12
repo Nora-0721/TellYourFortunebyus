@@ -67,6 +67,45 @@
 			gap: 0.6rem;
 			align-items: center;
 		}
+
+		.bazi-report-text .bazi-heading {
+			color: #d07a1c;
+			font-weight: 700;
+			margin-top: 0.35rem;
+			margin-bottom: 0.2rem;
+		}
+
+		.bazi-report-text .bazi-inline {
+			margin-left: 0;
+			line-height: 1.45;
+			margin-bottom: 0.15rem;
+		}
+
+		.bazi-report-text .bazi-heading-inline {
+			color: #d07a1c;
+			font-weight: 700;
+			margin-right: 0.25rem;
+		}
+
+		.bazi-report-text .bazi-body-inline {
+			color: #111;
+			font-weight: 700;
+		}
+
+		.bazi-report-text .bazi-body {
+			margin-left: 1.2rem;
+			color: #111;
+			font-weight: 400;
+			text-indent: 0;
+			line-height: 1.45;
+			margin-bottom: 0.2rem;
+		}
+
+		.bazi-panel-title {
+			color: #d07a1c;
+			font-size: 1.28rem;
+			font-weight: 800;
+		}
   </style>
 <body style="padding-top:0">
 <script type="text/javascript">
@@ -135,6 +174,39 @@
 						<div id="mouse_text"  class="text">{{ lip_block_str }}</div>
 						<div id="character" class="title">&#9775;综合评价</div>
 						<div id="character_text" class="text">{{ person_str }}</div>
+					</div>
+
+					<div id="bazi_flow_panel" class="report-panel" style="display:none;">
+						<div class="title bazi-panel-title">&#9788;八字排盘解析</div>
+						<div class="text bazi-report-text" style="margin-left:0;padding-left:0;">
+							{% if bazi_display_html_flow %}
+								{{ bazi_display_html_flow|safe }}
+							{% else %}
+								八字分析生成中，请稍后刷新重试。
+							{% endif %}
+						</div>
+					</div>
+
+					<div id="bazi_prosperity_panel" class="report-panel" style="display:none;">
+						<div class="title bazi-panel-title">&#9788;八字排盘解析</div>
+						<div class="text bazi-report-text" style="margin-left:0;padding-left:0;">
+							{% if bazi_display_html_prosperity %}
+								{{ bazi_display_html_prosperity|safe }}
+							{% else %}
+								旺衰与定局分析生成中，请稍后刷新重试。
+							{% endif %}
+						</div>
+					</div>
+
+					<div id="bazi_strategy_panel" class="report-panel" style="display:none;">
+						<div class="title bazi-panel-title">&#9788;八字排盘解析</div>
+						<div class="text bazi-report-text" style="margin-left:0;padding-left:0;">
+							{% if bazi_display_html_strategy %}
+								{{ bazi_display_html_strategy|safe }}
+							{% else %}
+								战略箴言生成中，请稍后刷新重试。
+							{% endif %}
+						</div>
 					</div>
 
 					<div id="partner_report_panel" class="report-panel" style="display:none;">
@@ -224,14 +296,19 @@
 
 				} 
 
-		// 文本区域左右切换：本人报告 <-> 正缘报告
+		// 文本区域左右切换：本人报告 -> 流年干支 -> 旺衰与定局 -> 战略箴言 -> 正缘
 		var switchToPartner = document.getElementById("switch_to_partner");
 		var switchToSelf = document.getElementById("switch_to_self");
 		var selfPanel = document.getElementById("self_report_panel");
+		var baziFlowPanel = document.getElementById("bazi_flow_panel");
+		var baziProsperityPanel = document.getElementById("bazi_prosperity_panel");
+		var baziStrategyPanel = document.getElementById("bazi_strategy_panel");
 		var partnerPanel = document.getElementById("partner_report_panel");
 		var refreshImageBtn = document.getElementById("refresh_image_btn");
 		var partnerListBox = document.getElementById("partner_face_list");
 		var partnerStatusText = document.getElementById("partner_image_status_text");
+		var reportPanels = [selfPanel, baziFlowPanel, baziProsperityPanel, baziStrategyPanel, partnerPanel];
+		var currentPanelIndex = 0;
 
 		function renderPartnerImages(urls) {
 			if (!partnerListBox) {
@@ -249,25 +326,44 @@
 			}
 		}
 
-		if (switchToPartner && switchToSelf && selfPanel && partnerPanel) {
-			// 默认在本人页：左键禁用，右键可用
+		function updatePanelSwitch() {
+			for (var i = 0; i < reportPanels.length; i++) {
+				if (!reportPanels[i]) {
+					continue;
+				}
+				reportPanels[i].style.display = i === currentPanelIndex ? "block" : "none";
+			}
+			if (switchToSelf) {
+				if (currentPanelIndex <= 0) {
+					switchToSelf.classList.add("disabled");
+				} else {
+					switchToSelf.classList.remove("disabled");
+				}
+			}
+			if (switchToPartner) {
+				if (currentPanelIndex >= reportPanels.length - 1) {
+					switchToPartner.classList.add("disabled");
+				} else {
+					switchToPartner.classList.remove("disabled");
+				}
+			}
+		}
+
+		if (switchToPartner && switchToSelf && selfPanel && baziFlowPanel && baziProsperityPanel && baziStrategyPanel && partnerPanel) {
+			updatePanelSwitch();
 			switchToPartner.onclick = function () {
-				if (switchToPartner.classList.contains("disabled")) {
+				if (currentPanelIndex >= reportPanels.length - 1) {
 					return;
 				}
-				selfPanel.style.display = "none";
-				partnerPanel.style.display = "block";
-				switchToPartner.classList.add("disabled");
-				switchToSelf.classList.remove("disabled");
+				currentPanelIndex += 1;
+				updatePanelSwitch();
 			};
 			switchToSelf.onclick = function () {
-				if (switchToSelf.classList.contains("disabled")) {
+				if (currentPanelIndex <= 0) {
 					return;
 				}
-				partnerPanel.style.display = "none";
-				selfPanel.style.display = "block";
-				switchToSelf.classList.add("disabled");
-				switchToPartner.classList.remove("disabled");
+				currentPanelIndex -= 1;
+				updatePanelSwitch();
 			};
 		}
 

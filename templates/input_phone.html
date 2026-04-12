@@ -34,14 +34,22 @@
 
 					</div>
 						<div class="form_item1">
-								<label id="label_input_age" class="label_input1">您的年龄段：</label>
-								<div>
-									<label><input type="radio" name="age_group" value="18-25" checked>18-25岁</label>
-									<label style="margin-left:1.5rem;"><input type="radio" name="age_group" value="26-35">26-35岁</label>
+									<label id="label_input_age" class="label_input1" style="white-space:nowrap;display:inline-block;">您的生辰：</label>
+									<div style="margin-left:2rem;">
+									<input type="date" name="bazi_birth_date" required style="padding:0.15rem 0.3rem;" />
 								</div>
-								<div style="margin-top:0.3rem;">
-									<label><input type="radio" name="age_group" value="36-45">36-45岁</label>
-									<label style="margin-left:1.5rem;"><input type="radio" name="age_group" value=">45">45岁以上</label>
+									<div style="margin-top:0.3rem;margin-left:2rem;">
+									<select name="bazi_birth_hour" style="padding:0.15rem 0.3rem;min-width:11rem;">
+										<option value="" selected>时辰未填（默认12时）</option>
+										<option value="0">00时</option><option value="1">01时</option><option value="2">02时</option>
+										<option value="3">03时</option><option value="4">04时</option><option value="5">05时</option>
+										<option value="6">06时</option><option value="7">07时</option><option value="8">08时</option>
+										<option value="9">09时</option><option value="10">10时</option><option value="11">11时</option>
+										<option value="12">12时</option><option value="13">13时</option><option value="14">14时</option>
+										<option value="15">15时</option><option value="16">16时</option><option value="17">17时</option>
+										<option value="18">18时</option><option value="19">19时</option><option value="20">20时</option>
+										<option value="21">21时</option><option value="22">22时</option><option value="23">23时</option>
+									</select>
 								</div>
 						</div>
 					<div class="form_item2">
