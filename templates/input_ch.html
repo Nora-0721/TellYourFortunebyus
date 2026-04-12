@@ -27,6 +27,75 @@
       padding-left: 5rem;
       padding-right: 5rem;
     }
+
+	.bazi-inline-controls {
+		display: inline-flex;
+		align-items: center;
+		margin-left: 0.3rem;
+		position: relative;
+		top: -0.2rem;
+		max-width: 100%;
+	}
+
+	.form-row.birth-row #label_input_age {
+		margin-left: 5.1rem;
+		width: 5.6rem;
+	}
+
+	.form-row.birth-row .bazi-inline-controls {
+		margin-left: 0;
+	}
+
+	.form-row.birth-row .bazi-inline-controls select {
+		margin-left: 0.3rem !important;
+	}
+
+	.form-row.birth-row .bazi-inline-controls input[type="date"],
+	.form-row.birth-row .bazi-inline-controls select {
+		height: 1.85rem;
+		line-height: 1.85rem;
+		padding-top: 0;
+		padding-bottom: 0;
+		box-sizing: border-box;
+	}
+
+	.form-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		margin-top: 0.1rem;
+	}
+
+	.form-row {
+		display: flex;
+		align-items: center;
+	}
+
+	.form-row .label_input1,
+	.form-row .label_input2 {
+		margin-left: 5.1rem;
+		width: 6.2rem;
+		white-space: nowrap;
+		position: relative;
+		top: -0.12rem;
+	}
+
+	.form-row .submit-wrap {
+		margin-left: 6.6rem;
+	}
+
+	.form-row #button1 {
+		margin-top: 0;
+		margin-left: 0;
+	}
+
+	#input {
+		padding-top: 0.35rem !important;
+	}
+
+	#suanming {
+		margin-top: 0.35rem !important;
+	}
   </style>
 <body style="padding-top:0">
 
@@ -83,34 +152,45 @@
                     		<form method="post" enctype="multipart/form-data" name = "my post" >
 				{% csrf_token %}
 
-				<div id="input">
+				<div id="input" class="form-grid">
 
-					<div class="form_item2">
+					<div class="form_item2 form-row">
 						
 							<label for="id_sex_1" id="label_input3" class="label_input1">您的性别：</label>						
 							<label for="id_sex_1"><input type="radio" name="sex" value="1" id="id_sex_1" checked="" required="">男</label>
 							<label for="id_sex_2"><input type="radio" name="sex" value="2" id="id_sex_2" required="">女</label>
 
 					</div>
-					<div class="form_item2">
-						<label id="label_input_age" class="label_input1">您的年龄段：</label>
-						<span style="display:inline-block;margin-left:0.8rem;position:relative;top:-0.2rem;">
-							<label><input type="radio" name="age_group" value="18-25" checked>18-25岁</label>
-							<label style="margin-left:1.5rem;"><input type="radio" name="age_group" value="26-35">26-35岁</label><br/>
-							<label style="margin-top:0.3rem;display:inline-block;"><input type="radio" name="age_group" value="36-45">36-45岁</label>
-							<label style="margin-left:1.5rem;"><input type="radio" name="age_group" value=">45">45岁以上</label>
+					<div class="form_item2 form-row birth-row">
+						<label id="label_input_age" class="label_input1">您的生辰：</label>
+						<span class="bazi-inline-controls">
+							<input type="date" name="bazi_birth_date" required style="padding:0 0.3rem;" />
+							<select name="bazi_birth_hour" style="margin-left:0.6rem;padding:0 0.3rem;">
+								<option value="" selected>时辰未填（默认12时）</option>
+								<option value="0">00时</option><option value="1">01时</option><option value="2">02时</option>
+								<option value="3">03时</option><option value="4">04时</option><option value="5">05时</option>
+								<option value="6">06时</option><option value="7">07时</option><option value="8">08时</option>
+								<option value="9">09时</option><option value="10">10时</option><option value="11">11时</option>
+								<option value="12">12时</option><option value="13">13时</option><option value="14">14时</option>
+								<option value="15">15时</option><option value="16">16时</option><option value="17">17时</option>
+								<option value="18">18时</option><option value="19">19时</option><option value="20">20时</option>
+								<option value="21">21时</option><option value="22">22时</option><option value="23">23时</option>
+							</select>
 						</span>
 					</div>
-					<div class="form_item2">
+					<div class="form_item2 form-row">
 						
 							<label for="cover" id="label_input2" class="label_input2">您的照片：</label>
 							<button type="button"  id="cover" onclick="document.querySelector('#id_cover').click()")>选择文件</button>
 						<input style="display:none" type="file" name="cover" id="id_cover" accept="image/*" required="">
 					</div>
+					<div class="form_item2 form-row">
+						<div class="submit-wrap">
+							<button type="submit" id="button1" ></button>
+						</div>
+					</div>
 
 				</div>
-				
-				<button type="submit" id="button1" ></button>
 		</form>
 				</div>
 			</div>

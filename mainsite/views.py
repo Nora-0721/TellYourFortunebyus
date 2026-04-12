@@ -1,6 +1,10 @@
 print("views.py loaded (模块已加载)")
 import random
 import json
+import re
+import os
+from datetime import date
+from html import escape
 
 from deepface import DeepFace
 from django.contrib.auth import authenticate, login, logout
@@ -11,10 +15,11 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView  # new
 from django.urls import reverse_lazy  # new
 
-from ai import DashScopeChat, generate_ideal_partner_profile, generate_ideal_partner_image
+from ai import DashScopeChat, generate_ideal_partner_profile, generate_ideal_partner_image, generate_bazi_analysis
 from stygan import StyleGANImageGenerator
 from .forms import PostForm, PostPhoneForm  # new
 from .models import Post, PostNew, PostNewImage, FaceFeature, SeedToFace
+from .bazi_skill import build_bazi_profile
 
 from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -28,6 +33,165 @@ from django.http import Http404
 import time
 import numpy as np
 import cv2
+
+
+REQUIRED_BAZI_PROFILE_KEYS = [
+    "bazi_str",
+    "year_pillar",
+    "month_pillar",
+    "day_pillar",
+    "time_pillar",
+    "wuxing_summary",
+    "lunar_birth_text",
+    "current_year_ganzhi",
+    "next_year_ganzhi",
+    "current_dayun_ganzhi",
+    "flow_year_stem_compare",
+    "flow_year_branch_compare",
+    "flow_dayun_effect",
+]
+
+
+def _bazi_profile_needs_recompute(profile):
+    if not isinstance(profile, dict) or not profile:
+        return True
+    for key in REQUIRED_BAZI_PROFILE_KEYS:
+        value = profile.get(key)
+        if value is None:
+            return True
+        if isinstance(value, str) and not value.strip():
+            return True
+        if isinstance(value, list) and not value:
+            return True
+    return False
+
+
+def _log_bazi_profile_json(profile):
+    if not isinstance(profile, dict) or not profile:
+        print("[BaziProfileJSON] empty=true")
+        return
+    print("[BaziProfileJSON] keys={}".format(",".join(sorted(profile.keys()))))
+    print("[BaziProfileJSON] full={}".format(json.dumps(profile, ensure_ascii=False)))
+
+
+def _log_bazi_analysis_json(analysis):
+    if not isinstance(analysis, dict) or not analysis:
+        print("[BaziAnalysisJSON] empty=true")
+        return
+    print("[BaziAnalysisJSON] source={}".format(analysis.get("source", "")))
+    print("[BaziAnalysisJSON] source_reason={}".format(analysis.get("source_reason", "")))
+    print("[BaziAnalysisJSON] full={}".format(json.dumps(analysis, ensure_ascii=False)))
+
+
+def _has_duplicate_flow_lines(display_text):
+    text = str(display_text or "")
+    lines = [ln.strip() for ln in text.replace("\\r\\n", "\n").replace("\\n", "\n").splitlines() if ln.strip()]
+    if not lines:
+        return False
+    prefixes = [
+        "流年干支",
+        "今年天干与命局天干的合冲克关系：",
+        "今年地支与命局地支的合冲刑害：",
+        "流年干支与当前大运干支的叠加效应：",
+        "{}年（今年）：".format(date.today().year),
+        "{}年（明年）：".format(date.today().year + 1),
+    ]
+    counts = {k: 0 for k in prefixes}
+    for line in lines:
+        for pref in prefixes:
+            if line == pref or line.startswith(pref):
+                counts[pref] += 1
+                break
+    return any(v > 1 for v in counts.values())
+
+
+def _normalize_bazi_lines(raw_text):
+    text = str(raw_text or "").replace("\\r\\n", "\n").replace("\\n", "\n").strip()
+    if not text:
+        return []
+    return [ln.strip() for ln in text.splitlines() if ln.strip()]
+
+
+def _split_bazi_sections(raw_text):
+    lines = _normalize_bazi_lines(raw_text)
+    if not lines:
+        return {
+            "flow": [],
+            "prosperity": [],
+            "strategy": [],
+        }
+
+    idx_prosperity = lines.index("旺衰与定局") if "旺衰与定局" in lines else -1
+    idx_strategy = lines.index("给命主的“战略箴言”") if "给命主的“战略箴言”" in lines else -1
+
+    if idx_prosperity < 0:
+        return {
+            "flow": lines,
+            "prosperity": [],
+            "strategy": [],
+        }
+
+    flow_lines = lines[:idx_prosperity]
+    if idx_strategy >= 0:
+        prosperity_lines = lines[idx_prosperity:idx_strategy]
+        strategy_lines = lines[idx_strategy:]
+    else:
+        prosperity_lines = lines[idx_prosperity:]
+        strategy_lines = []
+
+    return {
+        "flow": flow_lines,
+        "prosperity": prosperity_lines,
+        "strategy": strategy_lines,
+    }
+
+
+def _format_bazi_display_html(raw_text):
+    lines = _normalize_bazi_lines(raw_text)
+    if not lines:
+        return ""
+
+    heading_keywords = ["流年干支", "旺衰与定局", "给命主的“战略箴言”"]
+    inline_title_prefix = ["生辰（农历）：", "四柱：", "五行："]
+    html_parts = []
+    for line in lines:
+        line_no_dash = re.sub(r"^[-•]\s*", "", line)
+        if line_no_dash == "☼八字排盘解析":
+            # 页面标题已在模板单独显示，正文中不重复。
+            continue
+
+        matched_prefix = ""
+        for pref in inline_title_prefix:
+            if line_no_dash.startswith(pref):
+                matched_prefix = pref
+                break
+
+        if matched_prefix:
+            suffix = line_no_dash[len(matched_prefix):].strip()
+            if matched_prefix == "生辰（农历）：" and "虚岁：" in suffix:
+                lunar_text, nominal_age_text = suffix.split("虚岁：", 1)
+                html_parts.append(
+                    '<div class="bazi-inline"><span class="bazi-heading-inline">{}</span><span class="bazi-body-inline">{}</span><span class="bazi-heading-inline">虚岁：</span><span class="bazi-body-inline">{}</span></div>'.format(
+                        escape(matched_prefix),
+                        escape(lunar_text.strip()),
+                        escape(nominal_age_text.strip()),
+                    )
+                )
+                continue
+            html_parts.append(
+                '<div class="bazi-inline"><span class="bazi-heading-inline">{}</span><span class="bazi-body-inline">{}</span></div>'.format(
+                    escape(matched_prefix),
+                    escape(suffix),
+                )
+            )
+            continue
+
+        if any(line_no_dash == k for k in heading_keywords):
+            css_class = "bazi-heading"
+        else:
+            css_class = "bazi-body"
+        html_parts.append('<div class="{}">{}</div>'.format(css_class, escape(line_no_dash)))
+    return "".join(html_parts)
 
 def test_set(request):
     str = get_code()
@@ -202,11 +366,38 @@ def home_page_ch(request):
         expected_partner_sex = "男"
     else:
         expected_partner_sex = "未知"
+    bazi_birth_date = request.session.get("bazi_birth_date", "")
+    bazi_birth_hour = request.session.get("bazi_birth_hour", "")
     age_group = request.session.get("age_group", "")
+
+    bazi_profile = request.session.get("bazi_profile_json", {})
+    if not isinstance(bazi_profile, dict):
+        bazi_profile = {}
+
+    profile_needs_recompute = _bazi_profile_needs_recompute(bazi_profile)
+    if bazi_birth_date and profile_needs_recompute:
+        bazi_profile = build_bazi_profile(
+            birth_date_text=bazi_birth_date,
+            birth_hour_value=bazi_birth_hour,
+            gender=sex_label,
+        )
+        if bazi_profile:
+            request.session["bazi_profile_json"] = bazi_profile
+            # 命盘重算后，旧分析结果可能与新字段不一致，强制失效重算。
+            request.session.pop("bazi_profile_analysis_json", None)
+            print("[BaziEvidence] session_profile_recomputed=true")
+
+    _log_bazi_profile_json(bazi_profile)
+
+    if isinstance(bazi_profile, dict) and bazi_profile.get("age_range"):
+        age_group = bazi_profile.get("age_range", age_group)
+
     user_context = {
         "user_sex": sex_label,
         "expected_partner_sex": expected_partner_sex,
         "user_age_group": age_group,
+        "user_age": bazi_profile.get("age") if isinstance(bazi_profile, dict) else None,
+        "user_age_stage": bazi_profile.get("age_stage") if isinstance(bazi_profile, dict) else "",
         "user_eye_insight": eye_block_str,
         "user_nose_insight": nose_block_str,
         "user_lip_insight": lip_block_str,
@@ -214,7 +405,69 @@ def home_page_ch(request):
         "note": "基于本人分析动态生成三候选正缘画像prompt",
     }
 
+    bazi_analysis = request.session.get("bazi_profile_analysis_json", {})
+    if not isinstance(bazi_analysis, dict):
+        bazi_analysis = {}
+    has_dashscope_key = bool(str(os.getenv("DASHSCOPE_API_KEY", "")).strip())
+    cached_source = str(bazi_analysis.get("source", ""))
+    cached_text = str(bazi_analysis.get("display_text", ""))
+    stale_local_fallback = (
+        cached_source == "local_fallback"
+        and has_dashscope_key
+    ) or (
+        "离线兜底文本" in cached_text
+        and has_dashscope_key
+    )
+
+    if bazi_profile and (not bazi_analysis or stale_local_fallback):
+        if stale_local_fallback:
+            print("[BaziEvidence] refresh_stale_fallback=true")
+        bazi_analysis = generate_bazi_analysis(bazi_profile=bazi_profile, user_context=user_context)
+        if bazi_analysis:
+            request.session["bazi_profile_analysis_json"] = bazi_analysis
+
+    if isinstance(bazi_analysis, dict) and _has_duplicate_flow_lines(bazi_analysis.get("display_text", "")):
+        print("[BaziEvidence] duplicate_flow_lines_detected=true")
+        refreshed = generate_bazi_analysis(bazi_profile=bazi_profile, user_context=user_context)
+        if isinstance(refreshed, dict) and refreshed.get("display_text"):
+            bazi_analysis = refreshed
+            request.session["bazi_profile_analysis_json"] = bazi_analysis
+
+    _log_bazi_analysis_json(bazi_analysis)
+
+    bazi_display_text = ""
+    bazi_display_html_flow = ""
+    bazi_display_html_prosperity = ""
+    bazi_display_html_strategy = ""
+    if isinstance(bazi_analysis, dict):
+        bazi_display_text = bazi_analysis.get("display_text", "")
+    bazi_sections = _split_bazi_sections(bazi_display_text)
+    bazi_display_html_flow = _format_bazi_display_html("\n".join(bazi_sections.get("flow", [])))
+    bazi_display_html_prosperity = _format_bazi_display_html("\n".join(bazi_sections.get("prosperity", [])))
+    bazi_display_html_strategy = _format_bazi_display_html("\n".join(bazi_sections.get("strategy", [])))
+    if bazi_display_text:
+        print("[BaziOutput] header_preview={}".format(" | ".join([x for x in bazi_display_text.splitlines()[:3] if x])))
+
     ideal_partner = request.session.get("ideal_partner_profile_json", {})
+    stale_ideal_age_prompt = False
+    if isinstance(ideal_partner, dict) and ideal_partner:
+        cached_prompts = ideal_partner.get("visual_prompts", [])
+        if not isinstance(cached_prompts, list):
+            cached_prompts = []
+        legacy_prompt = ideal_partner.get("visual_prompt", "")
+        merged_prompt_text = " ".join([str(x) for x in cached_prompts if x]) + " " + str(legacy_prompt or "")
+        if re.search(r"\d+\s*[-~到]\s*\d+\s*岁|\d+岁|18-25|26-35|36-45|45\+", merged_prompt_text):
+            stale_ideal_age_prompt = True
+
+    if stale_ideal_age_prompt:
+        print("[IdealPromptEvidence] stale_age_prompt_detected=true")
+        request.session.pop("ideal_partner_profile_json", None)
+        request.session.pop("ideal_visual_prompt", None)
+        request.session.pop("ideal_visual_prompts", None)
+        request.session.pop("ideal_partner_image_data_url", None)
+        request.session.pop("ideal_partner_image_data_urls", None)
+        ideal_partner = {}
+
     if not isinstance(ideal_partner, dict) or not ideal_partner:
         random_pack = request.session.get("ideal_prompt_random_pack", {})
         ideal_partner = generate_ideal_partner_profile(user_context, random_pack=random_pack)
@@ -559,15 +812,18 @@ def input_ch(request):
     # 如果提交表单，重定向
     if request.method == "POST":
         author_sex = request.POST["sex"]
-        age_group = request.POST.get("age_group", "")
+        bazi_birth_date = request.POST.get("bazi_birth_date", "")
+        bazi_birth_hour = request.POST.get("bazi_birth_hour", "")
         image_name = request.FILES.get('cover')
         print(image_name)
         post = PostNew()
         post.cover = image_name
         post.sex = author_sex
         post.save()
-        # 将年龄段暂存到 session，便于后续 LLM 使用
-        request.session["age_group"] = age_group
+        # 将生辰暂存到 session；年龄段由八字模块动态计算。
+        request.session["bazi_birth_date"] = bazi_birth_date
+        request.session["bazi_birth_hour"] = bazi_birth_hour
+        request.session["age_group"] = ""
         # 新图上传后清空上一次的正缘缓存，避免显示旧图。
         request.session.pop("ideal_visual_prompt", None)
         request.session.pop("ideal_visual_prompts", None)
@@ -575,6 +831,8 @@ def input_ch(request):
         request.session.pop("ideal_partner_profile_json", None)
         request.session.pop("ideal_partner_image_data_url", None)
         request.session.pop("ideal_partner_image_data_urls", None)
+        request.session.pop("bazi_profile_json", None)
+        request.session.pop("bazi_profile_analysis_json", None)
         return HttpResponseRedirect('/home_ch/')
     # else:
     #     html = get_template('input_ch.html')
@@ -615,21 +873,25 @@ def phone_ch(request):
                 return HttpResponse(html.render())
             if request.method == "POST":
                 author_sex = request.POST["sex"]
-                age_group = request.POST.get("age_group", "")
+                bazi_birth_date = request.POST.get("bazi_birth_date", "")
+                bazi_birth_hour = request.POST.get("bazi_birth_hour", "")
                 image_name = request.FILES.get('cover')
                 print(image_name)
                 post = PostNew()
                 post.cover = image_name
                 post.sex = author_sex
                 post.save()
-                # 将年龄段暂存到 session，便于后续 LLM 使用
-                request.session["age_group"] = age_group
+                request.session["bazi_birth_date"] = bazi_birth_date
+                request.session["bazi_birth_hour"] = bazi_birth_hour
+                request.session["age_group"] = ""
                 request.session.pop("ideal_visual_prompt", None)
                 request.session.pop("ideal_visual_prompts", None)
                 request.session.pop("ideal_prompt_random_pack", None)
                 request.session.pop("ideal_partner_profile_json", None)
                 request.session.pop("ideal_partner_image_data_url", None)
                 request.session.pop("ideal_partner_image_data_urls", None)
+                request.session.pop("bazi_profile_json", None)
+                request.session.pop("bazi_profile_analysis_json", None)
                 return HttpResponseRedirect('/home_phone/')
             else:
                 html = get_template('input_phone.html')
