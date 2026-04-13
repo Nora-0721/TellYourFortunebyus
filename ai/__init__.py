@@ -3,6 +3,7 @@ import json
 import os
 import re
 import random
+import time
 from datetime import date
 from difflib import SequenceMatcher
 
@@ -670,8 +671,8 @@ def _build_local_bazi_text(bazi_profile):
     body05 = "流年干支与当前大运干支的叠加效应：{}".format(dayun_effect) if dayun_effect else ""
 
     body1 = "旺衰与定局"
-    body2 = "旺衰：以月令、透干、根气与岁运叠加综合判断。"
-    body3 = "月令司令：{}。".format("月柱{}为本盘季节主气参考".format(month_pillar) if month_pillar else "本盘月令信息可用")
+    body2 = "旺衰：命局以月令为主轴，日主受季节与根气共同影响，整体呈阶段性起伏。"
+    body3 = "月令司令：{}。".format("月柱{}当令，做事宜顺势推进".format(month_pillar) if month_pillar else "本盘月令信息可用")
 
     cond_parts = []
     if relation_chong:
@@ -681,14 +682,14 @@ def _build_local_bazi_text(bazi_profile):
     if relation_stem_he:
         cond_parts.append("关键：{}".format(relation_stem_he))
     if dayun:
-        cond_parts.append("次第：先命局后岁运，当前参考大运{}".format(dayun))
+        cond_parts.append("当前大运{}".format(dayun))
     cond_text = "；".join(cond_parts)
     body4 = ""
     if wuxing_summary:
         if cond_text:
-            body4 = "调候气象：结合{}综合判断（{}；大忌：单看一柱定全局）。".format(wuxing_summary, cond_text)
+            body4 = "调候气象：命局{}，{}，宜先稳住节奏与现金流，再做扩张动作。".format(wuxing_summary, cond_text)
         else:
-            body4 = "调候气象：结合{}综合判断。".format(wuxing_summary)
+            body4 = "调候气象：命局{}，宜先稳住节奏与现金流，再做扩张动作。".format(wuxing_summary)
 
     dingju_main, dingju_desc = _infer_local_dingju(bazi_profile)
     body8 = "建议定局：{}（定局说明：{}）。".format(dingju_main, dingju_desc) if dingju_main and dingju_desc else ""
@@ -819,6 +820,41 @@ def _clean_bazi_template_echo(display_text: str) -> str:
     return "\n".join(cleaned)
 
 
+def _looks_like_non_analysis_bazi_text(display_text: str) -> bool:
+    text = _take_text(display_text)
+    if not text:
+        return True
+
+    bad_markers = [
+        "<User_Bazi_Data>",
+        "{{USER_BAZI_DATA}}",
+        "按模板输出",
+        "硬性输出规则",
+        "请基于上方模板",
+        "请逐柱比对",
+        "输出规则",
+        "待推导",
+        "e.g.",
+    ]
+    if any(m in text for m in bad_markers):
+        return True
+
+    # 明显“模板腔”判定：术语堆叠但缺少可执行判断。
+    template_tone = [
+        "调候气象：结合",
+        "次第：先命局后岁运",
+        "大忌：单看一柱定全局",
+    ]
+    if any(m in text for m in template_tone):
+        return True
+
+    # 省略号占位过多也视为无效输出。
+    if text.count("...") >= 3:
+        return True
+
+    return False
+
+
 def _clamp_bazi_display_text(display_text: str) -> str:
     text = _take_text(display_text)
     if not text:
@@ -838,19 +874,19 @@ def _ensure_bazi_required_lines(display_text: str, bazi_profile: dict) -> str:
     year_next_prefix = "{}年（明年）：".format(date.today().year + 1)
     required_by_prefix = [
         ("流年干支", "流年干支"),
-        (year_now_prefix, "{}{}".format(year_now_prefix, _take_text(bazi_profile.get("current_year_ganzhi")) or "待推导")),
-        (year_next_prefix, "{}{}".format(year_next_prefix, _take_text(bazi_profile.get("next_year_ganzhi")) or "待推导")),
+        (year_now_prefix, "{}{}".format(year_now_prefix, _take_text(bazi_profile.get("current_year_ganzhi")) or "未知")),
+        (year_next_prefix, "{}{}".format(year_next_prefix, _take_text(bazi_profile.get("next_year_ganzhi")) or "未知")),
         (
             "今年天干与命局天干的合冲克关系：",
-            "今年天干与命局天干的合冲克关系：{}".format("；".join(bazi_profile.get("flow_year_stem_compare", [])) or "待推导"),
+            "今年天干与命局天干的合冲克关系：{}".format("；".join(bazi_profile.get("flow_year_stem_compare", [])) or "未见明显合冲，以平势论"),
         ),
         (
             "今年地支与命局地支的合冲刑害：",
-            "今年地支与命局地支的合冲刑害：{}".format("；".join(bazi_profile.get("flow_year_branch_compare", [])) or "待推导"),
+            "今年地支与命局地支的合冲刑害：{}".format("；".join(bazi_profile.get("flow_year_branch_compare", [])) or "合冲引动较弱，先守后攻"),
         ),
         (
             "流年干支与当前大运干支的叠加效应：",
-            "流年干支与当前大运干支的叠加效应：{}".format(_take_text(bazi_profile.get("flow_dayun_effect")) or "待推导"),
+            "流年干支与当前大运干支的叠加效应：{}".format(_take_text(bazi_profile.get("flow_dayun_effect")) or "与当前大运同向度一般，宜稳中求进"),
         ),
     ]
 
@@ -878,23 +914,180 @@ def _ensure_bazi_required_lines(display_text: str, bazi_profile: dict) -> str:
                 present_prefixes.add(pref)
                 break
 
-    # 若缺失关键行，则插入到“流年干支”分段后方（或尾部）。
-    if "流年干支" not in present_prefixes:
-        out.append("流年干支")
-        present_prefixes.add("流年干支")
-
-    try:
-        insert_at = out.index("流年干支") + 1
-    except ValueError:
-        insert_at = len(out)
-
-    for pref, required_line in required_by_prefix[1:]:
-        if pref in present_prefixes:
-            continue
-        out.insert(insert_at, required_line)
-        insert_at += 1
+    # 不再补写固定分析行，避免不同用户出现相同兜底话术。
+    # 仅做清洗、去重，最终内容由 LLM 基于命盘自行生成。
 
     return "\n".join(out)
+
+
+def _bazi_retry_message() -> str:
+    return "八字解析生成未完成，请重试一次。"
+
+
+def _truncate_text(value: str, max_len: int) -> str:
+    text = _take_text(value)
+    if max_len <= 0:
+        return ""
+    if len(text) <= max_len:
+        return text
+    return text[:max_len]
+
+
+def _extract_prefixed_value(lines, prefixes):
+    for line in lines:
+        raw = _take_text(line)
+        for pref in prefixes:
+            if raw.startswith(pref):
+                return raw[len(pref):].strip(" ：")
+    return ""
+
+
+def _extract_section_lines(lines, start_title: str, end_title: str = ""):
+    started = False
+    out = []
+    for line in lines:
+        cur = _take_text(line)
+        if not cur:
+            continue
+        if cur == start_title:
+            started = True
+            continue
+        if started and end_title and cur == end_title:
+            break
+        if started:
+            out.append(cur)
+    return out
+
+
+def _fit_section_lines(lines, max_chars: int, shrinkable_prefixes):
+    out = [_take_text(x) for x in lines if _take_text(x)]
+    if not out:
+        return out
+
+    def total_len(cur_lines):
+        return len("\n".join(cur_lines))
+
+    if total_len(out) <= max_chars:
+        return out
+
+    idx_map = {}
+    for idx, line in enumerate(out):
+        for pref in shrinkable_prefixes:
+            if line.startswith(pref):
+                idx_map[pref] = idx
+                break
+
+    order = [idx_map[p] for p in shrinkable_prefixes if p in idx_map]
+    if not order:
+        # 没有可收缩行时，直接截断尾部。
+        text = "\n".join(out)
+        return text[:max_chars].split("\n")
+
+    loop_guard = 0
+    while total_len(out) > max_chars and loop_guard < 4000:
+        loop_guard += 1
+        changed = False
+        for idx in order:
+            if total_len(out) <= max_chars:
+                break
+            line = out[idx]
+            pos = line.find("：")
+            if pos < 0:
+                continue
+            prefix = line[:pos + 1]
+            val = line[pos + 1:]
+            if len(val) <= 8:
+                continue
+            out[idx] = prefix + val[:-1]
+            changed = True
+        if not changed:
+            break
+
+    if total_len(out) > max_chars:
+        text = "\n".join(out)
+        out = text[:max_chars].split("\n")
+    return out
+
+
+def _format_bazi_output_to_template(display_text: str, bazi_profile: dict) -> str:
+    raw_lines = [ln.strip() for ln in _take_text(display_text).splitlines() if ln.strip()]
+
+    section_flow = _extract_section_lines(raw_lines, "流年干支", "旺衰与定局")
+    section_wangshuai = _extract_section_lines(raw_lines, "旺衰与定局", "给命主的“战略箴言”")
+    section_quote = _extract_section_lines(raw_lines, "给命主的“战略箴言”", "")
+
+    year_now = date.today().year
+    year_next = year_now + 1
+
+    flow_year_now = _extract_prefixed_value(section_flow, [f"{year_now}年（今年）："]) or _take_text(bazi_profile.get("current_year_ganzhi"))
+    flow_year_next = _extract_prefixed_value(section_flow, [f"{year_next}年（明年）："]) or _take_text(bazi_profile.get("next_year_ganzhi"))
+    flow_stem = _extract_prefixed_value(section_flow, ["今年天干与命局天干的合冲克关系："]) or "；".join(bazi_profile.get("flow_year_stem_compare", []))
+    flow_branch = _extract_prefixed_value(section_flow, ["今年地支与命局地支的合冲刑害："]) or "；".join(bazi_profile.get("flow_year_branch_compare", []))
+    flow_effect = _extract_prefixed_value(section_flow, ["流年干支与当前大运干支的叠加效应："]) or _take_text(bazi_profile.get("flow_dayun_effect"))
+
+    ws_wang = _extract_prefixed_value(section_wangshuai, ["旺衰："])
+    ws_month = _extract_prefixed_value(section_wangshuai, ["月令司令："])
+    ws_tiaohou = _extract_prefixed_value(section_wangshuai, ["调候气象："])
+    ws_dingju = _extract_prefixed_value(section_wangshuai, ["建议定局："])
+    ws_shensha = _extract_prefixed_value(section_wangshuai, ["神煞外格："])
+    ws_xiyong = _extract_prefixed_value(section_wangshuai, ["建议喜用："])
+    ws_jishen = _extract_prefixed_value(section_wangshuai, ["建议忌神："])
+
+    q_base = _extract_prefixed_value(section_quote, ["您的人生底牌是："])
+    q_now = _extract_prefixed_value(section_quote, ["此时此刻的生存哲学："])
+    q_future = _extract_prefixed_value(section_quote, ["未来三年的战略伏笔："])
+
+    # 若模型未给出规范标签，尝试按句子顺序回填三条箴言。
+    quote_plain = [ln for ln in section_quote if "：" not in ln]
+    if not q_base and len(quote_plain) >= 1:
+        q_base = quote_plain[0]
+    if not q_now and len(quote_plain) >= 2:
+        q_now = quote_plain[1]
+    if not q_future and len(quote_plain) >= 3:
+        q_future = quote_plain[2]
+
+    top_lines = [
+        "☼八字排盘解析",
+        "生辰（农历）：{}  虚岁：{}".format(
+            _take_text(bazi_profile.get("lunar_birth_text")) or "未知",
+            _take_text(bazi_profile.get("nominal_age_cn")) or (str(bazi_profile.get("nominal_age")) + "岁" if bazi_profile.get("nominal_age") else "未知"),
+        ),
+        "四柱：{}".format(_take_text(bazi_profile.get("bazi_str")) or "未知"),
+        "五行：{}".format(_take_text(bazi_profile.get("wuxing")) or _take_text(bazi_profile.get("wuxing_summary")) or "未知"),
+    ]
+
+    flow_lines = [
+        "流年干支",
+        "{}年（今年）：{}".format(year_now, _take_text(flow_year_now)),
+        "{}年（明年）：{}".format(year_next, _take_text(flow_year_next)),
+        "今年天干与命局天干的合冲克关系：{}".format(_take_text(flow_stem)),
+        "今年地支与命局地支的合冲刑害：{}".format(_take_text(flow_branch)),
+        "流年干支与当前大运干支的叠加效应：{}".format(_take_text(flow_effect)),
+    ]
+
+    ws_lines = ["旺衰与定局"]
+    maybe_ws = [
+        ("旺衰：", ws_wang),
+        ("月令司令：", ws_month),
+        ("调候气象：", ws_tiaohou),
+        ("建议定局：", ws_dingju),
+        ("神煞外格：", ws_shensha),
+        ("建议喜用：", ws_xiyong),
+        ("建议忌神：", ws_jishen),
+    ]
+    for pref, val in maybe_ws:
+        if _take_text(val):
+            ws_lines.append(pref + _take_text(val))
+
+    quote_lines = [
+        "给命主的“战略箴言”",
+        "您的人生底牌是：{}".format(_take_text(q_base)),
+        "此时此刻的生存哲学：{}".format(_take_text(q_now)),
+        "未来三年的战略伏笔：{}".format(_take_text(q_future)),
+    ]
+
+    final_lines = top_lines + [""] + flow_lines + [""] + ws_lines + [""] + quote_lines
+    return "\n".join([ln for ln in final_lines if ln is not None]).strip()
 
 
 def generate_bazi_analysis(bazi_profile, user_context=None, api_key=None, model="qwen-plus"):
@@ -923,8 +1116,8 @@ def generate_bazi_analysis(bazi_profile, user_context=None, api_key=None, model=
     # 八字分析优先调用 LLM：只要存在 API Key 就发起请求。
     if not chat.api_key:
         return {
-            "display_text": _build_local_bazi_text(bazi_profile),
-            "source": "local_fallback",
+            "display_text": _bazi_retry_message(),
+            "source": "generation_unavailable",
             "source_reason": "no_api_key",
         }
 
@@ -948,9 +1141,8 @@ def generate_bazi_analysis(bazi_profile, user_context=None, api_key=None, model=
     skill_prompt = get_bazi_expert_prompt()
     if not skill_prompt:
         skill_prompt = (
-            "你是八字命理专家。"
-            "请只输出最终正文文本，不要输出 JSON。"
-            "正文必须按固定模板分段，包含农历生时、四柱、五行、流年与大运关系、旺衰定局。"
+            "你是八字命理分析师。只输出实质分析，不要复述规则，不要输出JSON。"
+            "必须按固定段落输出：八字排盘解析、流年干支、旺衰与定局、战略箴言。"
         )
 
     system_prompt = skill_prompt.replace(
@@ -958,7 +1150,7 @@ def generate_bazi_analysis(bazi_profile, user_context=None, api_key=None, model=
         json.dumps(payload, ensure_ascii=False),
     )
 
-    user_prompt = "请基于上方模板中的<User_Bazi_Data>，按固定结构返回正文文本。"
+    user_prompt = "请基于命盘数据直接给出算命分析，重点解释今年、明年与当前大运的实际影响，并给可执行建议。"
 
     print("[BaziEvidence] rule_source=rili-bazi-main/bazi.js + paipan.gx.js")
     print("[BaziEvidence] bazi={}".format(_take_text(bazi_profile.get("bazi_str"))))
@@ -970,43 +1162,85 @@ def generate_bazi_analysis(bazi_profile, user_context=None, api_key=None, model=
         "Authorization": f"Bearer {chat.api_key}",
         "Content-Type": "application/json",
     }
-    data = {
-        "model": chat.model,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-    }
+    prompts = [
+        user_prompt,
+        "上一次输出过于模板化。请重写为实质命理分析：不要解释规则、不要占位词、不要'结合XX综合判断'句式，直接给判断与建议。",
+    ]
+    timeout_like_errors = 0
 
-    try:
-        response = requests.post(
-            chat.api_url,
-            headers=headers,
-            data=json.dumps(data, ensure_ascii=False).encode("utf-8"),
-            timeout=15,
-            proxies={"http": None, "https": None},
-        )
-        response.raise_for_status()
-        response_json = response.json()
-        content = response_json["choices"][0]["message"]["content"]
-    except Exception as e:
-        print("generate_bazi_analysis: DashScope 请求错误：{}".format(e))
-        return {
-            "display_text": _build_local_bazi_text(bazi_profile),
-            "source": "local_fallback",
-            "source_reason": "request_error",
+    for idx, cur_user_prompt in enumerate(prompts):
+        data = {
+            "model": chat.model,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": cur_user_prompt},
+            ],
         }
 
-    display_text = _take_text(content)
-    if display_text.startswith("{"):
-        # 兼容旧提示词或模型偶发返回 JSON 的场景。
-        parsed = _extract_and_parse_json(display_text)
-        if isinstance(parsed, dict):
-            display_text = _take_text(parsed.get("display_text"))
+        content = ""
+        last_error = None
+        for attempt in range(3):
+            try:
+                response = requests.post(
+                    chat.api_url,
+                    headers=headers,
+                    data=json.dumps(data, ensure_ascii=False).encode("utf-8"),
+                    timeout=(8, 45),
+                    proxies={"http": None, "https": None},
+                )
+                response.raise_for_status()
+                response_json = response.json()
+                content = response_json["choices"][0]["message"]["content"]
+                last_error = None
+                break
+            except requests.exceptions.Timeout as e:
+                last_error = e
+                timeout_like_errors += 1
+                print("generate_bazi_analysis: DashScope 超时（第{}次重试）：{}".format(attempt + 1, e))
+            except requests.exceptions.ConnectionError as e:
+                last_error = e
+                timeout_like_errors += 1
+                print("generate_bazi_analysis: DashScope 连接异常（第{}次重试）：{}".format(attempt + 1, e))
+            except Exception as e:
+                last_error = e
+                print("generate_bazi_analysis: DashScope 请求错误（第{}次重试）：{}".format(attempt + 1, e))
 
-    if display_text:
+            if attempt < 2:
+                time.sleep(0.8 * (attempt + 1))
+
+        if last_error is not None:
+            if idx == len(prompts) - 1:
+                return {
+                    "display_text": _bazi_retry_message(),
+                    "source": "generation_failed",
+                    "source_reason": "request_timeout" if timeout_like_errors > 0 else "request_error",
+                }
+            continue
+
+        display_text = _take_text(content)
+        if display_text.startswith("{"):
+            # 兼容旧提示词或模型偶发返回 JSON 的场景。
+            parsed = _extract_and_parse_json(display_text)
+            if isinstance(parsed, dict):
+                display_text = _take_text(parsed.get("display_text"))
+
+        if not display_text:
+            continue
+
         display_text = _clean_bazi_template_echo(display_text)
         display_text = _ensure_bazi_required_lines(display_text, bazi_profile)
+        if _looks_like_non_analysis_bazi_text(display_text):
+            print("[BaziEvidence] template_like_output_retry={}".format(idx + 1))
+            if idx < len(prompts) - 1:
+                continue
+            return {
+                "display_text": _bazi_retry_message(),
+                "source": "generation_failed",
+                "source_reason": "template_like_output",
+            }
+
+        display_text = _format_bazi_output_to_template(display_text, bazi_profile)
+
         return {
             "display_text": display_text,
             "source": "dashscope",
@@ -1014,8 +1248,8 @@ def generate_bazi_analysis(bazi_profile, user_context=None, api_key=None, model=
         }
 
     return {
-        "display_text": _build_local_bazi_text(bazi_profile),
-        "source": "local_fallback",
+        "display_text": _bazi_retry_message(),
+        "source": "generation_failed",
         "source_reason": "empty_content",
     }
 

@@ -52,6 +52,271 @@ REQUIRED_BAZI_PROFILE_KEYS = [
 ]
 
 
+STAR_SIGNS = [
+    {
+        "name": "星纪",
+        "palace": "摩羯宫",
+        "start": (12, 7),
+        "end": (1, 5),
+        "lunar_range_text": "农历12月7日-1月5日",
+        "quote": "“上当星纪，下裂坤维。”",
+        "quote_source": "——唐·王勃《广州宝庄严寺舍利塔》",
+        "personality": "日月五星轮回的终始，故称“星纪”。作为十二星次的出发点，有根基的含义。信念坚强而勤奋，会朝着自己的目标努力不懈。生性温柔，但若发起脾气，也是势不可挡的。",
+        "svg": "星纪.svg",
+    },
+    {
+        "name": "玄枵",
+        "palace": "水瓶宫",
+        "start": (1, 6),
+        "end": (2, 3),
+        "lunar_range_text": "农历1月6日-2月3日",
+        "quote": "“自须女八度至危十五度为玄枵，於辰在子，齐之分野，属青州。”",
+        "quote_source": "——《晋书·天文志上》",
+        "personality": "有种子的含义，兼具发展性和神秘感。好奇心旺盛，性格开朗、乐观，兴趣广泛。但同时缺乏耐心，善变，对一件事物的热情不会太持久。",
+        "svg": "玄枵.svg",
+    },
+    {
+        "name": "娵訾",
+        "palace": "双鱼宫",
+        "start": (2, 4),
+        "end": (3, 5),
+        "lunar_range_text": "农历2月4日-3月5日",
+        "quote": "“及其亡也，岁在娵訾之口。”",
+        "quote_source": "——《左传·襄公三十年》",
+        "personality": "代表植物的核，意指中心。个性强，注重自我。外表冷漠内心却十分热情，而且具有恒心和毅力，一旦决定了某件事，便会以坚强的意志坚持到底。不过这种坚强可能会导致过于自我。",
+        "svg": "娵訾.svg",
+    },
+    {
+        "name": "降娄",
+        "palace": "白羊宫",
+        "start": (3, 6),
+        "end": (4, 4),
+        "lunar_range_text": "农历3月6日-4月4日",
+        "quote": "“自奎五度至胃六度为降娄，於辰在戌，鲁之分野，属徐州。”",
+        "quote_source": "——《晋书·天文志上》",
+        "personality": "代表植物的茎，像茎向植物无私地输送养分一般，是一个为他人无私奉献的人。性格直率，乐于助人，但容易过于听从别人的想法而失去主见。",
+        "svg": "降娄.svg",
+    },
+    {
+        "name": "大梁",
+        "palace": "金牛宫",
+        "start": (4, 5),
+        "end": (5, 5),
+        "lunar_range_text": "农历4月5日-5月5日",
+        "quote": "“岁在大梁，将集天行。”",
+        "quote_source": "——《国语·晋语四》",
+        "personality": "象征植物积蓄能量而生长，有结实的意思。头脑灵活，有先见之明，善于规划。但也会比较现实而精于算计。",
+        "svg": "大梁.svg",
+    },
+    {
+        "name": "实沈",
+        "palace": "双子宫",
+        "start": (5, 6),
+        "end": (6, 5),
+        "lunar_range_text": "农历5月6日-6月5日",
+        "quote": "“岁在大梁，将集天行，元年始受实沈之星也。”",
+        "quote_source": "——《国语·晋语四》",
+        "personality": "代表伸缩自如的柔软性，象征植物的枝条。有韧性，善于随机应变。但有时会缺乏踏实的努力，天赋需要真正的磨练才能转化为才能。",
+        "svg": "实沈.svg",
+    },
+    {
+        "name": "鹑首",
+        "palace": "巨蟹宫",
+        "start": (6, 6),
+        "end": (7, 6),
+        "lunar_range_text": "农历6月6日-7月6日",
+        "quote": "“天文家‘朱鸟’，乃取象於鹑。故南方朱鸟七宿，曰鹑首、鹑火、鹑尾是也。”",
+        "quote_source": "——宋·沈括《梦溪笔谈·象数一》",
+        "personality": "象征着宁静。沉稳温和，总给人很有内涵而且略有神秘感的印象。外冷内热，有包容力和涵养。但有时会过于计较。",
+        "svg": "鹑首.svg",
+    },
+    {
+        "name": "鹑火",
+        "palace": "狮子宫",
+        "start": (7, 7),
+        "end": (8, 7),
+        "lunar_range_text": "农历7月7日-8月7日",
+        "quote": "“岁在鹑火，是以卒灭。”",
+        "quote_source": "——《左传·昭公八年》",
+        "personality": "代表不死鸟的心脏，具有燃烧的生命力。精力充沛，热情四溢，毫不做作。但也是典型的忽冷忽热的性格。",
+        "svg": "鹑火.svg",
+    },
+    {
+        "name": "鹑尾",
+        "palace": "室女宫",
+        "start": (8, 8),
+        "end": (9, 7),
+        "lunar_range_text": "农历8月8日-9月7日",
+        "quote": "“岁在寿星及鹑尾，其有此土乎！”",
+        "quote_source": "——《国语·晋语四》",
+        "personality": "代表着坚实地生长在大地中的根。性格会如同土地中的根一样，坚强而深不可测。外表冷峻，内心温柔，想象力丰富，但有时会不切实际。",
+        "svg": "鹑尾.svg",
+    },
+    {
+        "name": "寿星",
+        "palace": "天秤宫",
+        "start": (9, 8),
+        "end": (10, 7),
+        "lunar_range_text": "农历9月8日-10月7日",
+        "quote": "“东宫则析木之津，寿星之野。”",
+        "quote_source": "——唐·杨炯《浑天赋》",
+        "personality": "福寿双全之命格，表面上慵懒，但一旦有了目标，就会充满热情地开始实干。但这种热情，往往难以持久，而且不喜欢团体活动。",
+        "svg": "寿星.svg",
+    },
+    {
+        "name": "大火",
+        "palace": "天蝎宫",
+        "start": (10, 8),
+        "end": (11, 8),
+        "lunar_range_text": "农历10月8日-11月8日",
+        "quote": "“大火谓之大辰。”",
+        "quote_source": "——《尔雅·释天》",
+        "personality": "代表早晨温暖的阳光。给别人的感觉十分温暖，性格安宁恬静而深得大家喜爱，爱家顾家。但容易优柔寡断。",
+        "svg": "大火.svg",
+    },
+    {
+        "name": "析木",
+        "palace": "射手宫",
+        "start": (11, 9),
+        "end": (12, 6),
+        "lunar_range_text": "农历11月9日-12月6日",
+        "quote": "“日月会於析木兮，重阴凄而增肃。”",
+        "quote_source": "——晋·傅玄《大寒赋》",
+        "personality": "代表着拦截天河的木栅。意志坚强，直面逆境，勤奋上进。但有时一腔热血和不喜欢束缚也意味着固执。",
+        "svg": "析木.svg",
+    },
+]
+
+
+def _lunar_md_to_key(month, day):
+    return int(month) * 100 + int(day)
+
+
+def _star_sign_match(month, day, item):
+    cur = _lunar_md_to_key(month, day)
+    start = _lunar_md_to_key(item["start"][0], item["start"][1])
+    end = _lunar_md_to_key(item["end"][0], item["end"][1])
+    if start <= end:
+        return start <= cur <= end
+    return cur >= start or cur <= end
+
+
+def _extract_lunar_month_day(bazi_profile):
+    if not isinstance(bazi_profile, dict):
+        return None
+
+    lunar_birth_text = str(bazi_profile.get("lunar_birth_text", "")).strip()
+    if lunar_birth_text:
+        # 先尝试直接从已有农历文本提取，避免对运行环境中的 lunar_python 产生硬依赖。
+        m = re.search(r"(\d{1,2})\s*月\s*(\d{1,2})\s*日", lunar_birth_text)
+        if m:
+            return int(m.group(1)), int(m.group(2))
+
+        cn_month_map = {
+            "正": 1,
+            "一": 1,
+            "二": 2,
+            "三": 3,
+            "四": 4,
+            "五": 5,
+            "六": 6,
+            "七": 7,
+            "八": 8,
+            "九": 9,
+            "十": 10,
+            "冬": 11,
+            "十一": 11,
+            "腊": 12,
+            "十二": 12,
+        }
+
+        def _cn_day_to_int(day_text):
+            day_map = {
+                "初一": 1,
+                "初二": 2,
+                "初三": 3,
+                "初四": 4,
+                "初五": 5,
+                "初六": 6,
+                "初七": 7,
+                "初八": 8,
+                "初九": 9,
+                "初十": 10,
+                "十一": 11,
+                "十二": 12,
+                "十三": 13,
+                "十四": 14,
+                "十五": 15,
+                "十六": 16,
+                "十七": 17,
+                "十八": 18,
+                "十九": 19,
+                "二十": 20,
+                "廿一": 21,
+                "廿二": 22,
+                "廿三": 23,
+                "廿四": 24,
+                "廿五": 25,
+                "廿六": 26,
+                "廿七": 27,
+                "廿八": 28,
+                "廿九": 29,
+                "三十": 30,
+            }
+            return day_map.get(day_text)
+
+        cn_match = re.search(r"([正一二三四五六七八九十冬腊]{1,2})月([初十廿一二三四五六七八九]{2})", lunar_birth_text)
+        if cn_match:
+            month_text = cn_match.group(1)
+            day_text = cn_match.group(2)
+            month_val = cn_month_map.get(month_text)
+            day_val = _cn_day_to_int(day_text)
+            if month_val and day_val:
+                return month_val, day_val
+
+    birth_date_text = str(bazi_profile.get("birth_date", "")).strip()
+    birth_hour = bazi_profile.get("birth_hour", 12)
+    if not birth_date_text:
+        return None
+    try:
+        y, m, d = [int(x) for x in birth_date_text.split("-")]
+    except Exception:
+        return None
+
+    try:
+        from lunar_python import Solar  # type: ignore
+
+        solar = Solar.fromYmdHms(y, m, d, int(birth_hour), 0, 0)
+        lunar = solar.getLunar()
+        lunar_month = abs(int(lunar.getMonth()))
+        lunar_day = int(lunar.getDay())
+        return lunar_month, lunar_day
+    except Exception:
+        return None
+
+
+def _build_star_sign_context(bazi_profile):
+    lunar_md = _extract_lunar_month_day(bazi_profile)
+    if not lunar_md:
+        return None
+
+    lunar_month, lunar_day = lunar_md
+    for item in STAR_SIGNS:
+        if not _star_sign_match(lunar_month, lunar_day, item):
+            continue
+        return {
+            "name": item["name"],
+            "palace": item["palace"],
+            "title_line": "【{}】- {}".format(item["name"], item["palace"]),
+            "lunar_range_text": item["lunar_range_text"],
+            "quote": item["quote"],
+            "quote_source": item["quote_source"],
+            "personality": item["personality"],
+            "svg_url": "/media/stars/{}".format(item["svg"]),
+        }
+    return None
+
+
 def _bazi_profile_needs_recompute(profile):
     if not isinstance(profile, dict) or not profile:
         return True
@@ -103,6 +368,22 @@ def _has_duplicate_flow_lines(display_text):
                 counts[pref] += 1
                 break
     return any(v > 1 for v in counts.values())
+
+
+def _looks_like_template_bazi_text(display_text):
+    text = str(display_text or "")
+    if not text.strip():
+        return True
+    bad_markers = [
+        "调候气象：结合",
+        "次第：先命局后岁运",
+        "大忌：单看一柱定全局",
+        "按模板输出",
+        "请逐柱比对",
+        "待推导",
+        "e.g.",
+    ]
+    return any(m in text for m in bad_markers)
 
 
 def _normalize_bazi_lines(raw_text):
@@ -433,6 +714,13 @@ def home_page_ch(request):
             bazi_analysis = refreshed
             request.session["bazi_profile_analysis_json"] = bazi_analysis
 
+    if isinstance(bazi_analysis, dict) and _looks_like_template_bazi_text(bazi_analysis.get("display_text", "")):
+        print("[BaziEvidence] template_like_cached_output_detected=true")
+        refreshed = generate_bazi_analysis(bazi_profile=bazi_profile, user_context=user_context)
+        if isinstance(refreshed, dict) and refreshed.get("display_text"):
+            bazi_analysis = refreshed
+            request.session["bazi_profile_analysis_json"] = bazi_analysis
+
     _log_bazi_analysis_json(bazi_analysis)
 
     bazi_display_text = ""
@@ -445,6 +733,7 @@ def home_page_ch(request):
     bazi_display_html_flow = _format_bazi_display_html("\n".join(bazi_sections.get("flow", [])))
     bazi_display_html_prosperity = _format_bazi_display_html("\n".join(bazi_sections.get("prosperity", [])))
     bazi_display_html_strategy = _format_bazi_display_html("\n".join(bazi_sections.get("strategy", [])))
+    star_sign = _build_star_sign_context(bazi_profile)
     if bazi_display_text:
         print("[BaziOutput] header_preview={}".format(" | ".join([x for x in bazi_display_text.splitlines()[:3] if x])))
 
