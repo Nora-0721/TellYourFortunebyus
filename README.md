@@ -6,6 +6,7 @@
 其中我有写我这次改了什么功能，以及改动了哪些文件和函数。
 
 （1）我主要是改了上传界面 的UI、年龄段输入改成了具体生辰输入、引入了八字排盘功能和十二星次分析、微调了LLM输出给文生图模型的prompt（因为prompt中关于年龄的描述原来是直接取用户选择的年龄段的，现在改成具体生辰输入了，就做成区分自动计算实岁匹配少年青年中年老年了）
+
 （2）具体改动的文件和函数在 对接说明.md 的 ## 4. 我本次功能改动与文件/函数对应清单这里。
 
 
@@ -22,18 +23,22 @@
 
 你可以看一下我的这个分支，<img width="1652" height="1066" alt="image" src="https://github.com/user-attachments/assets/90739bca-185d-4143-9590-9451bb4973b3" />
 每次在本地切到这个分支再去修改，改完传分支云端，然后pullrequest把分支并到main。这是一个标准化的流程，我们的代码要相互merge的前提是我们的分支一定是从共同的最初版本上长出来的，也就是你第一次拉下我的代码的那个版本（你得拉下来关联我的仓库，不是直接下载压缩包然后关联自己的仓库。或者改完才关联。这些常见的Git教程都会说明的，或者自己问一下ai也能懂，我之前没特别提醒你是我以为这种问题应该不会有）
-    如果不太会命令行，解决问题很好的办法就是用github desktop的图形化操作界面查看你在哪个仓库哪个分支。其实不管你用什么方法网上都有教程，都是很基础的所以我不给你写教程了。
-    <img width="997" height="463" alt="image" src="https://github.com/user-attachments/assets/2026f54c-6914-4edd-a6a3-ad4b68b94bb6" />
+
+如果不太会命令行，解决问题很好的办法就是用github desktop的图形化操作界面查看你在哪个仓库哪个分支。其实不管你用什么方法网上都有教程，都是很基础的所以我不给你写教程了。
+<img width="997" height="463" alt="image" src="https://github.com/user-attachments/assets/2026f54c-6914-4edd-a6a3-ad4b68b94bb6" />
 
      
 
 3.然后关于你这个孤儿分支怎么办，这种情况我也没遇到过，我去问了一下cc，
+
 <img width="928" height="944" alt="image" src="https://github.com/user-attachments/assets/cfc5d054-62be-47fe-a064-14d61a0ba092" />
+
 <img width="928" height="549" alt="image" src="https://github.com/user-attachments/assets/6043047f-be75-4a8d-86a2-d08319f3f437" />
 
 我倒是觉得你如果舍得的话（因为之前只改了模型选型、报告格式、手机端格式适配，这些现在全部都要再改的）直接重新拉最新的代码到本地新的位置，（不要和原来的放在一个路径，你拉到新的位置把原项目文件夹的venv等配置文件移动过去就行了，因为老路径位置的文件只要上传过就会被git追踪的。）确认和云端关联没问题，在main上新建分支开发，切到正确的分支，自己改完之后上传云端，然后再合并merge到main。当攒经验买教训了，以后不会出一样的错了就是赚的。
 
 NewBranch在这里也可以。不管是分支管理，拉代码和上传云端代码，还是合并到主分支，甚至是修改文件，这些操作你用命令行、用github desktop图形化操作、直接在github网页端改其实都可以。多变通。
+
 <img width="2302" height="397" alt="image" src="https://github.com/user-attachments/assets/660587f9-9e62-4b3d-9d6d-7742d830d76a" />
 
 
