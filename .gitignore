@@ -18,3 +18,6 @@ requirements.txt.bak2
 
 # 模型文件
 stygan/ffhq.pkl
+
+# 数据库文件
+db.sqlite3
