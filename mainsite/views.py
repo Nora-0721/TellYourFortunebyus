@@ -521,8 +521,17 @@ def loginMy(request):
         if user is not None:
             # 登录用户，保存登录状态
             login(request,user)
-            # 重定向到协议页面
-            return HttpResponseRedirect('/xieyi/')
+            # 设置缓存 flag，允许访问 /phone_ch/ 和 /ch/ 等页面
+            cache.set("flag", "true", 600)
+            # 检测是否为移动设备
+            ua = request.META.get('HTTP_USER_AGENT', '').lower()
+            is_mobile = any(mobile in ua for mobile in ['android', 'iphone', 'ipad', 'blackberry'])
+            if is_mobile:
+                # 移动设备跳转到手机版协议页面
+                return HttpResponseRedirect('/phone_xieyi/')
+            else:
+                # 桌面设备跳转到桌面版协议页面
+                return HttpResponseRedirect('/xieyi/')
         else:
             # 登录失败，返回错误信息
             return render(request, 'login.html', {'error': '用户名或密码错误'})
@@ -551,14 +560,19 @@ def login_bak(request):
                 return HttpResponse("not allowed!!!!")
 
 
+
 def home_page_ch(request):
     print("home_page_ch接口被调用 (上传分析入口)")
+    print("[home_page_ch] request.path =", request.path)
     if not request.user.is_authenticated:
+        print("[home_page_ch] 用户未登录，重定向到login")
         return HttpResponseRedirect('/login/')
     try:
         # 读取最近一次上传的数据（性别、图片）
         post = PostNew.objects.latest('pub_date')
+        print("[home_page_ch] 找到最新post: ID=%s, sex=%s, cover=%s" % (post.id, post.sex, post.cover.url))
     except Exception as e:  # 修正拼写错误
+        print("[home_page_ch] 获取post失败:", str(e))
         raise Http404("数据为空:" + str(e))
 
     template = get_template('showpage.html')
@@ -572,9 +586,18 @@ def home_page_ch(request):
         image_path = ""
 
     try:
+        print("[home_page_ch] 开始分析图片: .%s, sex=%s" % (post.cover.url, post.sex))
+        import sys
+        sys.stdout.flush()
         output = cal_rate('.' + post.cover.url, int(post.sex))
+        print("[home_page_ch] cal_rate 返回: output=%s" % ('None' if output is None else 'len=%d' % len(output)))
+        sys.stdout.flush()
+        if output:
+            print("[home_page_ch] output[9]=color=%s, output[10]=address=%s" % (output[9], output[10]))
     except Exception as e:
-        print("home_page_ch: cal_rate 失败，降级展示。错误={}".format(e))
+        print("[home_page_ch] cal_rate 失败，降级展示。错误=%s" % e)
+        import traceback
+        traceback.print_exc()
         output = None
 
     if output is not None:
@@ -597,26 +620,172 @@ def home_page_ch(request):
         wehnhedu2 = str(output[14]) + "%"
         face_x = output[15]
         face_y = output[16]
-        avatarUrl = post.cover.url[:-4] + "_400" + post.cover.url[-4:]
-        generate_report(
-            backgroundUrl="./static/picture/report.png",
-            avatarUrl='.' + avatarUrl,
-            qrcodeUrl="./static/picture/qrcode.png",
-            couple_1_Url="." + image1_url,
-            couple_2_Url="." + image2_url,
-            astr_lucky_color=color,
-            astr_lucky_location=address,
-            astr_doing=job_message,
-            astr_eye=eye_block_str,
-            astr_nose=nose_block_str,
-            astr_mouth=lip_block_str,
-            astr_all=person_str,
-            match_rate_1=str(output[13]) + "%",
-            match_rate_2=str(output[14]) + "%",
-            x=face_x,
-            y=face_y,
-        )
+        true_love_str = output[19] if len(output) > 19 else "正缘预测功能暂时不可用"
+        # 使用原始图片URL，不再尝试使用不存在的_400压缩版本
+        avatarUrl = post.cover.url
+        print("[home_page_ch] 分析成功: color=%s, address=%s, job=%s" % (color, address, job_message))
+
+
+        # 修正性别反逻辑
+        sex_label = "男" if str(post.sex) == "1" else ("女" if str(post.sex) == "2" else "未知")
+        if str(post.sex) == "1":
+            expected_partner_sex = "女"
+        elif str(post.sex) == "2":
+            expected_partner_sex = "男"
+        else:
+            expected_partner_sex = "未知"
+        bazi_birth_date = request.session.get("bazi_birth_date", "")
+        bazi_birth_hour = request.session.get("bazi_birth_hour", "")
+        age_group = request.session.get("age_group", "")
+
+        bazi_profile = request.session.get("bazi_profile_json", {})
+        if not isinstance(bazi_profile, dict):
+            bazi_profile = {}
+
+        profile_needs_recompute = _bazi_profile_needs_recompute(bazi_profile)
+        if bazi_birth_date and profile_needs_recompute:
+            bazi_profile = build_bazi_profile(
+                birth_date_text=bazi_birth_date,
+                birth_hour_value=bazi_birth_hour,
+                gender=sex_label,
+            )
+            if bazi_profile:
+                request.session["bazi_profile_json"] = bazi_profile
+                request.session.pop("bazi_profile_analysis_json", None)
+                print("[BaziEvidence] session_profile_recomputed=true")
+
+        _log_bazi_profile_json(bazi_profile)
+
+        if isinstance(bazi_profile, dict) and bazi_profile.get("age_range"):
+            age_group = bazi_profile.get("age_range", age_group)
+
+        user_context = {
+            "user_sex": sex_label,
+            "expected_partner_sex": expected_partner_sex,
+            "user_age_group": age_group,
+            "user_age": bazi_profile.get("age") if isinstance(bazi_profile, dict) else None,
+            "user_age_stage": bazi_profile.get("age_stage") if isinstance(bazi_profile, dict) else "",
+            "user_eye_insight": eye_block_str,
+            "user_nose_insight": nose_block_str,
+            "user_lip_insight": lip_block_str,
+            "user_personality_summary": person_str,
+            "note": "基于本人分析动态生成三候选正缘画像prompt",
+        }
+
+        # 处理正缘 profile 和生图（先于报告生成）
+        ideal_partner = request.session.get("ideal_partner_profile_json", {})
+        stale_ideal_age_prompt = False
+        if isinstance(ideal_partner, dict) and ideal_partner:
+            cached_prompts = ideal_partner.get("visual_prompts", [])
+            if not isinstance(cached_prompts, list):
+                cached_prompts = []
+            legacy_prompt = ideal_partner.get("visual_prompt", "")
+            merged_prompt_text = " ".join([str(x) for x in cached_prompts if x]) + " " + str(legacy_prompt or "")
+            if re.search(r"\d+\s*[-~到]\s*\d+\s*岁|\d+岁|18-25|26-35|36-45|45\+", merged_prompt_text):
+                stale_ideal_age_prompt = True
+
+        if stale_ideal_age_prompt:
+            print("[IdealPromptEvidence] stale_age_prompt_detected=true")
+            request.session.pop("ideal_partner_profile_json", None)
+            request.session.pop("ideal_visual_prompt", None)
+            request.session.pop("ideal_visual_prompts", None)
+            request.session.pop("ideal_partner_image_data_url", None)
+            request.session.pop("ideal_partner_image_data_urls", None)
+            ideal_partner = {}
+
+        if not isinstance(ideal_partner, dict) or not ideal_partner:
+            random_pack = request.session.get("ideal_prompt_random_pack", {})
+            ideal_partner = generate_ideal_partner_profile(user_context, random_pack=random_pack)
+            if ideal_partner:
+                request.session["ideal_partner_profile_json"] = ideal_partner
+                if isinstance(ideal_partner.get("random_pack"), dict):
+                    request.session["ideal_prompt_random_pack"] = ideal_partner.get("random_pack")
+
+        ideal_partner_image_data_urls = request.session.get("ideal_partner_image_data_urls", [])
+        if not isinstance(ideal_partner_image_data_urls, list):
+            ideal_partner_image_data_urls = []
+        if not ideal_partner_image_data_urls:
+            legacy_data_url = request.session.get("ideal_partner_image_data_url", "")
+            if legacy_data_url:
+                ideal_partner_image_data_urls = [legacy_data_url]
+
+        ideal_display_text = ""
+        ideal_visual_prompts = []
+        ideal_visual_prompt = ""
+        if ideal_partner:
+            ideal_display_text = ideal_partner.get("display_text", "")
+            ideal_visual_prompts = ideal_partner.get("visual_prompts", [])
+            if not isinstance(ideal_visual_prompts, list):
+                ideal_visual_prompts = []
+            if not ideal_visual_prompts:
+                fallback_prompt = ideal_partner.get("visual_prompt", "")
+                if fallback_prompt:
+                    ideal_visual_prompts = [fallback_prompt]
+
+            ideal_visual_prompt = ideal_visual_prompts[0] if ideal_visual_prompts else ""
+            request.session["ideal_visual_prompts"] = ideal_visual_prompts
+            request.session["ideal_visual_prompt"] = ideal_visual_prompt
+
+            print("================ 理想伴侣 / 正缘 LLM 输出 ================")
+            print("[display_text]\n{}".format(ideal_display_text))
+            print("\n[visual_prompts]")
+            for idx, p in enumerate(ideal_visual_prompts[:3]):
+                print(f"Prompt {idx+1}: {p}")
+            print("\n[full_json]\n{}".format(json.dumps(ideal_partner, ensure_ascii=False, indent=2)))
+            print("================  理想伴侣 / 正缘 输出结束  ================")
+
+        # 先生成正缘图片用于报告
+        report_couple_1_Url = "." + image1_url
+        report_couple_2_Url = "." + image2_url
+        if ideal_visual_prompts and len(ideal_partner_image_data_urls) < 2:
+            for idx, prompt in enumerate(ideal_visual_prompts[:3]):
+                if len(ideal_partner_image_data_urls) >= 2:
+                    break
+                print(f"[正缘生图] 开始生成第{idx+1}个候选，Prompt: {prompt}")
+                ideal_image_result = generate_ideal_partner_image(prompt=prompt, resolution="1024:1024")
+                data_url = ideal_image_result.get("data_url", "")
+                if data_url:
+                    ideal_partner_image_data_urls.append(data_url)
+                    print(f"[正缘生图] 第{idx+1}个候选生成成功")
+            if ideal_partner_image_data_urls:
+                request.session["ideal_partner_image_data_urls"] = ideal_partner_image_data_urls
+                request.session["ideal_partner_image_data_url"] = ideal_partner_image_data_urls[0]
+
+        if len(ideal_partner_image_data_urls) >= 2:
+            report_couple_1_Url = ideal_partner_image_data_urls[0]
+            report_couple_2_Url = ideal_partner_image_data_urls[1]
+            print("[home_page_ch] 报告使用豆包生成的图片作为对象像谁")
+
+        ideal_partner_image_data_url = ideal_partner_image_data_urls[0] if ideal_partner_image_data_urls else ""
+        ideal_partner_image_tip = "正在生成正缘长相，请稍候。" if not ideal_partner_image_data_urls else "正缘候选画像已生成（{}/3）。".format(len(ideal_partner_image_data_urls))
+
+        try:
+            generate_report(
+                backgroundUrl="./static/picture/report.png",
+                avatarUrl='.' + avatarUrl,
+                qrcodeUrl="./static/picture/qrcode.png",
+                couple_1_Url=report_couple_1_Url,
+                couple_2_Url=report_couple_2_Url,
+                astr_lucky_color=color,
+                astr_lucky_location=address,
+                astr_doing=job_message,
+                astr_eye=eye_block_str,
+                astr_nose=nose_block_str,
+                astr_mouth=lip_block_str,
+                astr_all=person_str,
+                astr_true_love=ideal_display_text if ideal_display_text else true_love_str,
+                astr_couple="",
+                match_rate_1=str(output[13]) + "%",
+                match_rate_2=str(output[14]) + "%",
+                x=face_x,
+                y=face_y,
+            )
+        except Exception as gen_err:
+            print("[home_page_ch] generate_report 失败: %s" % gen_err)
+            import traceback
+            traceback.print_exc()
     else:
+        print("[home_page_ch] output为None，使用空变量")
         avatarUrl = post.cover.url
         eye_path = ""
         eye_block_str = ""
@@ -950,6 +1119,8 @@ def home_page_ch_bak(request):
                                 astr_nose=nose_block_str,
                                 astr_mouth=lip_block_str,
                                 astr_all=person_str,
+                                astr_true_love=true_love_str if 'true_love_str' in dir() else "",
+                                astr_couple="",
                                 match_rate_1=str(output[13]) + "%",
                                 match_rate_2=str(output[14]) + "%",
                                 x=face_x,
@@ -1043,6 +1214,8 @@ def home_phone_page(request):
                                 astr_nose=nose_block_str,
                                 astr_mouth=lip_block_str,
                                 astr_all=person_str,
+                                astr_true_love=true_love_str if 'true_love_str' in dir() else "",
+                                astr_couple="",
                                 match_rate_1=str(output[13]) + "%",
                                 match_rate_2=str(output[14]) + "%",
                                 x=face_x,

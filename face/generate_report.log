@@ -1,0 +1,448 @@
+
+============================================================
+[2026-04-16 21:24:09.581051] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=3616
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x5416
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 21:24:10.163636] out.png saved successfully
+  File size: 2090295 bytes
+
+============================================================
+[2026-04-16 21:25:47.106695] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905_wC17gXZ.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=3616
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x5416
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 21:25:47.676750] out.png saved successfully
+  File size: 2090295 bytes
+
+============================================================
+[2026-04-16 21:32:15.404327] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905_IOZdx2B.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=4194
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x5994
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 21:32:16.027932] out.png saved successfully
+  File size: 2311499 bytes
+
+============================================================
+[2026-04-16 21:44:39.513754] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905_IOZdx2B.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=4141
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x5941
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 21:44:45.037503] out.png saved successfully
+  File size: 2411039 bytes
+
+============================================================
+[2026-04-16 21:58:06.845031] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905_IOZdx2B.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=4393
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x6193
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 21:58:07.852790] out.png saved successfully
+  File size: 2449669 bytes
+
+============================================================
+[2026-04-16 22:08:08.801347] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905_IOZdx2B.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=4848
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x6648
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 22:08:10.610152] out.png saved successfully
+  File size: 2647354 bytes
+
+============================================================
+[2026-04-16 22:20:02.023699] generate_report called
+  avatarUrl: ./media/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2025-01-17_163905_IOZdx2B.png
+  x=229, y=146
+[LOG] Step 1: before test_image_height
+[LOG] test_image_height called
+[LOG] test_image_height: loading avatar
+[LOG] test_image_height: avatar loaded
+[LOG] test_image_height: loading qrcode
+[LOG] test_image_height: qrcode loaded
+[LOG] test_image_height: calling drawCircleAvatar
+[LOG] test_image_height: drawCircleAvatar done
+[LOG] test_image_height: drawing title
+[LOG] test_image_height: title drawn
+[LOG] test_image_height: pasting qrcode
+[LOG] test_image_height: qrcode pasted
+[LOG] test_image_height: drawing text fields
+[LOG] test_image_height: lucky_color done
+[LOG] test_image_height: lucky_location done
+[LOG] test_image_height: job done
+[LOG] test_image_height: eye done
+[LOG] test_image_height: nose done
+[LOG] test_image_height: mouth done
+[LOG] test_image_height: all done
+[LOG] test_image_height: true_love done
+[LOG] test_image_height: drawing couple
+[LOG] test_image_height: couple done, returning
+[LOG] Step 2: after test_image_height, max_height=4760
+[LOG] Step 3: loading background image
+[LOG] Step 3.1: opening background
+[LOG] Step 3.2: resizing background to 1572x6560
+[LOG] Step 3.3: background loaded and resized
+[LOG] Step 4: processing avatar
+[LOG] Step 4.1: opening avatar
+[LOG] Step 4.2: cropping avatar
+[LOG] Step 4.3: avatar cropped successfully
+[LOG] Step 5: loading qrcode
+[LOG] Step 5.1: qrcode loaded
+[LOG] Step 6: calling drawCircleAvatar
+[LOG] Step 6.1: drawCircleAvatar done
+[LOG] Step 7: loading font and drawing title
+[LOG] Step 7.1: title drawn
+[LOG] Step 8: pasting qrcode
+[LOG] Step 8.1: qrcode pasted
+[LOG] Step 9: drawing text fields
+[LOG] Step 9.1: lucky_color drawn
+[LOG] Step 9.2: lucky_location drawn
+[LOG] Step 9.3: job drawn
+[LOG] Step 9.4: eye drawn
+[LOG] Step 9.5: nose drawn
+[LOG] Step 9.6: mouth drawn
+[LOG] Step 9.7: all drawn
+[LOG] Step 9.7b: true_love drawn
+[LOG] Step 9.8: drawing couple
+[LOG] Step 9.9: couple drawn
+[LOG] Step 10: loading couple images
+[LOG] Step 10.1: couple_1 pasted
+[LOG] Step 10.2: couple_2 pasted
+[LOG] Step 11: drawing match rates
+[LOG] Step 11.1: match rates drawn
+[LOG] Step 12: saving out.png
+[2026-04-16 22:20:03.845726] out.png saved successfully
+  File size: 2611698 bytes

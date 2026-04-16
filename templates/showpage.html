@@ -313,21 +313,9 @@
 								正缘分析生成中，如暂未出现请稍后刷新重试。
 							{% endif %}
 						</div>
-						<div id="partner_prompt" class="text" style="margin-left:0;padding-left:0;font-size:0.7rem;color:#666;">
-							{% if ideal_visual_prompts %}
-								<div>生成人像提示词：</div>
-								<ol style="margin:0 0 0 1.2em;padding:0;">
-								{% for p in ideal_visual_prompts %}
-									<li>{{ p }}</li>
-								{% endfor %}
-								</ol>
-							{% elif ideal_visual_prompt %}
-								（生成人像提示词：{{ ideal_visual_prompt }}）
-							{% endif %}
-						</div>
 					</div>
-			</div>
-			<div class="banner-head">
+				</div>
+				<div class="banner-head">
 				<div id="hunpei"class="title">&hearts;您的正缘预期长相</div>
 				<div class="block_qizi" >
 					<div id="partner_face_list">

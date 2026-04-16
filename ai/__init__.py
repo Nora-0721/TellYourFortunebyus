@@ -532,17 +532,16 @@ def generate_ideal_partner_profile(user_context, api_key=None, model="qwen-plus"
     return {}
 
 
-def generate_ideal_partner_image(prompt, resolution="1024:1024"):
-    """调用腾讯混元文生图轻量版，生成一张正缘画像（base64）。
+def generate_ideal_partner_image(prompt, resolution="2K"):
+    """调用豆包 Doubao-Seedream-5.0-lite 文生图，生成一张正缘画像。
 
     环境变量：
-        - USE_HUNYUAN_IMAGE=1 时才会调用线上接口；
-        - TENCENTCLOUD_SECRET_ID / TENCENTCLOUD_SECRET_KEY 为鉴权密钥。
+        - USE_HUNYUAN_IMAGE=1 时才会调用线上接口（保持开关名兼容）；
+        - ARK_API_KEY 为豆包鉴权密钥。
 
     返回：
         {
-            "img_base64": str,
-            "data_url": str,
+            "img_url": str,
             "request_id": str
         }
         出错时返回 {}，不阻断主流程。
@@ -556,86 +555,53 @@ def generate_ideal_partner_image(prompt, resolution="1024:1024"):
         print("generate_ideal_partner_image: 未启用 USE_HUNYUAN_IMAGE，跳过生成。")
         return {}
 
-    secret_id = os.getenv("TENCENTCLOUD_SECRET_ID")
-    secret_key = os.getenv("TENCENTCLOUD_SECRET_KEY")
-    if not secret_id or not secret_key:
-        print("generate_ideal_partner_image: 未配置腾讯云密钥，跳过生成。")
+    ark_api_key = os.getenv("ARK_API_KEY")
+    if not ark_api_key:
+        print("generate_ideal_partner_image: 未配置 ARK_API_KEY，跳过生成。")
         return {}
 
     try:
-        # 延迟导入，避免未安装 SDK 时影响其他功能。
-        from tencentcloud.common import credential
-        from tencentcloud.common.profile.client_profile import ClientProfile
-        from tencentcloud.common.profile.http_profile import HttpProfile
-        from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
-        from tencentcloud.aiart.v20221229 import aiart_client, models
+        from volcenginesdkarkruntime import Ark
     except Exception as e:
-        print("generate_ideal_partner_image: 腾讯云 SDK 不可用：{}".format(e))
-        print("请先安装依赖：pip install tencentcloud-sdk-python")
+        print("generate_ideal_partner_image: 豆包 Ark SDK 不可用：{}".format(e))
+        print("请先安装依赖：pip install volcengine-python-sdk")
         return {}
 
-    payload = {
-        "Prompt": prompt,
-        "Resolution": resolution,
-        "RspImgType": "base64",
-    }
-    print("generate_ideal_partner_image: 请求参数={}".format(
-        json.dumps(payload, ensure_ascii=False)
-    ))
+    print("generate_ideal_partner_image: 请求参数 prompt={}".format(prompt))
 
     try:
-        # 与腾讯云官方 Python 示例一致：密钥走环境变量，endpoint 使用 aiart。
-        cred = credential.Credential(secret_id, secret_key)
-        http_profile = HttpProfile()
-        http_profile.endpoint = "aiart.tencentcloudapi.com"
-        client_profile = ClientProfile()
-        client_profile.httpProfile = http_profile
-        region = os.getenv("TENCENTCLOUD_REGION", "ap-guangzhou")
-        client = aiart_client.AiartClient(cred, region, client_profile)
+        client = Ark(
+            base_url="https://ark.cn-beijing.volces.com/api/v3",
+            api_key=ark_api_key,
+        )
 
-        req = models.TextToImageLiteRequest()
-        req.from_json_string(json.dumps(payload, ensure_ascii=False))
-        resp = client.TextToImageLite(req)
-        resp_json = json.loads(resp.to_json_string())
-        print("generate_ideal_partner_image: 完整返回体={}".format(
-            json.dumps(resp_json, ensure_ascii=False)
-        ))
-        response_obj = resp_json.get("Response", {})
-        print("generate_ideal_partner_image: 运行模块文件={}".format(__file__))
-        print("generate_ideal_partner_image: Response键={}".format(list(response_obj.keys()) if isinstance(response_obj, dict) else type(response_obj)))
-        img_base64 = response_obj.get("ResultImage", "") if isinstance(response_obj, dict) else ""
-        if not img_base64 and isinstance(response_obj, dict):
-            # 兼容少量历史回包结构
-            img_base64 = response_obj.get("Data", {}).get("ResultImage", "")
-        if not img_base64:
-            # SDK 对象属性兜底，避免 to_json_string 结构变化导致取不到。
-            img_base64 = getattr(resp, "ResultImage", "")
+        imagesResponse = client.images.generate(
+            model="doubao-seedream-5-0-260128",
+            prompt=prompt,
+            size="2K",
+            output_format="png",
+            response_format="url",
+            watermark=False,
+            timeout=60,
+        )
 
-        request_id = response_obj.get("RequestId", "") if isinstance(response_obj, dict) else ""
-        if not request_id:
-            request_id = getattr(resp, "RequestId", "")
+        img_url = imagesResponse.data[0].url if imagesResponse.data else ""
+        request_id = getattr(imagesResponse, "id", "")
 
-        if not img_base64:
-            print("generate_ideal_partner_image: 返回中无 ResultImage。")
-            print("generate_ideal_partner_image: RequestId={}".format(request_id))
-            if response_obj.get("Error"):
-                print("generate_ideal_partner_image: Error={}".format(
-                    json.dumps(response_obj.get("Error"), ensure_ascii=False)
-                ))
+        if not img_url:
+            print("generate_ideal_partner_image: 返回中无图片 URL。")
             return {}
 
-        data_url = img_base64 if str(img_base64).startswith("data:image/") else "data:image/png;base64,{}".format(img_base64)
         return {
-            "img_base64": img_base64,
-            "data_url": data_url,
+            "img_url": img_url,
+            "data_url": img_url,
             "request_id": request_id,
         }
-    except TencentCloudSDKException as e:
-        print("generate_ideal_partner_image: 腾讯云 SDK 异常：{}".format(e))
-        return {}
     except Exception as e:
-        print("generate_ideal_partner_image: 调用混元失败：{}".format(e))
+        print("generate_ideal_partner_image: 豆包 API 调用失败：{}".format(e))
         return {}
+
+    return {}
 
 
 def _build_local_bazi_text(bazi_profile):

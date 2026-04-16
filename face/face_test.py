@@ -1,5 +1,12 @@
 import json
 import os
+import sys
+
+# Windows下修复DeepFace的Unicode编码问题
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 import numpy as np
 import cv2
@@ -19,7 +26,7 @@ import time
 
 from ai import DashScopeChat
 from mainsite.models import FaceFeature, SeedToFace
-from stygan import StyleGANImageGenerator
+# from stygan import StyleGANImageGenerator
 
 
 # from django.conf import settings
@@ -364,6 +371,11 @@ def cal_rate(file_name,sex):
             output_list.append(face_y)
             output_list.append(imageUrl1)# 17
             output_list.append(imageUrl2)
+            
+            # 生成正缘预测文本（索引 18）
+            true_love_str = generate_true_love_prediction(eye_block_str, nose_block_st, lip_block_str, person_str, sex)
+            output_list.append(true_love_str)
+            
             landmarks_list = json.loads(landmarks_json)#将json数据还原
     else:
         # 打印未能正确检测到单一人脸的数量，避免字符串与整数拼接错误
@@ -510,15 +522,22 @@ def judge_MBTI(EI,SN,TF,JP,lip_width_rate,nose_rate,filename):
         except Exception as copy_err:
             print("copy for DeepFace failed:", copy_err)
 
-    attribute = DeepFace.analyze(
-        img_path=safe_filename,
-        actions=['age', 'gender', 'race', 'emotion']
-    )
-    if attribute!=None:
-        chat = DashScopeChat()
-        res = chat.ask("已知人脸属性如下" + str(attribute) + "，请你给出算命结果")
-        if res!=None:
-            person_str=res
+    # DeepFace分析 - 添加完善的异常处理
+    try:
+        attribute = DeepFace.analyze(
+            img_path=safe_filename,
+            actions=['age', 'gender', 'race', 'emotion'],
+            enforce_detection=False,  # 放宽人脸检测要求
+            silent=True  # 静默模式，减少日志输出
+        )
+        if attribute is not None and len(attribute) > 0:
+            chat = DashScopeChat()
+            res = chat.ask("已知人脸属性如下" + str(attribute) + "，请你给出算命结果")
+            if res is not None:
+                person_str = res
+    except Exception as deepface_err:
+        print(f"DeepFace分析失败（降级使用MBTI文案）: {str(deepface_err)[:200]}")
+        # 降级：继续使用MBTI的person_str，不影响整体流程
     return person_str,job_message
 
 
@@ -781,7 +800,55 @@ def get_randomBA(seed):
         str_yuju = "等到一切都看透，希望你陪我看细水常流！"
 
     return index+45,str_yuju
-	
+
+
+def generate_true_love_prediction(eye_block_str, nose_block_str, lip_block_str, person_str, sex, attribute=None):
+    """基于面相分析结果动态生成正缘预测文本
+
+    Args:
+        eye_block_str: 眼睛分析结果
+        nose_block_str: 鼻子分析结果
+        lip_block_str: 嘴唇分析结果
+        person_str: 综合评价
+        sex: 用户性别（用于调整正缘对象描述）
+        attribute: DeepFace 分析属性（可选）
+
+    Returns:
+        str: 完整的正缘预测文本，如API失败则返回提示信息
+    """
+    from ai import USE_DASHSCOPE
+
+    if not USE_DASHSCOPE:
+        return "正缘预测功能暂时不可用"
+
+    try:
+        chat = DashScopeChat()
+        # 构建个性化提示词，强调需要生成两段内容
+        prompt = f"""你是专业的面相学大师。根据以下面相分析结果，请为此人预测其正缘伴侣的特征。
+
+面相分析：
+- 眼睛特征：{eye_block_str}
+- 鼻子特征：{nose_block_str}
+- 嘴唇特征：{lip_block_str}
+- 综合评价：{person_str}
+- 性别：{"男" if str(sex) == "1" else "女"}
+
+请生成约200-300字的正缘预测，包含两部分内容：
+1. 基于面相的正缘特质分析（说明此人会吸引什么样的伴侣）
+2. 正缘对象的详细描述（年龄范围、职业倾向、性格特点、相处模式等）
+
+要求：语言优美流畅，符合传统面相学理论，给出积极正面的预测。"""
+
+        res = chat.ask(prompt)
+        if res:
+            return res
+        else:
+            return "正缘预测功能暂时不可用"
+    except Exception as e:
+        print(f"正缘预测生成失败: {e}")
+        return "正缘预测功能暂时不可用"
+
+
 if __name__ == '__main__':
     # get_index_new("1.jpg")
     create_jobbox()
