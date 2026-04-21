@@ -234,7 +234,9 @@ def insert_word_recommand(title_astr, astr, width, image, font, current_h, pad):
     bbox = draw.textbbox((0, 0), title_astr+astr, font=font)
     w = bbox[2] - bbox[0]
     h = bbox[3] - bbox[1]
-    draw.text((30*4, current_h), title_astr+astr, font=font,fill=(0, 0, 0))
+    # 标题使用深蓝色，内容使用深灰色
+    draw.text((30*4, current_h), title_astr, font=font, fill=(30, 64, 175))
+    draw.text((30*4 + draw.textbbox((0, 0), title_astr, font=font)[2], current_h), astr, font=font, fill=(50, 50, 50))
     current_h += h + pad  
         
     return image, current_h # 返回图片和当前高度
@@ -253,14 +255,16 @@ def insert_word(title_astr, astr, width, image, font, current_h, pad):
     bbox = draw.textbbox((0, 0), title_astr, font=font1)
     w = bbox[2] - bbox[0]
     h = bbox[3] - bbox[1]
-    draw.text((30*4, current_h), title_astr, font=font1,fill=(0, 0, 0))
+    # 标题使用深蓝色
+    draw.text((30*4, current_h), title_astr, font=font1, fill=(30, 64, 175))
     current_h += h + pad  
     para = textwrap.wrap(astr, width)
     for line in para: 
         bbox = draw.textbbox((0, 0), line, font=font)
         w = bbox[2] - bbox[0]
         h = bbox[3] - bbox[1]
-        draw.text((50*4, current_h), line, font=font,fill=(0, 0, 0)) 
+        # 内容使用深灰色
+        draw.text((50*4, current_h), line, font=font, fill=(50, 50, 50)) 
         current_h += h + pad 
         
     return image, current_h # 返回图片和当前高度
@@ -444,6 +448,13 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
         lf.write(f"[LOG] Step 9: drawing text fields\n")
     font_path = _get_font_path('simhei.ttf')
     font = ImageFont.truetype(font_path, 12*4) 
+    
+    # 绘制分隔线函数
+    def draw_divider(img, x, y, width, height=2, color=(200, 200, 200)):
+        draw = ImageDraw.Draw(img)
+        draw.rectangle([x, y, x + width, y + height], fill=color)
+    
+    # 基本信息部分
     back_img, cureent_h = insert_word_recommand(title_lucky_color,astr_lucky_color, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.1: lucky_color drawn\n")
@@ -453,7 +464,12 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
     back_img, cureent_h = insert_word_recommand(title_doing,astr_doing, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.3: job drawn\n")
+    
+    # 添加分隔线
+    draw_divider(back_img, 30*4, cureent_h, MAX_W - 60*4)
     cureent_h += 20*4
+    
+    # 五官分析部分
     back_img, cureent_h = insert_word(title_astr_eye,astr_eye, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.4: eye drawn\n")
@@ -465,21 +481,39 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
     back_img, cureent_h = insert_word(title_astr_mouth,astr_mouth, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.6: mouth drawn\n")
-    cureent_h += 10*4
+    
+    # 添加分隔线
+    draw_divider(back_img, 30*4, cureent_h, MAX_W - 60*4)
+    cureent_h += 20*4
+    
+    # 八字分析部分
     back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad)
     cureent_h += 10*4
     back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad)
     cureent_h += 10*4
     back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad)
-    cureent_h += 10*4
+    
+    # 添加分隔线
+    draw_divider(back_img, 30*4, cureent_h, MAX_W - 60*4)
+    cureent_h += 20*4
+    
+    # 综合评价部分
     back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.7: all drawn\n")
-    cureent_h += 10*4
+    
+    # 添加分隔线
+    draw_divider(back_img, 30*4, cureent_h, MAX_W - 60*4)
+    cureent_h += 20*4
+    
+    # 正缘预测部分
     back_img, cureent_h = insert_word(title_true_love, astr_true_love, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.7b: true_love drawn\n")
-    cureent_h += 10*4
+    
+    # 添加分隔线
+    draw_divider(back_img, 30*4, cureent_h, MAX_W - 60*4)
+    cureent_h += 20*4
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.8: drawing couple\n")
     font_path_couple = _get_font_path('simhei.ttf')
