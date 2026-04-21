@@ -386,10 +386,18 @@ def _looks_like_template_bazi_text(display_text):
     return any(m in text for m in bad_markers)
 
 
+def _remove_html_tags(text):
+    """去除文本中的HTML标签"""
+    import re
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
 def _normalize_bazi_lines(raw_text):
     text = str(raw_text or "").replace("\\r\\n", "\n").replace("\\n", "\n").strip()
     if not text:
         return []
+    # 去除HTML标签
+    text = _remove_html_tags(text)
     return [ln.strip() for ln in text.splitlines() if ln.strip()]
 
 
@@ -672,6 +680,38 @@ def home_page_ch(request):
             "note": "基于本人分析动态生成三候选正缘画像prompt",
         }
 
+        # 生成八字分析
+        bazi_analysis = request.session.get("bazi_profile_analysis_json", {})
+        if not isinstance(bazi_analysis, dict):
+            bazi_analysis = {}
+
+        # 简单判断八字分析是否需要重新计算
+        bazi_analysis_needs_recompute = not bazi_analysis or not bazi_analysis.get("display_text")
+        if bazi_profile and bazi_analysis_needs_recompute:
+            print("[BaziEvidence] bazi_analysis_needs_recompute=true")
+            refreshed = generate_bazi_analysis(bazi_profile=bazi_profile, user_context=user_context)
+            if isinstance(refreshed, dict) and refreshed.get("display_text"):
+                bazi_analysis = refreshed
+                request.session["bazi_profile_analysis_json"] = bazi_analysis
+
+        bazi_display_text = ""
+        bazi_display_html_flow = ""
+        bazi_display_html_prosperity = ""
+        bazi_display_html_strategy = ""
+        bazi_text_flow = ""
+        bazi_text_prosperity = ""
+        bazi_text_strategy = ""
+        if isinstance(bazi_analysis, dict):
+            bazi_display_text = bazi_analysis.get("display_text", "")
+        bazi_sections = _split_bazi_sections(bazi_display_text)
+        bazi_display_html_flow = _format_bazi_display_html("\n".join(bazi_sections.get("flow", [])))
+        bazi_display_html_prosperity = _format_bazi_display_html("\n".join(bazi_sections.get("prosperity", [])))
+        bazi_display_html_strategy = _format_bazi_display_html("\n".join(bazi_sections.get("strategy", [])))
+        # 生成纯文本版本用于报告图片
+        bazi_text_flow = "\n".join(bazi_sections.get("flow", []))
+        bazi_text_prosperity = "\n".join(bazi_sections.get("prosperity", []))
+        bazi_text_strategy = "\n".join(bazi_sections.get("strategy", []))
+
         # 处理正缘 profile 和生图（先于报告生成）
         ideal_partner = request.session.get("ideal_partner_profile_json", {})
         stale_ideal_age_prompt = False
@@ -775,6 +815,9 @@ def home_page_ch(request):
                 astr_all=person_str,
                 astr_true_love=ideal_display_text if ideal_display_text else true_love_str,
                 astr_couple="",
+                astr_bazi_flow=bazi_text_flow if 'bazi_text_flow' in dir() else "",
+                astr_bazi_prosperity=bazi_text_prosperity if 'bazi_text_prosperity' in dir() else "",
+                astr_bazi_strategy=bazi_text_strategy if 'bazi_text_strategy' in dir() else "",
                 match_rate_1=str(output[13]) + "%",
                 match_rate_2=str(output[14]) + "%",
                 x=face_x,
@@ -896,12 +939,19 @@ def home_page_ch(request):
     bazi_display_html_flow = ""
     bazi_display_html_prosperity = ""
     bazi_display_html_strategy = ""
+    bazi_text_flow = ""
+    bazi_text_prosperity = ""
+    bazi_text_strategy = ""
     if isinstance(bazi_analysis, dict):
         bazi_display_text = bazi_analysis.get("display_text", "")
     bazi_sections = _split_bazi_sections(bazi_display_text)
     bazi_display_html_flow = _format_bazi_display_html("\n".join(bazi_sections.get("flow", [])))
     bazi_display_html_prosperity = _format_bazi_display_html("\n".join(bazi_sections.get("prosperity", [])))
     bazi_display_html_strategy = _format_bazi_display_html("\n".join(bazi_sections.get("strategy", [])))
+    # 生成纯文本版本用于报告图片
+    bazi_text_flow = "\n".join(bazi_sections.get("flow", []))
+    bazi_text_prosperity = "\n".join(bazi_sections.get("prosperity", []))
+    bazi_text_strategy = "\n".join(bazi_sections.get("strategy", []))
     star_sign = _build_star_sign_context(bazi_profile)
     if bazi_display_text:
         print("[BaziOutput] header_preview={}".format(" | ".join([x for x in bazi_display_text.splitlines()[:3] if x])))
@@ -1121,6 +1171,9 @@ def home_page_ch_bak(request):
                                 astr_all=person_str,
                                 astr_true_love=true_love_str if 'true_love_str' in dir() else "",
                                 astr_couple="",
+                                astr_bazi_flow="",
+                                astr_bazi_prosperity="",
+                                astr_bazi_strategy="",
                                 match_rate_1=str(output[13]) + "%",
                                 match_rate_2=str(output[14]) + "%",
                                 x=face_x,
@@ -1216,6 +1269,9 @@ def home_phone_page(request):
                                 astr_all=person_str,
                                 astr_true_love=true_love_str if 'true_love_str' in dir() else "",
                                 astr_couple="",
+                                astr_bazi_flow="",
+                                astr_bazi_prosperity="",
+                                astr_bazi_strategy="",
                                 match_rate_1=str(output[13]) + "%",
                                 match_rate_2=str(output[14]) + "%",
                                 x=face_x,

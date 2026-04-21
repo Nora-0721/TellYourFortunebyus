@@ -346,7 +346,7 @@ def cal_rate(file_name,sex):
             JP,lip_block_str,lip_width_rate,face_x,face_y = judge_lip(landmarks, face)# 脸判断判断（J）与知觉（P）
             # DeepFace 需要本地真实文件路径，这里使用已解码的绝对路径
             person_str, job_message = judge_MBTI(EI, SN, TF, JP, lip_width_rate, nose_rate, abs_file_path)
-            address, color, index_image1, index_image2, wenhedu1, wenhedu2 = get_randomaddressandcolor(lip_width_rate,nose_rate)
+            color, address, index_image1, index_image2, wenhedu1, wenhedu2 = get_randomaddressandcolor(lip_width_rate,nose_rate)
             # imageUrl1 = get_matchUrl(relative_landmarks,sex)
             imageUrl1,imageUrl2 = ganGenerate(relative_landmarks,sex) #"gan生成"
             # 修改图片：这里仍然传入相对路径（./media/image/xxx.jpg），
@@ -361,8 +361,8 @@ def cal_rate(file_name,sex):
             output_list.append(person_str)
             output_list.append(job_message)# 7
             output_list.append(landmarks_json)# 8
-            output_list.append(address)
             output_list.append(color)
+            output_list.append(address)
             output_list.append(index_image1)# 11
             output_list.append(index_image2)
             output_list.append(wenhedu1)# 13

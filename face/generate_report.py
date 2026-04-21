@@ -91,7 +91,7 @@ def _get_font_path(font_name: str) -> str:
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_dir, font_name)
 
-def test_image_height(avatarUrl,qrcodeUrl,title_lucky_color,astr_lucky_color,title_lucky_location,astr_lucky_location,title_doing,astr_doing,title_astr_eye,astr_eye,title_astr_nose,astr_nose,title_astr_mouth,astr_mouth,title_all,astr_all,title_true_love,astr_true_love,title_couple,astr_couple):
+def test_image_height(avatarUrl,qrcodeUrl,title_lucky_color,astr_lucky_color,title_lucky_location,astr_lucky_location,title_doing,astr_doing,title_astr_eye,astr_eye,title_astr_nose,astr_nose,title_astr_mouth,astr_mouth,title_all,astr_all,title_true_love,astr_true_love,title_bazi_flow,astr_bazi_flow,title_bazi_prosperity,astr_bazi_prosperity,title_bazi_strategy,astr_bazi_strategy,title_couple,astr_couple):
     import datetime
     log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'generate_report.log')
     with open(log_file, 'a', encoding='utf-8') as lf:
@@ -199,6 +199,12 @@ def test_image_height(avatarUrl,qrcodeUrl,title_lucky_color,astr_lucky_color,tit
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: mouth done\n")
     cureent_h += 10*4
+    back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad)
+    cureent_h += 10*4
+    back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad)
+    cureent_h += 10*4
+    back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad)
+    cureent_h += 10*4
     back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: all done\n")
@@ -261,7 +267,8 @@ def insert_word(title_astr, astr, width, image, font, current_h, pad):
 
 def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,astr_lucky_color,
                    astr_lucky_location,astr_doing,astr_eye,astr_nose,astr_mouth,astr_all,astr_true_love,
-                   astr_couple,match_rate_1,match_rate_2,x,y):
+                   astr_couple,astr_bazi_flow,astr_bazi_prosperity,astr_bazi_strategy,
+                   match_rate_1,match_rate_2,x,y):
     # 添加日志文件记录执行过程
     import datetime
     log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'generate_report.log')
@@ -305,6 +312,10 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
    # astr_all = "本人有着比较强的创新能力和逻辑推理能力，能够很快的结合自身所有解决遇到的问题。对新的事物会比较好奇。是一位有创造力的思考者，也善于分析解决问题。大多数时候，为人比较机灵，但是，有时候会比较懒散，保守。"
     
     title_true_love = "☆正缘预测："
+
+    title_bazi_flow = "☆流年干支："
+    title_bazi_prosperity = "☆旺衰与定局："
+    title_bazi_strategy = "☆战略箴言："
     # astr_true_love 从参数传入
     
     title_couple = "您的对象像谁？"
@@ -316,7 +327,7 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
         lf.write(f"[LOG] Step 1: before test_image_height\n")
     try:
         max_height = test_image_height(avatarUrl,qrcodeUrl,title_lucky_color,astr_lucky_color,title_lucky_location,
-	    astr_lucky_location,title_doing,astr_doing,title_astr_eye,astr_eye,title_astr_nose,astr_nose,title_astr_mouth,astr_mouth,title_all,astr_all,title_true_love,astr_true_love,title_couple,astr_couple)
+	    astr_lucky_location,title_doing,astr_doing,title_astr_eye,astr_eye,title_astr_nose,astr_nose,title_astr_mouth,astr_mouth,title_all,astr_all,title_true_love,astr_true_love,title_bazi_flow,astr_bazi_flow,title_bazi_prosperity,astr_bazi_prosperity,title_bazi_strategy,astr_bazi_strategy,title_couple,astr_couple)
         with open(log_file, 'a', encoding='utf-8') as lf:
             lf.write(f"[LOG] Step 2: after test_image_height, max_height={max_height}\n")
     except Exception as e:
@@ -454,6 +465,12 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
     back_img, cureent_h = insert_word(title_astr_mouth,astr_mouth, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.6: mouth drawn\n")
+    cureent_h += 10*4
+    back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad)
+    cureent_h += 10*4
+    back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad)
+    cureent_h += 10*4
+    back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad)
     cureent_h += 10*4
     back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad)
     with open(log_file, 'a', encoding='utf-8') as lf:
