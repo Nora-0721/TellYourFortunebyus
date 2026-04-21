@@ -387,10 +387,14 @@ def _looks_like_template_bazi_text(display_text):
 
 
 def _remove_html_tags(text):
-    """去除文本中的HTML标签"""
+    """去除文本中的HTML标签和特殊字符"""
     import re
+    # 去除HTML标签
     clean = re.compile('<.*?>')
-    return re.sub(clean, '', text)
+    text = re.sub(clean, '', text)
+    # 去除方格符号和其他特殊字符
+    text = re.sub(r'[\u25a0-\u25ff\u2600-\u26ff\u2700-\u27bf]', '', text)  # 去除各种特殊符号
+    return text
 
 def _normalize_bazi_lines(raw_text):
     text = str(raw_text or "").replace("\\r\\n", "\n").replace("\\n", "\n").strip()
@@ -398,7 +402,16 @@ def _normalize_bazi_lines(raw_text):
         return []
     # 去除HTML标签
     text = _remove_html_tags(text)
-    return [ln.strip() for ln in text.splitlines() if ln.strip()]
+    # 进一步处理每一行，去除特殊字符
+    import re
+    lines = []
+    for line in text.splitlines():
+        line = line.strip()
+        if line:
+            # 去除方格符号和其他特殊字符
+            line = re.sub(r'[\u25a0-\u25ff\u2600-\u26ff\u2700-\u27bf]', '', line)
+            lines.append(line)
+    return lines
 
 
 def _split_bazi_sections(raw_text):
