@@ -2,11 +2,12 @@
 from django.urls import path
 
 from mainsite import views
-from .views import  test_set, test_get,xieyi,phone_xieyi,input_ch,phone_ch,download
+from .views import  test_set, test_get,xieyi,phone_xieyi,input_ch,phone_ch,download,home_phone_page
 
 # from .views import CreatePostView 
 urlpatterns = [
 	path('phone_ch/', views.phone_ch, name='phone_input_ch'),
+	path('home_phone/', views.home_phone_page, name='home_phone'),
 	# path('phone_en/', PhonePostViewEn.as_view(), name='phone_input_en'),
 	path('ch/', views.input_ch, name='input_ch'),
 	# path('en/', CreatePostViewEn.as_view(), name='input_en'),

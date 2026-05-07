@@ -29,27 +29,53 @@
         <div id="character" class="title">&#9775;综合评价</div>
 		<div id="character_text" class="text">{{ person_str }}</div>
 		
+		{% if bazi_text_flow %}
+		<div id="bazi_flow" class="title">&#9788;八字排盘 - 流年运势</div>
+		<div id="bazi_flow_text" class="text">{{ bazi_text_flow|linebreaksbr }}</div>
+		{% endif %}
+		
+		{% if bazi_text_prosperity %}
+		<div id="bazi_prosperity" class="title">&#9788;八字排盘 - 旺衰定局</div>
+		<div id="bazi_prosperity_text" class="text">{{ bazi_text_prosperity|linebreaksbr }}</div>
+		{% endif %}
+		
+		{% if bazi_text_strategy %}
+		<div id="bazi_strategy" class="title">&#9788;八字排盘 - 战略箴言</div>
+		<div id="bazi_strategy_text" class="text">{{ bazi_text_strategy|linebreaksbr }}</div>
+		{% endif %}
 		
 		<div class="banner-head">
 			<div id="hunpei"class="title">&hearts;您的对象长的像谁?</div>
-			<div class="block_qizi1" >
-				<div class="qizi">
-				<img class="qizi_image" src="{{image1_url}}">
-			</div>
-			<div  class="name_title"><span>吻合度：{{wehnhedu1}}</span></div>
-			</div>
-			<div class="block_qizi2" >
-			<div class="qizi">
-			<img class="qizi_image" src="{{image2_url}}">
-
-			</div>
-			<div  class="name_title"><span>吻合度：{{wehnhedu2}}</span></div>
+			<div class="partner-grid">
+				{% if partner_image_urls and partner_image_urls|length >= 1 %}
+				<div class="partner-item">
+					<div class="qizi">
+						<img class="qizi_image" src="{{ partner_image_urls.0 }}">
+					</div>
+				</div>
+				{% endif %}
+				{% if partner_image_urls and partner_image_urls|length >= 2 %}
+				<div class="partner-item">
+					<div class="qizi">
+						<img class="qizi_image" src="{{ partner_image_urls.1 }}">
+					</div>
+				</div>
+				{% endif %}
+				{% if partner_image_urls and partner_image_urls|length >= 3 %}
+				<div class="partner-item">
+					<div class="qizi">
+						<img class="qizi_image" src="{{ partner_image_urls.2 }}">
+					</div>
+				</div>
+				{% endif %}
 			</div>
 			<div id="logo2"></div>
+			<div id="download_wrapper">
+				<div id="download" >下载报告</div>
+			</div>
 		</div>
-		<div id="download" style="cursor:pointer;width:4rem;height:2rem;background-color:#ae2121;border-radius:2rem;color:#fff;font-size:0.75rem;line-height:2rem;margin:0rem auto 0.4rem" >&nbsp;&nbsp;下载报告</div>
 	
-</div>
+	</div>
 </div>
 <script type="text/javascript">
 		var designWidth = 420, rem2px = 16;
@@ -60,7 +86,7 @@
 		back.style.backgroundSize = window.innerWidth +"px "+window.innerHeight + "px";
 		var button_ch = document.getElementById("download");
         button_ch.onclick = function () {
-			window.location.href="http://www.tellyourfortune.io:8000/download/"
+			window.location.href="/download/"
         }
 
 </script>

@@ -522,7 +522,14 @@ def xieyi(request):
     html = get_template('input_xieyi.html')
     return HttpResponse(html.render())
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def phone_xieyi(request):
+    if request.method == "POST":
+        request.session["flag"] = "true"
+        request.session.set_expiry(600)
+        return HttpResponseRedirect('/phone_ch/')
     html = get_template('input_phone_xieyi.html')
     return HttpResponse(html.render())
 
@@ -1124,77 +1131,69 @@ def ideal_image_status_api(request):
     return JsonResponse({"status": "failed", "message": "混元接口未返回图片，请查看终端日志"})
 
 def home_page_ch_bak(request):
-    if cache.get("flag") is None :
-        return  HttpResponseRedirect('/login/')
-    else:
-        if cache.get("flag") == "true":
-            try:
-                post = PostNew.objects.latest('pub_date')
-                if str(post.sex) == "1":
-                    image_path = "/static/meinv/"
-                elif str(post.sex) == "2":
-                    image_path= "/static/meinan/"
-                else:
-                    image_path=""
-                print(post.sex)
-            except Exception as e:  # 修正拼写错误
-                raise Http404("数据为空:"+str(e))
-            # if ("Chinese" == post.language):
-            template = get_template('showpage.html')
-            # print(post.language)
-        
-            try:
-                output = cal_rate('.' + post.cover.url)
-            except :
-                raise Http404("图片没找到！")
-            if output != None:
-                eye_path = output[0]
-                eye_block_str = output[1]
-                nose_path = output[2]
-                nose_block_str = output[3]
-                lip_path = output[4]
-                lip_block_str = output[5]
-                person_str = output[6]
-                job_message = output[7]
-                landmarks_json = output[8]
-                color= output[9]
-                address = output[10]
-                index_image1 = output[11]
-                index_image2 = output[12]
-                image1_url = image_path+str((index_image1%20))+".jpg"
-                image2_url = image_path+str(((index_image2)%20))+".jpg"
-                wehnhedu1 = str(output[13]) + "%"
-                wehnhedu2 = str(output[14]) + "%"
-                face_x = output[15]
-                face_y = output[16]
-                avatarUrl = post.cover.url[:-4]+"_400"+post.cover.url[-4:]
-                print(avatarUrl)
-                print('.' + post.cover.url)
-                generate_report(backgroundUrl="./static/picture/report.png",
-                                avatarUrl='.' + avatarUrl,
-                                qrcodeUrl="./static/picture/qrcode.png",
-                                couple_1_Url="."+image1_url,
-                                couple_2_Url="."+image2_url,
-                                astr_lucky_color=color,
-                                astr_lucky_location=address,
-                                astr_doing=job_message,
-                                astr_eye=eye_block_str,
-                                astr_nose=nose_block_str,
-                                astr_mouth=lip_block_str,
-                                astr_all=person_str,
-                                astr_true_love=true_love_str if 'true_love_str' in dir() else "",
-                                astr_couple="",
-                                astr_bazi_flow="",
-                                astr_bazi_prosperity="",
-                                astr_bazi_strategy="",
-                                match_rate_1=str(output[13]) + "%",
-                                match_rate_2=str(output[14]) + "%",
-                                x=face_x,
-                                y=face_y)
-            html = template.render(locals())
-            return HttpResponse(html)
+    try:
+        post = PostNew.objects.latest('pub_date')
+        if str(post.sex) == "1":
+            image_path = "/static/meinv/"
+        elif str(post.sex) == "2":
+            image_path= "/static/meinan/"
         else:
-            return  HttpResponseRedirect('/login/')
+            image_path=""
+        print(post.sex)
+    except Exception as e:
+        raise Http404("数据为空:"+str(e))
+    template = get_template('showpage.html')
+    
+    try:
+        output = cal_rate('.' + post.cover.url)
+    except :
+        raise Http404("图片没找到！")
+    if output != None:
+        eye_path = output[0]
+        eye_block_str = output[1]
+        nose_path = output[2]
+        nose_block_str = output[3]
+        lip_path = output[4]
+        lip_block_str = output[5]
+        person_str = output[6]
+        job_message = output[7]
+        landmarks_json = output[8]
+        color= output[9]
+        address = output[10]
+        index_image1 = output[11]
+        index_image2 = output[12]
+        image1_url = image_path+str((index_image1%20))+".jpg"
+        image2_url = image_path+str(((index_image2)%20))+".jpg"
+        wehnhedu1 = str(output[13]) + "%"
+        wehnhedu2 = str(output[14]) + "%"
+        face_x = output[15]
+        face_y = output[16]
+        avatarUrl = post.cover.url[:-4]+"_400"+post.cover.url[-4:]
+        print(avatarUrl)
+        print('.' + post.cover.url)
+        generate_report(backgroundUrl="./static/picture/report.png",
+                        avatarUrl='.' + avatarUrl,
+                        qrcodeUrl="./static/picture/qrcode.png",
+                        couple_1_Url="."+image1_url,
+                        couple_2_Url="."+image2_url,
+                        astr_lucky_color=color,
+                        astr_lucky_location=address,
+                        astr_doing=job_message,
+                        astr_eye=eye_block_str,
+                        astr_nose=nose_block_str,
+                        astr_mouth=lip_block_str,
+                        astr_all=person_str,
+                        astr_true_love=true_love_str if 'true_love_str' in dir() else "",
+                        astr_couple="",
+                        astr_bazi_flow="",
+                        astr_bazi_prosperity="",
+                        astr_bazi_strategy="",
+                        match_rate_1=str(output[13]) + "%",
+                        match_rate_2=str(output[14]) + "%",
+                        x=face_x,
+                        y=face_y)
+    html = template.render(locals())
+    return HttpResponse(html)
 
 
 def home_page_en(request):
@@ -1223,76 +1222,228 @@ def home_page_en(request):
     return HttpResponse(html)
 
 def home_phone_page(request):
-    if cache.get("flag") is None :
-        return  HttpResponseRedirect('/login/')
-    else:
-        if cache.get("flag") == "true":
-            try:
-                post = PostNew.objects.order_by('-pub_date')[0]
-                if str(post.sex) == "1":
-                    image_path = "/static/meinv/"
-                elif str(post.sex) == "2":
-                    image_path= "/static/meinan/"
-                else:
-                    image_path=""
-                print(post.sex)
-            except PostNew.DoseNotExit:
-                raise Http404("数据为空")
-            # if ("Chinese" == post.language):
-            template = get_template('show_phone.html')
-            # print(post.language)
-            try:
-                output = cal_rate('.' + post.cover.url)
-            except:
-                raise Http404("图片没找到！")
-            if output != None:
-                eye_path = output[0]
-                eye_block_str = output[1]
-                nose_path = output[2]
-                nose_block_str = output[3]
-                lip_path = output[4]
-                lip_block_str = output[5]
-                person_str = output[6]
-                job_message = output[7]
-                landmarks_json = output[8]
-                color= output[9]
-                address = output[10]
-                index_image1 = output[11]
-                index_image2 = output[12]
-                image1_url = image_path+str((index_image1%20))+".jpg"
-                image2_url = image_path+str(((index_image2)%20))+".jpg"
-                wehnhedu1 = str(output[13]) + "%"
-                wehnhedu2 = str(output[14]) + "%"
-                face_x = output[15]
-                face_y = output[16]
-                avatarUrl = post.cover.url[:-4] + "_400" + post.cover.url[-4:]
-                print(avatarUrl)
-                print('.' + post.cover.url)
-                generate_report(backgroundUrl="./static/picture/report.png",
-                                avatarUrl= '.' +avatarUrl,
-                                qrcodeUrl="./static/picture/qrcode.png",
-                                couple_1_Url="." + image1_url,
-                                couple_2_Url="." + image2_url,
-                                astr_lucky_color=color,
-                                astr_lucky_location=address,
-                                astr_doing=job_message,
-                                astr_eye=eye_block_str,
-                                astr_nose=nose_block_str,
-                                astr_mouth=lip_block_str,
-                                astr_all=person_str,
-                                astr_true_love=true_love_str if 'true_love_str' in dir() else "",
-                                astr_couple="",
-                                astr_bazi_flow="",
-                                astr_bazi_prosperity="",
-                                astr_bazi_strategy="",
-                                match_rate_1=str(output[13]) + "%",
-                                match_rate_2=str(output[14]) + "%",
-                                x=face_x,
-                                y=face_y)
-            html = template.render(locals())
-            return HttpResponse(html)
+    print("===== home_phone_page called =====")
+    try:
+        post = PostNew.objects.order_by('-pub_date')[0]
+        print("===== Got post =====")
+        if str(post.sex) == "1":
+            image_path = "/static/meinv/"
+            sex_label = "男"
+            expected_partner_sex = "女"
+        elif str(post.sex) == "2":
+            image_path= "/static/meinan/"
+            sex_label = "女"
+            expected_partner_sex = "男"
         else:
-            return HttpResponseRedirect('/login/')
+            image_path=""
+            sex_label = "未知"
+            expected_partner_sex = "未知"
+        print(post.sex)
+        print("===== cover url:", post.cover.url)
+    except PostNew.DoesNotExist:
+        print("===== PostNew.DoesNotExist =====")
+        raise Http404("数据为空")
+    
+    # 从 session 获取八字数据
+    bazi_birth_date = request.session.get("bazi_birth_date", "")
+    bazi_birth_hour = request.session.get("bazi_birth_hour", "")
+    age_group = request.session.get("age_group", "")
+    print(f"===== bazi_birth_date: {bazi_birth_date}")
+    print(f"===== bazi_birth_hour: {bazi_birth_hour}")
+    
+    # 构建八字 profile
+    bazi_profile = request.session.get("bazi_profile_json", {})
+    if not isinstance(bazi_profile, dict):
+        bazi_profile = {}
+    
+    profile_needs_recompute = _bazi_profile_needs_recompute(bazi_profile)
+    if bazi_birth_date and profile_needs_recompute:
+        print("===== Building bazi profile =====")
+        bazi_profile = build_bazi_profile(
+            birth_date_text=bazi_birth_date,
+            birth_hour_value=bazi_birth_hour,
+            gender=sex_label,
+        )
+        if bazi_profile:
+            request.session["bazi_profile_json"] = bazi_profile
+            request.session.pop("bazi_profile_analysis_json", None)
+            print("===== Bazi profile built =====")
+    
+    _log_bazi_profile_json(bazi_profile)
+    
+    if isinstance(bazi_profile, dict) and bazi_profile.get("age_range"):
+        age_group = bazi_profile.get("age_range", age_group)
+    
+    print("===== Getting template =====")
+    template = get_template('show_phone.html')
+    print("===== Template loaded =====")
+    try:
+        print("===== Calling cal_rate =====")
+        output = cal_rate('.' + post.cover.url, int(post.sex))
+        print("===== cal_rate done =====")
+    except Exception as e:
+        print("===== Exception in cal_rate:", str(e))
+        import traceback
+        traceback.print_exc()
+        raise Http404("图片没找到！")
+    
+    if output != None:
+        eye_path = output[0]
+        eye_block_str = output[1]
+        nose_path = output[2]
+        nose_block_str = output[3]
+        lip_path = output[4]
+        lip_block_str = output[5]
+        person_str = output[6]
+        job_message = output[7]
+        landmarks_json = output[8]
+        color= output[9]
+        address = output[10]
+        index_image1 = output[11]
+        index_image2 = output[12]
+        image1_url = image_path+str((index_image1%20))+".jpg"
+        image2_url = image_path+str(((index_image2)%20))+".jpg"
+        wehnhedu1 = str(output[13]) + "%"
+        wehnhedu2 = str(output[14]) + "%"
+        face_x = output[15]
+        face_y = output[16]
+        avatarUrl = post.cover.url
+        print(avatarUrl)
+        print('.' + post.cover.url)
+        
+        # 构建用户上下文
+        user_context = {
+            "user_sex": sex_label,
+            "expected_partner_sex": expected_partner_sex,
+            "user_age_group": age_group,
+            "user_age": bazi_profile.get("age") if isinstance(bazi_profile, dict) else None,
+            "user_age_stage": bazi_profile.get("age_stage") if isinstance(bazi_profile, dict) else "",
+            "user_eye_insight": eye_block_str,
+            "user_nose_insight": nose_block_str,
+            "user_lip_insight": lip_block_str,
+            "user_personality_summary": person_str,
+            "note": "基于本人分析动态生成三候选正缘画像prompt",
+        }
+        
+        # 生成八字分析
+        bazi_analysis = request.session.get("bazi_profile_analysis_json", {})
+        if not isinstance(bazi_analysis, dict):
+            bazi_analysis = {}
+        
+        bazi_analysis_needs_recompute = not bazi_analysis or not bazi_analysis.get("display_text")
+        if bazi_profile and bazi_analysis_needs_recompute:
+            print("===== Generating bazi analysis =====")
+            refreshed = generate_bazi_analysis(bazi_profile=bazi_profile, user_context=user_context)
+            if isinstance(refreshed, dict) and refreshed.get("display_text"):
+                bazi_analysis = refreshed
+                request.session["bazi_profile_analysis_json"] = bazi_analysis
+                print("===== Bazi analysis generated =====")
+        
+        # 处理八字分析结果
+        bazi_display_text = ""
+        bazi_text_flow = ""
+        bazi_text_prosperity = ""
+        bazi_text_strategy = ""
+        if isinstance(bazi_analysis, dict):
+            bazi_display_text = bazi_analysis.get("display_text", "")
+        
+        bazi_sections = _split_bazi_sections(bazi_display_text)
+        bazi_text_flow = "\n".join(bazi_sections.get("flow", []))
+        bazi_text_prosperity = "\n".join(bazi_sections.get("prosperity", []))
+        bazi_text_strategy = "\n".join(bazi_sections.get("strategy", []))
+        
+        print(f"===== bazi_text_flow: {bazi_text_flow[:100]}...")
+        print(f"===== bazi_text_prosperity: {bazi_text_prosperity[:100]}...")
+        print(f"===== bazi_text_strategy: {bazi_text_strategy[:100]}...")
+        
+        # 处理正缘图片：优先使用大模型生成的图片，失败时降级使用静态图片
+        ideal_partner_image_data_urls = request.session.get("ideal_partner_image_data_urls", [])
+        if not isinstance(ideal_partner_image_data_urls, list):
+            ideal_partner_image_data_urls = []
+        
+        # 获取理想伴侣 profile 和提示词
+        ideal_partner = request.session.get("ideal_partner_profile_json", {})
+        ideal_visual_prompts = []
+        ideal_display_text = ""
+        if isinstance(ideal_partner, dict):
+            ideal_visual_prompts = ideal_partner.get("visual_prompts", [])
+            if not isinstance(ideal_visual_prompts, list):
+                ideal_visual_prompts = []
+            if not ideal_visual_prompts:
+                fallback_prompt = ideal_partner.get("visual_prompt", "")
+                if fallback_prompt:
+                    ideal_visual_prompts = [fallback_prompt]
+            ideal_display_text = ideal_partner.get("display_text", "")
+        
+        # 如果有提示词但生成的图片少于2张，尝试生成
+        if ideal_visual_prompts and len(ideal_partner_image_data_urls) < 2:
+            print("===== Generating ideal partner images =====")
+            for idx, prompt in enumerate(ideal_visual_prompts[:3]):
+                if len(ideal_partner_image_data_urls) >= 2:
+                    break
+                print(f"===== Generating image {idx+1} with prompt: {prompt[:50]}...")
+                try:
+                    ideal_image_result = generate_ideal_partner_image(prompt=prompt, resolution="1024:1024")
+                    data_url = ideal_image_result.get("data_url", "")
+                    if data_url:
+                        ideal_partner_image_data_urls.append(data_url)
+                        print(f"===== Image {idx+1} generated successfully =====")
+                    else:
+                        print(f"===== Image {idx+1} generation failed =====")
+                except Exception as e:
+                    print(f"===== Error generating image {idx+1}: {str(e)} =====")
+            
+            if ideal_partner_image_data_urls:
+                request.session["ideal_partner_image_data_urls"] = ideal_partner_image_data_urls
+                request.session["ideal_partner_image_data_url"] = ideal_partner_image_data_urls[0]
+        
+        # 确定使用的图片：优先使用生成的图片，否则使用静态图片
+        report_couple_1_Url = "." + image1_url
+        report_couple_2_Url = "." + image2_url
+        
+        if len(ideal_partner_image_data_urls) >= 1:
+            report_couple_1_Url = ideal_partner_image_data_urls[0]
+            print("===== Using generated image 1 =====")
+        if len(ideal_partner_image_data_urls) >= 2:
+            report_couple_2_Url = ideal_partner_image_data_urls[1]
+            print("===== Using generated image 2 =====")
+        
+        # 准备模板使用的图片URL列表（最多3张）
+        partner_image_urls = []
+        if len(ideal_partner_image_data_urls) >= 3:
+            partner_image_urls = ideal_partner_image_data_urls[:3]
+        elif len(ideal_partner_image_data_urls) == 2:
+            partner_image_urls = ideal_partner_image_data_urls[:2] + [image_path + str((index_image1 % 20)) + ".jpg"]
+        elif len(ideal_partner_image_data_urls) == 1:
+            partner_image_urls = ideal_partner_image_data_urls[:1] + [image_path + str((index_image1 % 20)) + ".jpg", image_path + str((index_image2 % 20)) + ".jpg"]
+        else:
+            partner_image_urls = [image1_url, image2_url, image_path + str(((index_image1 + 1) % 20)) + ".jpg"]
+        
+        generate_report(backgroundUrl="./static/picture/report.png",
+                        avatarUrl= '.' +avatarUrl,
+                        qrcodeUrl="./static/picture/qrcode.png",
+                        couple_1_Url=report_couple_1_Url,
+                        couple_2_Url=report_couple_2_Url,
+                        astr_lucky_color=color,
+                        astr_lucky_location=address,
+                        astr_doing=job_message,
+                        astr_eye=eye_block_str,
+                        astr_nose=nose_block_str,
+                        astr_mouth=lip_block_str,
+                        astr_all=person_str,
+                        astr_true_love=ideal_display_text if ideal_display_text else (true_love_str if 'true_love_str' in dir() else ""),
+                        astr_couple="",
+                        astr_bazi_flow=bazi_text_flow,
+                        astr_bazi_prosperity=bazi_text_prosperity,
+                        astr_bazi_strategy=bazi_text_strategy,
+                        match_rate_1=str(output[13]) + "%",
+                        match_rate_2=str(output[14]) + "%",
+                        x=face_x,
+                        y=face_y)
+    print("===== Rendering template =====")
+    html = template.render(locals())
+    print("===== Returning response =====")
+    return HttpResponse(html)
 
 
 
@@ -1307,7 +1458,7 @@ def home_phone_pipei(request):
         # else:
             # image_path=""
         # print(post.sex)
-    except PostNewImage.DoseNotExit:
+    except PostNewImage.DoesNotExist:
         raise Http404("数据为空")
     # if ("Chinese" == post.language):
     template = get_template('showpage_pipei.html')
@@ -1395,40 +1546,65 @@ def input_ch_bak(request):
             return HttpResponseRedirect('/login/')
 
 def phone_ch(request):
-    if cache.get("flag") is None :
-        return  HttpResponseRedirect('/login/')
-    else:
-        if cache.get("flag") == "true":
-            if request.method == "GET":
-                html = get_template('input_phone.html')
-                return HttpResponse(html.render())
-            if request.method == "POST":
-                author_sex = request.POST["sex"]
-                bazi_birth_date = request.POST.get("bazi_birth_date", "")
-                bazi_birth_hour = request.POST.get("bazi_birth_hour", "")
-                image_name = request.FILES.get('cover')
-                print(image_name)
-                post = PostNew()
-                post.cover = image_name
-                post.sex = author_sex
-                post.save()
-                request.session["bazi_birth_date"] = bazi_birth_date
-                request.session["bazi_birth_hour"] = bazi_birth_hour
-                request.session["age_group"] = ""
-                request.session.pop("ideal_visual_prompt", None)
-                request.session.pop("ideal_visual_prompts", None)
-                request.session.pop("ideal_prompt_random_pack", None)
-                request.session.pop("ideal_partner_profile_json", None)
-                request.session.pop("ideal_partner_image_data_url", None)
-                request.session.pop("ideal_partner_image_data_urls", None)
-                request.session.pop("bazi_profile_json", None)
-                request.session.pop("bazi_profile_analysis_json", None)
-                return HttpResponseRedirect('/home_phone/')
-            else:
-                html = get_template('input_phone.html')
-                return HttpResponse(html.render())
-        else:
-            return HttpResponseRedirect('/login/')
+    if request.method == "GET":
+        request.session["flag"] = "true"
+        html = get_template('input_phone.html')
+        return HttpResponse(html.render())
+    
+    if request.method == "POST":
+        print("=" * 50)
+        print("POST request received")
+        print("POST data:", request.POST)
+        print("FILES:", request.FILES)
+        print("=" * 50)
+        
+        try:
+            author_sex = request.POST.get("sex")
+            bazi_birth_date = request.POST.get("bazi_birth_date", "")
+            bazi_birth_hour = request.POST.get("bazi_birth_hour", "")
+            image_name = request.FILES.get('cover')
+            
+            print(f"author_sex: {author_sex}")
+            print(f"bazi_birth_date: {bazi_birth_date}")
+            print(f"bazi_birth_hour: {bazi_birth_hour}")
+            print(f"Image file: {image_name}")
+            
+            if not author_sex:
+                print("Error: sex is missing")
+                return HttpResponse("请选择性别！")
+            
+            if not image_name:
+                print("Error: cover image is missing")
+                return HttpResponse("请选择图片文件！")
+            
+            post = PostNew()
+            post.cover = image_name
+            post.sex = int(author_sex)
+            post.save()
+            print("Post saved successfully")
+            
+            request.session["bazi_birth_date"] = bazi_birth_date
+            request.session["bazi_birth_hour"] = bazi_birth_hour
+            request.session["age_group"] = ""
+            request.session.pop("ideal_visual_prompt", None)
+            request.session.pop("ideal_visual_prompts", None)
+            request.session.pop("ideal_prompt_random_pack", None)
+            request.session.pop("ideal_partner_profile_json", None)
+            request.session.pop("ideal_partner_image_data_url", None)
+            request.session.pop("ideal_partner_image_data_urls", None)
+            request.session.pop("bazi_profile_json", None)
+            request.session.pop("bazi_profile_analysis_json", None)
+            print("Redirecting to /home_phone/")
+            return HttpResponseRedirect('/home_phone/')
+        except Exception as e:
+            import traceback
+            print(f"Error: {str(e)}")
+            print("Traceback:")
+            traceback.print_exc()
+            return HttpResponse(f"上传失败: {str(e)}")
+    
+    html = get_template('input_phone.html')
+    return HttpResponse(html.render())
 
 def input_pipei(request):
     # if cache.get("flag") is None :
@@ -1456,17 +1632,22 @@ def input_pipei(request):
         #     return HttpResponseRedirect('/login/')
 
 def download(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/login/')
     path = "./out.png"
     print(path)
-    with open(path, 'rb') as fr:
-        response = HttpResponse(fr.read())
-        response['Content-Type'] = 'image/png'
-        current_time = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
-        file_name = str(current_time) + ".png"
-        response['Content-Disposition'] = "attachment;filename={}".format(escape_uri_path(file_name))
-    return response
+    try:
+        with open(path, 'rb') as fr:
+            response = HttpResponse(fr.read())
+            response['Content-Type'] = 'image/png'
+            current_time = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
+            file_name = str(current_time) + ".png"
+            response['Content-Disposition'] = "attachment;filename={}".format(escape_uri_path(file_name))
+        return response
+    except FileNotFoundError:
+        print("===== Download file not found =====")
+        return HttpResponse("报告文件不存在，请先生成报告！")
+    except Exception as e:
+        print(f"===== Download error: {str(e)} =====")
+        return HttpResponse(f"下载失败: {str(e)}")
 
 def download_bak(request):
     if cache.get("flag") is None :

@@ -187,29 +187,29 @@ def test_image_height(avatarUrl,qrcodeUrl,title_lucky_color,astr_lucky_color,tit
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: job done\n")
     cureent_h += 20*4
-    back_img, cureent_h = insert_word(title_astr_eye,astr_eye, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_astr_eye,astr_eye, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: eye done\n")
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_astr_nose,astr_nose, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_astr_nose,astr_nose, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: nose done\n")
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_astr_mouth,astr_mouth, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_astr_mouth,astr_mouth, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: mouth done\n")
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad, MAX_W)
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad, MAX_W)
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad, MAX_W)
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: all done\n")
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_true_love, astr_true_love, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_true_love, astr_true_love, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] test_image_height: true_love done\n")
     cureent_h += 10*4
@@ -242,30 +242,35 @@ def insert_word_recommand(title_astr, astr, width, image, font, current_h, pad):
     return image, current_h # 返回图片和当前高度
 
 # 插入文字
-def insert_word(title_astr, astr, width, image, font, current_h, pad):
+def insert_word(title_astr, astr, width, image, font, current_h, pad, MAX_W):
     # asrr -- 字符串
     # width -- 文字一行的宽度
     # image -- 背景图片
     # font -- 字体
     # current_h -- 当前高度
     # pad -- 与以前文字的间隔
+    # MAX_W -- 最大宽度
     font1_path = _get_font_path('simhei.ttf')
     font1 = ImageFont.truetype(font1_path, 15*4) 
     draw = ImageDraw.Draw(image)
     bbox = draw.textbbox((0, 0), title_astr, font=font1)
     w = bbox[2] - bbox[0]
     h = bbox[3] - bbox[1]
-    # 标题使用深蓝色
-    draw.text((30*4, current_h), title_astr, font=font1, fill=(30, 64, 175))
+    
+    # 绘制标题文字（无背景）
+    draw.text((30*4, current_h), title_astr, font=font1, fill=(157, 12, 12))
     current_h += h + pad  
+    
+    # 绘制内容文字（无背景）
     para = textwrap.wrap(astr, width)
-    for line in para: 
-        bbox = draw.textbbox((0, 0), line, font=font)
-        w = bbox[2] - bbox[0]
-        h = bbox[3] - bbox[1]
-        # 内容使用深灰色
-        draw.text((50*4, current_h), line, font=font, fill=(50, 50, 50)) 
-        current_h += h + pad 
+    if para:
+        # 绘制内容文字
+        for line in para: 
+            bbox = draw.textbbox((0, 0), line, font=font)
+            w = bbox[2] - bbox[0]
+            h = bbox[3] - bbox[1]
+            draw.text((50*4, current_h), line, font=font, fill=(50, 50, 50)) 
+            current_h += h + pad 
         
     return image, current_h # 返回图片和当前高度
 
@@ -422,10 +427,19 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
         lf.write(f"[LOG] Step 7: loading font and drawing title\n")
     font_path = _get_font_path('simhei.ttf')
     font = ImageFont.truetype(font_path, 20*4) 
-    bbox = draw.textbbox((0, 0), "人工智能大数据命理分析报告", font=font)
+    title_text = "人工智能大数据命理分析报告"
+    bbox = draw.textbbox((0, 0), title_text, font=font)
     w = bbox[2] - bbox[0]
     h = bbox[3] - bbox[1]
-    draw.text(((MAX_W - w)/2, 520), "人工智能大数据命理分析报告", font=font,fill=(0, 0, 0))
+    title_x = (MAX_W - w) / 2
+    title_y = 520
+    
+    # 绘制标题背景
+    draw.rectangle([title_x - 20, title_y - 10, title_x + w + 20, title_y + h + 10], fill=(240, 245, 255))
+    # 绘制标题边框
+    draw.rectangle([title_x - 22, title_y - 12, title_x + w + 22, title_y + h + 12], outline=(30, 64, 175), width=2)
+    # 绘制标题文字
+    draw.text((title_x, title_y), title_text, font=font, fill=(30, 64, 175))
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 7.1: title drawn\n")
 
@@ -470,15 +484,15 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
     cureent_h += 20*4
     
     # 五官分析部分
-    back_img, cureent_h = insert_word(title_astr_eye,astr_eye, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_astr_eye,astr_eye, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.4: eye drawn\n")
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_astr_nose,astr_nose, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_astr_nose,astr_nose, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.5: nose drawn\n")
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_astr_mouth,astr_mouth, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_astr_mouth,astr_mouth, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.6: mouth drawn\n")
     
@@ -487,18 +501,18 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
     cureent_h += 20*4
     
     # 八字分析部分
-    back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_bazi_flow,astr_bazi_flow, width, back_img, font, cureent_h, pad, MAX_W)
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_bazi_prosperity,astr_bazi_prosperity, width, back_img, font, cureent_h, pad, MAX_W)
     cureent_h += 10*4
-    back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_bazi_strategy,astr_bazi_strategy, width, back_img, font, cureent_h, pad, MAX_W)
     
     # 添加分隔线
     draw_divider(back_img, 30*4, cureent_h, MAX_W - 60*4)
     cureent_h += 20*4
     
     # 综合评价部分
-    back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_all,astr_all, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.7: all drawn\n")
     
@@ -507,7 +521,7 @@ def generate_report(backgroundUrl,avatarUrl,qrcodeUrl,couple_1_Url,couple_2_Url,
     cureent_h += 20*4
     
     # 正缘预测部分
-    back_img, cureent_h = insert_word(title_true_love, astr_true_love, width, back_img, font, cureent_h, pad)
+    back_img, cureent_h = insert_word(title_true_love, astr_true_love, width, back_img, font, cureent_h, pad, MAX_W)
     with open(log_file, 'a', encoding='utf-8') as lf:
         lf.write(f"[LOG] Step 9.7b: true_love drawn\n")
     

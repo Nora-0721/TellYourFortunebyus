@@ -1,181 +1,200 @@
-html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,input,button,sub,sup,textarea{margin:0;padding:0;}
-/*#body{*/
-    /*width:100%;*/
-    /*!*height: 200%;*!*/
-    /*!*background:url("./picture/back.png") no-repeat center 0px;*!*/
-/*}*/
+html,body,p,dl,dt,dd,table,td,th,input,img,form,div,span,ul,ol,li,h1,h2,h3,h4,h5,h6,select,fieldset,input,button,sub,sup,textarea{margin:0;padding:0;box-sizing:border-box;}
 html{
     font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
-@font-face {
-    font-family: rlsm;
-    src: url("./picture/rlsm.TTF");
+body{
+    min-height: 100vh;
+    background: #e3e1e1;
 }
 #filebody{
-	background:#e3e1e1;
-    /* width:30rem; */
-    /* height:50rem; */
-	
-    /* background-size: 100% 100%; */
-    /* background:url("./picture/back_phone_well.png") ; */
-    /* background-size: 30rem 50rem; */
-    /* -moz-background-size: 30rem 50rem; */
-    /* -webkit-background-size: 30rem 50rem; */
-
+    background: #e3e1e1;
+    min-height: 100vh;
+    width: 100%;
+}
+#back1_phone{
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem 2rem;
 }
 #head{
-    width:100%;
-    height:2.3rem;
-    line-height: 3rem;
-    font-size:2rem;
-    text-align:center;
-    vertical-align: middle;
-    font-family:rlsm;
-    font-weight:bold;
-    color:rgb(0,0,0);
-	padding-top:4rem;
-}
-
-#back1_phone{
-    height: 60rem;
-    width: 28rem;
-    background-image:url("./picture/back_phone1.png");
-    background-size: 28rem 100%;
-    -moz-background-size: 28rem 100%;
-    -webkit-background-size: 28rem 100%;
-	margin-top:0.25rem;
-	margin-left:auto;
-	margin-right:auto;
-    /* position:absolute; */
-    /* top: 1.75rem; */
-	/* left:0.25rem; */
+    width: 100%;
+    line-height: 1.4;
+    font-size: 1.8rem;
+    text-align: center;
+    font-family: 'rlsm', sans-serif;
+    font-weight: bold;
+    color: rgb(0,0,0);
+    padding: 2.5rem 0.5rem 1rem;
 }
 #introduce{
-    margin: 10% 10% 0 10%;
-    width:80%;
-    /*height:69px;*/
-    font-size:1rem;
-    font-family:rlsm;
-    font-weight:400;
-    line-height:1.3em;
-    color:rgb(34, 6, 6);
+    width: 100%;
+    font-size: 0.9rem;
+    font-family: 'rlsm', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgb(34, 6, 6);
     white-space: pre-line;
+    text-align: justify;
+    margin-bottom: 1.5rem;
 }
-
 #h1{
-	margin-top:1rem;
-    width:100%;
-    height:2rem;
-    line-height: 2rem;
-    font-size:1.3rem;
-
-    font-family:Alibaba PuHuiTi;
-    text-align:center;
-    vertical-align: middle;
-    font-weight:bold;
-    color:rgb(0,0,0);
+    width: 100%;
+    line-height: 1.5;
+    font-size: 1.2rem;
+    font-family: 'Alibaba PuHuiTi', sans-serif;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(0,0,0);
+    margin-bottom: 1rem;
+}
+#form{
+    width: 100%;
 }
 #input{
-	
-    margin: 1rem auto 0 auto;
-    width:80%;
-    height: 9rem;
-    background-image:url("./picture/back_phone2.png");
-    background-size: 100% 9rem;
-    -moz-background-size: 100% 9rem;
-    -webkit-background-size: 100% 9rem;
-}
-#id_title{
-	width:8rem;
-	height:1rem;
-	font-size:1rem;
-}
-#id_cover{
-	width:8rem;
-	height:2rem;
-	font-size:1rem;
-}
-#id_sex{
-	width:8rem;
-	height:1rem;
-	font-size:1rem;
+    width: 100%;
+    padding: 1.5rem 1rem;
+    background-image: url("./picture/back_phone2.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem;
 }
 .form_item1{
-	padding-top: 2rem;
-	margin-left: 6rem;
-    margin-right: auto;
-	height:2rem;
-    
+    margin-bottom: 1.5rem;
 }
 .form_item2{
-	padding-top:1rem;
-	margin-left: 6rem;
-    margin-right: auto;
-	height:2rem;
-    
+    margin-bottom: 1.5rem;
 }
 .label_input1{
-    width:20%;
-    height:2rem;
-    font-size:1rem;
-    font-weight:400;
-    color:rgba(102,102,102,1);
-    line-height:1.375rem;
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 1.5;
+    margin-bottom: 0.7rem;
 }
 .label_input2{
-    width:20%;
-    height:1.5rem;
-    font-size:1rem;
-    font-weight:400;
-    color:rgba(102,102,102,1);
-    line-height:1.375rem;
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 1.5;
+    margin-bottom: 0.7rem;
+}
+#label_input3{
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+#label_input_age{
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+input[type="radio"]{
+    margin-right: 0.3rem;
+    margin-left: 0.5rem;
+}
+input[type="radio"]:first-of-type{
+    margin-left: 0;
+}
+input[type="date"]{
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    background: #fff;
+}
+select[name="bazi_birth_hour"]{
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    background: #fff;
+    margin-top: 0.5rem;
+}
+#cover{
+    display: block;
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.5rem;
 }
 #button1{
-	
-	margin-top:2rem;
-	margin-left:10rem;
-	width:9rem;
-	height:2rem;
-    border: 0rem;
-    background:url("./picture/submit_phone.png");
+    display: block;
+    width: 100%;
+    max-width: 10rem;
+    height: 2.5rem;
+    margin: 2rem auto 0;
+    border: none;
+    background: url("./picture/submit_phone.png");
     background-position: center center;
     background-size: cover;
+    cursor: pointer;
 }
 #xieyi{
-	margin-top:3rem;
-	margin-left:15rem;
+    margin-top: 1.5rem;
+    text-align: center;
 }
-
 .xieyi{
-	position: relative;
-	top:0rem;
-	background:#e3e1e1;
-	width: 100%;
-	height: 45rem;
-	border-radius: 5px;
-	margin: 5% auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #e3e1e1;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1rem;
+    z-index: 1000;
 }
 .header{
-	height: 4rem;
-	width:100%;
-	text-align:center;
-
+    padding: 1rem 0;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
 }
-
+.header h1{
+    font-size: 1.3rem;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
 .text_area{
-
-	background: #e3e1e1;
-	width: 95%;
-	margin: 0 1rem;
-	height: 35rem;
+    width: 100%;
+    height: calc(100vh - 14rem);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    resize: none;
 }
-#logo2 {
-    width: 31rem;
-    height:18rem;
-	margin-top:0rem;
-	margin-left:-2rem;
+#logo2{
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    margin: 2rem auto 0;
     background: url("./picture/logo1.png") center top no-repeat;
-    background-size: 24rem 100%;
-    -moz-background-size: 24rem 100%;
-    -webkit-background-size: 24rem 100%;
+    background-size: contain;
 }
